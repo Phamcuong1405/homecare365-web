@@ -1,0 +1,3 @@
+homecare365.vn, www.homecare365.vn {
+    reverse_proxy web:3000
+}

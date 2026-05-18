@@ -1,0 +1,37 @@
+=== NAVTools Web — Gắn tên miền ===
+
+THƯ MỤC: C:\Users\ADMIN\navtools-web
+
+1) CHẠY THỬ TRÊN MÁY
+   - Double-click: chay-web.bat
+   - Hoặc: npm install && npm run dev
+   - Mở: http://localhost:3000
+
+2) MUA TÊN MIỀN (nếu chưa có)
+   - Ví dụ: navtools.vn, tenban.com
+   - Nhà cung cấp: Cloudflare, Namecheap, Porkbun...
+
+3) ĐƯA WEB LÊN INTERNET (Vercel — khuyến nghị)
+   a) Tạo repo GitHub, push folder navtools-web
+   b) Đăng nhập https://vercel.com → Import project
+   c) Thêm biến môi trường:
+      NEXT_PUBLIC_SITE_URL = https://TEN-MIEN-CUA-BAN.com
+   d) Deploy → có link dạng xxx.vercel.app
+
+4) GẮN TÊN MIỀN
+   Vercel: Settings → Domains → thêm:
+   - TEN-MIEN-CUA-BAN.com
+   - www.TEN-MIEN-CUA-BAN.com
+
+   Tại trang quản lý DNS của tên miền, thêm (theo hướng dẫn Vercel hiển thị):
+   - A record @  → 76.76.21.21
+   - CNAME www   → cname.vercel-dns.com
+
+5) CHỜ DNS (5 phút – 48 giờ)
+   Truy cập: https://TEN-MIEN-CUA-BAN.com
+
+6) FILE .env.local (trên máy dev)
+   NEXT_PUBLIC_SITE_URL=https://TEN-MIEN-CUA-BAN.com
+
+=== VPS (khi cần FFmpeg/AI nặng) ===
+Dùng sau khi web đã chạy ổn trên Vercel; cần server Linux + nginx + SSL Let's Encrypt.
