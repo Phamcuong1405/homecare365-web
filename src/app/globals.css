@@ -270,3 +270,21 @@ body {
   border-color: var(--hc-primary);
   box-shadow: 0 0 0 3px rgba(125, 255, 122, 0.25);
 }
+
+/* Tiêu đề form — in hoa, giữa bảng */
+.hc-form-board-head {
+  margin-bottom: 0.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--hc-card-border);
+}
+
+.hc-form-board-title {
+  font-size: 1.125rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--hc-deep-dark);
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9),
+    0 2px 8px rgba(125, 255, 122, 0.25);
+}

@@ -56,8 +56,10 @@ export function ConsultationForm() {
 
   return (
     <div className="hc-card rounded-3xl p-6">
-      <h2 className="text-lg font-semibold text-[var(--hc-text)]">Đặt lịch tư vấn miễn phí</h2>
-      <p className="mt-1 text-sm text-[var(--hc-text-muted)]">Chúng tôi liên hệ trong vòng 24 giờ.</p>
+      <div className="hc-form-board-head text-center">
+        <h2 className="hc-form-board-title">ĐẶT LỊCH TƯ VẤN MIỄN PHÍ</h2>
+        <p className="mt-2 text-sm text-[var(--hc-text-muted)]">Chúng tôi liên hệ trong vòng 24 giờ.</p>
+      </div>
 
       {sent ? (
         <p className="mt-4 rounded-lg bg-[var(--hc-green-soft)] px-4 py-3 text-sm text-[var(--hc-deep)]">
