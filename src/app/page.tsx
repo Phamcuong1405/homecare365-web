@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ConsultationForm } from "@/components/ConsultationForm";
 import { ServiceVideoSection } from "@/components/ServiceVideoSection";
-import { siteConfig } from "@/lib/site";
+import { phoneTelHref, siteConfig } from "@/lib/site";
 
 const services = [
   {
@@ -131,7 +131,13 @@ export default function HomePage() {
             </div>
             <ul className="space-y-2 text-sm text-emerald-50">
               <li>
-                <strong className="text-white">Hotline:</strong> {siteConfig.contact.phone}
+                <strong className="text-white">Hotline:</strong>{" "}
+                <a
+                  href={phoneTelHref(siteConfig.contact.phone)}
+                  className="font-medium underline hover:text-white"
+                >
+                  {siteConfig.contact.phone}
+                </a>
               </li>
               <li>
                 <strong className="text-white">Email:</strong>{" "}

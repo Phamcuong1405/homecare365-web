@@ -16,8 +16,13 @@ export const siteConfig = {
     posterSrc: process.env.NEXT_PUBLIC_SERVICE_VIDEO_POSTER ?? "/video-poster.svg",
   },
   contact: {
-    phone: "1900 xxxx",
-    email: "lienhe@homecare365.vn",
+    phone: "+84 867050558",
+    email: "homecare365.vn@gmail.com",
     address: "Việt Nam",
   },
 } as const;
+
+/** Số gọi trực tiếp (tel:) — bỏ khoảng trắng, giữ dấu + */
+export function phoneTelHref(phone: string): string {
+  return `tel:${phone.replace(/\s/g, "")}`;
+}
