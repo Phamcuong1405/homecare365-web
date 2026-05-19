@@ -4,16 +4,16 @@ import { siteConfig } from "@/lib/site";
 
 const services = [
   {
-    title: "Chăm sóc người cao tuổi",
-    desc: "Hỗ trợ sinh hoạt, theo dõi thuốc, đồng hành an toàn tại nhà.",
+    title: "Dọn dẹp tổng thể",
+    desc: "Lau chùi, hút bụi, vệ sinh phòng khách, bếp, phòng ngủ — nhà sạch từng góc.",
   },
   {
-    title: "Điều dưỡng tại nhà",
-    desc: "Y tá, điều dưỡng viên có chứng chỉ, linh hoạt ca ngày/đêm.",
+    title: "Sắp xếp gọn gàng",
+    desc: "Phân loại đồ đạc, tối ưu không gian — căn nhà ngăn nắp, dễ sinh hoạt.",
   },
   {
-    title: "Phục hồi chức năng",
-    desc: "Tập vật lý trị liệu, theo dõi tiến độ qua báo cáo định kỳ.",
+    title: "Gói định kỳ 365 ngày",
+    desc: "Đặt lịch theo tuần/tháng — bạn bận đến mấy vẫn có nhà sạch, thư giãn mỗi ngày.",
   },
 ];
 
@@ -47,14 +47,32 @@ export default function HomePage() {
 
       <main className="relative z-10 mx-auto max-w-6xl px-6 pb-16">
         <section className="grid items-center gap-10 py-12 lg:grid-cols-2 lg:py-20">
-          <div>
-            <p className="mb-3 inline-block rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800">
-              {siteConfig.domain} · Chăm sóc 365 ngày
+          <div className="max-w-xl">
+            <p className="mb-6 inline-flex flex-wrap items-center gap-2 rounded-2xl border-2 border-emerald-400 bg-gradient-to-r from-emerald-600 to-teal-500 px-5 py-3 text-sm font-bold uppercase tracking-wide text-white shadow-lg shadow-emerald-600/35 sm:text-base">
+              <span>{siteConfig.domain}</span>
+              <span className="text-emerald-100">·</span>
+              <span>{siteConfig.tagline}</span>
             </p>
-            <h1 className="text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl">
-              Chăm sóc sức khỏe tại nhà — an tâm mỗi ngày
+
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-emerald-700 sm:text-base">
+              Bận đến mấy
+            </p>
+            <h1 className="mt-2 text-3xl font-extrabold leading-[1.15] tracking-tight text-slate-900 sm:text-4xl lg:text-[2.75rem]">
+              Bạn vẫn xứng đáng sống trong một căn nhà{" "}
+              <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                sạch sẽ
+              </span>
             </h1>
-            <p className="mt-5 text-lg text-slate-600">{siteConfig.description}</p>
+
+            <p className="mt-6 text-2xl font-black uppercase tracking-tight text-emerald-600 sm:text-3xl">
+              HomeCare365
+            </p>
+            <p className="mt-2 text-lg font-semibold leading-snug text-slate-800 sm:text-xl">
+              Lo toàn bộ việc dọn dẹp và sắp xếp cho bạn
+            </p>
+            <p className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-base font-bold text-emerald-900 sm:text-lg">
+              Sạch nhà · Gọn gàng · Thư giãn mỗi ngày
+            </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a
                 href="#dat-lich-tu-van"
@@ -62,9 +80,6 @@ export default function HomePage() {
               >
                 Đăng ký tư vấn
               </a>
-              <span className="rounded-xl border border-slate-300 bg-white px-6 py-3 font-semibold text-slate-700">
-                https://{siteConfig.domain}
-              </span>
             </div>
           </div>
 

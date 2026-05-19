@@ -1,9 +1,10 @@
 export const siteConfig = {
   name: "HomeCare365",
   domain: "homecare365.vn",
-  title: "HomeCare365 — Chăm sóc sức khỏe tại nhà 24/7",
+  title: "HomeCare365 — Dọn dẹp & sắp xếp nhà cửa 365 ngày",
   description:
-    "Dịch vụ chăm sóc người cao tuổi, bệnh nhân và phục hồi tại nhà. Đội ngũ chuyên nghiệp, theo dõi 365 ngày qua web và app.",
+    "HomeCare365 lo toàn bộ việc dọn dẹp và sắp xếp cho bạn — sạch nhà, gọn gàng, thư giãn mỗi ngày.",
+  tagline: "Chăm sóc 365 ngày",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://homecare365.vn",
   locale: "vi_VN",
   contact: {
