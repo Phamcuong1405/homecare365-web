@@ -16,15 +16,20 @@
   --hc-deep: #1f6b3d;
   --hc-deep-dark: #164a2b;
 
-  /* Nền fresh & clean — xanh rất nhạt, gần trắng */
-  --hc-bg-top: #fafcfa;
-  --hc-bg-mid: #f3f9f4;
-  --hc-bg-bottom: #eaf3ec;
+  /* Nền kem ấm — đồng bộ file logo (#f8faf5) */
+  --hc-bg-cream: #f8faf5;
+  --hc-bg-top: #f8faf5;
+  --hc-bg-mid: #f7f9f4;
+  --hc-bg-bottom: #f5f7f2;
+  --hc-brand-blue: #0056b3;
+  --hc-brand-green: #4caf50;
+  --hc-logo-watermark: url("/brand/homecare365-logo.png");
+  --hc-logo-watermark-opacity: 0.09;
 
-  /* Ánh sáng mềm (giảm cường độ neon) */
-  --hc-glow-soft: rgba(125, 255, 122, 0.12);
-  --hc-glow-mid: rgba(50, 205, 50, 0.08);
-  --hc-glow-warm: rgba(255, 255, 255, 0.85);
+  /* Ánh sáng mềm (vignette xanh rất nhẹ ở góc) */
+  --hc-glow-soft: rgba(76, 175, 80, 0.06);
+  --hc-glow-mid: rgba(76, 175, 80, 0.04);
+  --hc-glow-warm: rgba(248, 250, 245, 0.9);
 
   /* Thẻ & viền */
   --hc-card: #ffffff;
@@ -62,35 +67,61 @@ body {
   background-color: var(--hc-bg-mid);
 }
 
-/* ─── Nền trang: gradient xanh nhẹ + ánh sáng mềm ─── */
+/* ─── Nền trang: kem ấm + lá mờ góc (giống ảnh logo) ─── */
 .hc-page-bg {
   min-height: 100vh;
   position: relative;
-  background-color: var(--hc-bg-mid);
-  background-image:
-    radial-gradient(ellipse 90% 50% at 50% -10%, var(--hc-glow-soft), transparent 60%),
-    radial-gradient(ellipse 60% 40% at 100% 20%, var(--hc-glow-mid), transparent 55%),
-    radial-gradient(ellipse 50% 35% at 0% 80%, var(--hc-glow-mid), transparent 50%),
-    radial-gradient(circle at 70% 8%, var(--hc-glow-warm), transparent 35%),
-    linear-gradient(180deg, var(--hc-bg-top) 0%, var(--hc-bg-mid) 50%, var(--hc-bg-bottom) 100%);
+  background-color: var(--hc-bg-cream);
+  background-image: linear-gradient(
+    165deg,
+    var(--hc-bg-top) 0%,
+    var(--hc-bg-mid) 48%,
+    var(--hc-bg-bottom) 100%
+  );
 }
 
+/* Lá xanh mờ hai góc */
 .hc-page-bg::before {
   content: "";
   pointer-events: none;
   position: fixed;
   inset: 0;
   z-index: 0;
-  background: radial-gradient(
-    circle 380px at 12% 30%,
-    rgba(125, 255, 122, 0.07),
-    transparent 72%
-  );
+  background:
+    radial-gradient(ellipse 55% 45% at -8% -6%, var(--hc-glow-soft), transparent 68%),
+    radial-gradient(ellipse 50% 42% at 108% 106%, var(--hc-glow-mid), transparent 66%),
+    radial-gradient(ellipse 70% 50% at 50% 120%, rgba(245, 247, 242, 0.85), transparent 70%);
+}
+
+/* Logo mờ giữa trang — watermark thương hiệu */
+.hc-page-bg::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image: var(--hc-logo-watermark);
+  background-repeat: no-repeat;
+  background-position: center 40%;
+  background-size: min(90vw, 700px);
+  opacity: var(--hc-logo-watermark-opacity);
 }
 
 .hc-page-bg > * {
   position: relative;
   z-index: 1;
+}
+
+.hc-hero-logo-wrap {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 0.25rem;
+}
+
+@media (min-width: 1024px) {
+  .hc-hero-logo-wrap {
+    margin-bottom: 0.5rem;
+  }
 }
 
 /* ─── Header ─── */
@@ -229,11 +260,16 @@ body {
   transform: translateY(-1px);
 }
 
-/* Cùng style, chỉnh kích thước cho dòng slogan dài hơn */
-.hc-emphasis-clean--slogan {
-  font-size: 1.22em;
-  letter-spacing: 0.12em;
-  padding: 0.12em 0.65em 0.16em;
+/* Slogan hero — một dòng, chữ đậm, không nền */
+.hc-slogan-line {
+  margin: 0;
+  font-size: clamp(0.7rem, 2.2vw, 0.875rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--hc-text);
+  white-space: nowrap;
 }
 
 /* Khối liên hệ — xanh đậm tin cậy, không neon */

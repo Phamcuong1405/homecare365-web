@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BrandLogo } from "@/components/BrandLogo";
 import { ConsultationForm } from "@/components/ConsultationForm";
 import { ServiceVideoSection } from "@/components/ServiceVideoSection";
 import { phoneTelHref, siteConfig } from "@/lib/site";
@@ -23,12 +24,7 @@ export default function HomePage() {
     <div className="hc-page-bg text-[var(--hc-text)]">
       <header className="hc-header-glass sticky top-0 z-20">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl hc-btn-primary text-sm font-bold text-white">
-              HC
-            </span>
-            <span className="text-lg font-bold tracking-tight text-[var(--hc-text)]">{siteConfig.name}</span>
-          </Link>
+          <BrandLogo variant="header" linkHome />
           <nav className="hidden items-center gap-6 text-sm font-medium text-[var(--hc-text-muted)] sm:flex">
             <a href="#video-gioi-thieu" className="transition hover:text-[var(--hc-primary)]">
               Giới thiệu
@@ -52,6 +48,12 @@ export default function HomePage() {
       <main className="relative z-10 mx-auto max-w-6xl px-6 pb-16">
         <section className="grid items-start gap-10 py-10 lg:grid-cols-2 lg:py-16">
           <div className="space-y-5">
+            <div className="hc-hero-logo-wrap">
+              <BrandLogo variant="full" linkHome />
+            </div>
+            <p className="text-center text-xs font-bold uppercase tracking-[0.2em] text-[var(--hc-brand-blue)] sm:text-left">
+              {siteConfig.brand.slogan}
+            </p>
             <p className="hc-badge inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold uppercase tracking-wide">
               <span className="hc-badge-dot h-2 w-2 animate-pulse rounded-full" />
               {siteConfig.domain} · {siteConfig.tagline}
@@ -76,9 +78,7 @@ export default function HomePage() {
               </p>
             </div>
 
-            <p className="hc-emphasis-clean hc-emphasis-clean--slogan">
-              SẠCH NHÀ · GỌN GÀNG · THƯ GIÃN MỖI NGÀY
-            </p>
+            <p className="hc-slogan-line">SẠCH NHÀ · GỌN GÀNG · THƯ GIÃN MỖI NGÀY</p>
 
             <p className="max-w-lg text-base leading-relaxed text-[var(--hc-text-muted)]">
               {siteConfig.description}
