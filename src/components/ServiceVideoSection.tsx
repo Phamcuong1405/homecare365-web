@@ -84,7 +84,12 @@ export function ServiceVideoSection() {
           </a>
         </div>
 
-        <div className="hc-card overflow-hidden rounded-2xl bg-[var(--hc-green-deep)] p-1 shadow-xl">
+        <div
+          className="overflow-hidden rounded-2xl p-1 shadow-[0_12px_40px_rgba(50,205,50,0.25)]"
+          style={{
+            background: "linear-gradient(135deg, var(--hc-green-bright), var(--hc-green))",
+          }}
+        >
           <div className="relative aspect-video w-full">
             <VideoPlayer />
           </div>

@@ -52,8 +52,8 @@ export default function HomePage() {
       <main className="relative z-10 mx-auto max-w-6xl px-6 pb-16">
         <section className="grid items-start gap-10 py-10 lg:grid-cols-2 lg:py-16">
           <div className="space-y-5">
-            <p className="inline-flex items-center gap-2 rounded-full border-2 border-[var(--hc-green)] bg-[var(--hc-green-soft)] px-4 py-2 text-sm font-bold uppercase tracking-wide text-[var(--hc-green-deep)] shadow-sm">
-              <span className="h-2 w-2 animate-pulse rounded-full bg-[var(--hc-green)]" />
+            <p className="hc-badge inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold uppercase tracking-wide text-[var(--hc-green-dark)]">
+              <span className="h-2 w-2 animate-pulse rounded-full bg-[var(--hc-green)] shadow-[0_0_8px_var(--hc-green-bright)]" />
               {siteConfig.domain} · {siteConfig.tagline}
             </p>
 
@@ -63,12 +63,12 @@ export default function HomePage() {
               </p>
               <h1 className="text-xl font-semibold leading-snug text-[var(--hc-text-muted)] sm:text-2xl lg:text-[1.65rem] lg:leading-snug">
                 Bạn vẫn xứng đáng sống trong một căn nhà{" "}
-                <span className="font-bold text-[var(--hc-green-deep)]">sạch sẽ</span>
+                <span className="font-bold text-[var(--hc-green)]">sạch sẽ</span>
               </h1>
             </div>
 
-            <div className="border-l-4 border-[var(--hc-green)] py-1 pl-4">
-              <p className="text-2xl font-extrabold tracking-tight text-[var(--hc-green-deep)] sm:text-3xl">
+            <div className="hc-accent-bar py-1">
+              <p className="text-2xl font-extrabold tracking-tight hc-text-gradient sm:text-3xl">
                 {siteConfig.name}
               </p>
               <p className="mt-1 text-base font-semibold text-[var(--hc-text)] sm:text-lg">
@@ -76,7 +76,7 @@ export default function HomePage() {
               </p>
             </div>
 
-            <p className="text-lg font-bold uppercase tracking-wide text-[var(--hc-green)] sm:text-xl">
+            <p className="text-lg font-bold uppercase tracking-wide text-[var(--hc-green-deep)] sm:text-xl drop-shadow-[0_0_12px_rgba(125,255,122,0.4)]">
               Sạch nhà · Gọn gàng · Thư giãn mỗi ngày
             </p>
 

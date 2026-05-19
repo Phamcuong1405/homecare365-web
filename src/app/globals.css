@@ -1,23 +1,27 @@
 @import "tailwindcss";
 
 :root {
-  /* Nền xanh lá mát, pha ấm nhẹ (cream) */
-  --hc-bg-top: #f8fcf9;
-  --hc-bg-mid: #edf7f0;
-  --hc-bg-bottom: #dceee3;
-  --hc-warm-glow: rgba(255, 245, 230, 0.55);
-  --hc-green-glow: rgba(72, 160, 115, 0.18);
+  /* Fresh & clean — #32CD32 → #7DFF7A */
+  --hc-green: #32cd32;
+  --hc-green-bright: #7dff7a;
+  --hc-green-deep: #28a428;
+  --hc-green-dark: #1e7a1e;
 
-  --hc-card: rgba(255, 255, 255, 0.92);
-  --hc-card-border: rgba(58, 140, 95, 0.22);
+  /* Nền sáng, ánh xanh mềm */
+  --hc-bg-top: #f6fff6;
+  --hc-bg-mid: #eeffee;
+  --hc-bg-bottom: #e2fbe2;
 
-  --hc-green: #3d9b68;
-  --hc-green-light: #5cb882;
-  --hc-green-deep: #267a4d;
-  --hc-green-soft: #e8f5ec;
+  --hc-light-soft: rgba(125, 255, 122, 0.35);
+  --hc-light-glow: rgba(50, 205, 50, 0.2);
+  --hc-highlight: rgba(255, 255, 255, 0.75);
 
-  --hc-text: #1a3328;
-  --hc-text-muted: #456b55;
+  --hc-card: rgba(255, 255, 255, 0.88);
+  --hc-card-border: rgba(50, 205, 50, 0.28);
+
+  --hc-green-soft: rgba(125, 255, 122, 0.22);
+  --hc-text: #1a4d1a;
+  --hc-text-muted: #3d6b3d;
 
   --foreground: var(--hc-text);
 }
@@ -36,50 +40,137 @@ body {
   background-color: var(--hc-bg-mid);
 }
 
-/* Nền toàn trang — xanh mát + điểm ấm */
+/* Nền — gradient xanh lá + ánh sáng mềm */
 .hc-page-bg {
   min-height: 100vh;
+  position: relative;
   background-color: var(--hc-bg-mid);
   background-image:
-    radial-gradient(ellipse 90% 55% at 50% -15%, var(--hc-warm-glow), transparent 55%),
-    radial-gradient(ellipse 55% 45% at 0% 60%, var(--hc-green-glow), transparent 50%),
-    radial-gradient(ellipse 50% 40% at 100% 85%, rgba(90, 175, 130, 0.14), transparent 45%),
+    radial-gradient(ellipse 100% 60% at 50% -20%, var(--hc-light-soft), transparent 58%),
+    radial-gradient(ellipse 70% 50% at 0% 40%, var(--hc-light-glow), transparent 52%),
+    radial-gradient(ellipse 65% 45% at 100% 70%, rgba(125, 255, 122, 0.18), transparent 50%),
+    radial-gradient(circle at 80% 15%, var(--hc-highlight), transparent 28%),
     linear-gradient(
-      175deg,
+      168deg,
       var(--hc-bg-top) 0%,
-      var(--hc-bg-mid) 42%,
+      var(--hc-bg-mid) 45%,
       var(--hc-bg-bottom) 100%
     );
 }
 
-.hc-header-glass {
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--hc-card-border);
+.hc-page-bg::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(
+    circle 420px at 15% 25%,
+    rgba(125, 255, 122, 0.14),
+    transparent 70%
+  );
 }
 
+.hc-page-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
+.hc-header-glass {
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--hc-card-border);
+  box-shadow: 0 4px 24px rgba(50, 205, 50, 0.06);
+}
+
+/* Thẻ — highlight bóng nhẹ */
 .hc-card {
   background: var(--hc-card);
   border: 1px solid var(--hc-card-border);
-  box-shadow: 0 8px 32px rgba(38, 122, 77, 0.08);
+  box-shadow:
+    0 4px 6px rgba(50, 205, 50, 0.04),
+    0 12px 32px rgba(50, 205, 50, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  transition:
+    box-shadow 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
 }
 
+.hc-card:hover {
+  border-color: rgba(125, 255, 122, 0.55);
+  box-shadow:
+    0 8px 16px rgba(50, 205, 50, 0.08),
+    0 20px 48px rgba(125, 255, 122, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+/* Nút — gradient #7DFF7A → #32CD32 */
 .hc-btn-primary {
-  background: linear-gradient(135deg, var(--hc-green-light) 0%, var(--hc-green) 55%, var(--hc-green-deep) 100%);
-  box-shadow: 0 6px 20px rgba(45, 130, 85, 0.35);
+  background: linear-gradient(
+    135deg,
+    var(--hc-green-bright) 0%,
+    var(--hc-green) 50%,
+    var(--hc-green-deep) 100%
+  );
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(30, 122, 30, 0.35);
+  box-shadow:
+    0 4px 14px rgba(50, 205, 50, 0.35),
+    0 0 24px rgba(125, 255, 122, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
 }
 
 .hc-btn-primary:hover {
-  background: linear-gradient(135deg, #6bc992 0%, var(--hc-green-light) 55%, var(--hc-green) 100%);
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+  box-shadow:
+    0 8px 24px rgba(50, 205, 50, 0.4),
+    0 0 36px rgba(125, 255, 122, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.hc-badge {
+  border: 2px solid var(--hc-green);
+  background: linear-gradient(135deg, rgba(125, 255, 122, 0.35), rgba(50, 205, 50, 0.12));
+  box-shadow:
+    0 0 20px rgba(125, 255, 122, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .hc-contact-band {
-  background: linear-gradient(135deg, var(--hc-green-deep) 0%, var(--hc-green) 45%, #3a8f5c 100%);
-  box-shadow: 0 12px 40px rgba(38, 100, 65, 0.25);
+  background: linear-gradient(
+    125deg,
+    var(--hc-green-deep) 0%,
+    var(--hc-green) 40%,
+    var(--hc-green-bright) 100%
+  );
+  box-shadow:
+    0 16px 48px rgba(50, 205, 50, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .hc-footer {
-  background: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.7);
   border-top: 1px solid var(--hc-card-border);
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 -4px 24px rgba(50, 205, 50, 0.05);
+}
+
+.hc-accent-bar {
+  border-left: 4px solid var(--hc-green);
+  background: linear-gradient(90deg, var(--hc-green-soft), transparent);
+  padding-left: 1rem;
+}
+
+.hc-text-gradient {
+  background: linear-gradient(135deg, var(--hc-green-deep), var(--hc-green));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
