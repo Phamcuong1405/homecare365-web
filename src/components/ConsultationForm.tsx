@@ -39,10 +39,10 @@ export function ConsultationForm() {
       `Họ và tên: ${fullName}`,
       `Số điện thoại: ${phone}`,
       "",
-      "--- Địa chỉ chăm sóc ---",
+      "--- Địa chỉ dọn dẹp ---",
       fullAddress || "(chưa nhập)",
       "",
-      "--- Nhu cầu chăm sóc ---",
+      "--- Nhu cầu dọn dẹp ---",
       note || "(chưa ghi)",
     ].join("\n");
 
@@ -73,7 +73,7 @@ export function ConsultationForm() {
         </fieldset>
 
         <fieldset className="space-y-3">
-          <legend className="text-sm font-semibold text-slate-700">Địa chỉ chăm sóc tại nhà</legend>
+          <legend className="text-sm font-semibold text-slate-700">Địa chỉ cần dọn dẹp</legend>
           <div className="grid gap-3 sm:grid-cols-2">
             <input
               type="text"
@@ -98,10 +98,10 @@ export function ConsultationForm() {
         </fieldset>
 
         <fieldset className="space-y-3">
-          <legend className="text-sm font-semibold text-slate-700">Nhu cầu chăm sóc</legend>
+          <legend className="text-sm font-semibold text-slate-700">Nhu cầu dọn dẹp</legend>
           <textarea
             name="note"
-            placeholder="Tuổi, tình trạng sức khỏe, thời gian cần chăm sóc..."
+            placeholder="Diện tích nhà, tần suất (1 lần/tuần), yêu cầu đặc biệt..."
             rows={3}
             className={inputClass}
           />
