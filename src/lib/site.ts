@@ -11,7 +11,7 @@ export const siteConfig = {
     title: "Dọn dẹp & sắp xếp nhà cửa chuyên nghiệp",
     description:
       "HomeCare365 phục vụ hộ gia đình và cá nhân bận rộn — lo toàn bộ việc lau chùi, dọn dẹp, sắp xếp để bạn có thêm thời gian nghỉ ngơi trong không gian sạch sẽ.",
-    youtubeId: process.env.NEXT_PUBLIC_SERVICE_VIDEO_YOUTUBE_ID ?? "",
+    youtubeId: process.env.NEXT_PUBLIC_SERVICE_VIDEO_YOUTUBE_ID ?? "t-27gqwSgA0",
     mp4Src: process.env.NEXT_PUBLIC_SERVICE_VIDEO_MP4 ?? "",
     posterSrc: process.env.NEXT_PUBLIC_SERVICE_VIDEO_POSTER ?? "/video-poster.svg",
   },
