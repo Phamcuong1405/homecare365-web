@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ConsultationForm } from "@/components/ConsultationForm";
 import { siteConfig } from "@/lib/site";
 
 const services = [
@@ -56,7 +57,7 @@ export default function HomePage() {
             <p className="mt-5 text-lg text-slate-600">{siteConfig.description}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a
-                href="#lien-he"
+                href="#dat-lich-tu-van"
                 className="rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white shadow-lg shadow-emerald-600/25 hover:bg-emerald-500"
               >
                 Đăng ký tư vấn
@@ -67,38 +68,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="rounded-3xl border border-emerald-100 bg-white p-6 shadow-xl shadow-emerald-900/5">
-            <h2 className="text-lg font-semibold text-slate-900">Đặt lịch tư vấn miễn phí</h2>
-            <p className="mt-1 text-sm text-slate-500">Chúng tôi liên hệ trong vòng 24 giờ.</p>
-            <form className="mt-5 space-y-3" action={`mailto:${siteConfig.contact.email}`} method="post">
-              <input
-                type="text"
-                name="name"
-                placeholder="Họ và tên"
-                required
-                className="w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-emerald-500"
-              />
-              <input
-                type="tel"
-                name="phone"
-                placeholder="Số điện thoại"
-                required
-                className="w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-emerald-500"
-              />
-              <textarea
-                name="note"
-                placeholder="Nhu cầu chăm sóc (tuổi, tình trạng sức khỏe...)"
-                rows={3}
-                className="w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-emerald-500"
-              />
-              <button
-                type="submit"
-                className="w-full rounded-lg bg-emerald-600 py-3 text-sm font-semibold text-white hover:bg-emerald-500"
-              >
-                Gửi yêu cầu
-              </button>
-            </form>
-          </div>
+          <ConsultationForm />
         </section>
 
         <section id="dich-vu" className="py-12">
