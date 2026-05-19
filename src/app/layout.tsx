@@ -38,12 +38,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { brand } = siteConfig;
   const brandStyle = {
-    ["--hc-bg-cream" as string]: siteConfig.brand.bgCream,
-    ["--hc-bg-top" as string]: siteConfig.brand.bgCream,
-    ["--hc-bg-mid" as string]: "#f7f9f4",
-    ["--hc-bg-bottom" as string]: "#f5f7f2",
-    ["--hc-logo-watermark" as string]: `url("${siteConfig.brand.logoWatermarkSrc}")`,
+    ["--hc-bg-cream" as string]: brand.bgCream,
+    ["--hc-bg-top" as string]: brand.bgCream,
+    ["--hc-bg-mid" as string]: brand.bgCream,
+    ["--hc-bg-bottom" as string]: brand.bgCream,
+    ["--hc-brand-blue" as string]: brand.blue,
+    ["--hc-brand-blue-light" as string]: brand.blueLight,
+    ["--hc-brand-green" as string]: brand.green,
+    ["--hc-brand" as string]: brand.green,
+    ["--hc-primary" as string]: brand.green,
+    ["--hc-primary-hover" as string]: brand.greenDark,
+    ["--hc-deep" as string]: brand.blue,
+    ["--hc-deep-dark" as string]: brand.blue,
+    ["--hc-logo-watermark" as string]: `url("${brand.logoWatermarkSrc}")`,
   } satisfies CSSProperties;
 
   return (

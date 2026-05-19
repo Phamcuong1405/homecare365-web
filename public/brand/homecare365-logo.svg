@@ -2,15 +2,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 320" role="img" aria-label="Home Care 365">
   <defs>
     <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#1a7fd4"/>
-      <stop offset="100%" stop-color="#0d5a9e"/>
+      <stop offset="0%" stop-color="#0088ce"/>
+      <stop offset="100%" stop-color="#0056b3"/>
     </linearGradient>
     <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#6ab82e"/>
-      <stop offset="100%" stop-color="#4a9420"/>
+      <stop offset="0%" stop-color="#6bc06e"/>
+      <stop offset="100%" stop-color="#4caf50"/>
     </linearGradient>
   </defs>
-  <rect width="520" height="320" fill="#f8faf5"/>
+  <rect width="520" height="320" fill="#f9faf5"/>
   <g transform="translate(210 20)">
     <path d="M-55 75 Q-75 45 -55 25 L-25 5 Q0 -5 25 5 L55 25 Q75 45 55 75 L0 95 Z" fill="none" stroke="url(#greenGrad)" stroke-width="5"/>
     <path d="M-70 55 Q-40 15 0 25 Q40 15 70 55" fill="none" stroke="url(#blueGrad)" stroke-width="4"/>

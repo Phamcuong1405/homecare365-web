@@ -1,47 +1,40 @@
 @import "tailwindcss";
 
 /*
- * HomeCare365 — bảng màu tối ưu
- * Thương hiệu: #32CD32 · highlight: #7DFF7A
- * UI: nền mint trung tính, chữ xanh đậm, neon chỉ dùng điểm nhấn
+ * HomeCare365 — bảng màu theo logo (#f9faf5 · #0056b3 · #4caf50)
  */
 :root {
-  /* Màu thương hiệu (giữ đúng mã bạn chọn) */
-  --hc-brand: #32cd32;
-  --hc-brand-light: #7dff7a;
+  --hc-brand: #4caf50;
+  --hc-brand-light: #6bc06e;
 
-  /* Màu UI — dịu mắt, dễ đọc trên nền sáng */
-  --hc-primary: #2a9d4a;
-  --hc-primary-hover: #248f42;
-  --hc-deep: #1f6b3d;
-  --hc-deep-dark: #164a2b;
+  --hc-primary: #4caf50;
+  --hc-primary-hover: #3d8b40;
+  --hc-deep: #0056b3;
+  --hc-deep-dark: #004494;
 
-  /* Nền kem ấm — đồng bộ file logo (#f8faf5) */
-  --hc-bg-cream: #f8faf5;
-  --hc-bg-top: #f8faf5;
-  --hc-bg-mid: #f7f9f4;
-  --hc-bg-bottom: #f5f7f2;
+  --hc-bg-cream: #f9faf5;
+  --hc-bg-top: #f9faf5;
+  --hc-bg-mid: #f9faf5;
+  --hc-bg-bottom: #f9faf5;
   --hc-brand-blue: #0056b3;
+  --hc-brand-blue-light: #0088ce;
   --hc-brand-green: #4caf50;
   --hc-logo-watermark: url("/brand/homecare365-logo.png");
-  --hc-logo-watermark-opacity: 0.09;
+  --hc-logo-watermark-opacity: 0.13;
 
-  /* Ánh sáng mềm (vignette xanh rất nhẹ ở góc) */
-  --hc-glow-soft: rgba(76, 175, 80, 0.06);
-  --hc-glow-mid: rgba(76, 175, 80, 0.04);
-  --hc-glow-warm: rgba(248, 250, 245, 0.9);
+  --hc-glow-soft: rgba(76, 175, 80, 0.14);
+  --hc-glow-mid: rgba(76, 175, 80, 0.1);
+  --hc-glow-blue: rgba(0, 86, 179, 0.06);
 
-  /* Thẻ & viền */
-  --hc-card: #ffffff;
-  --hc-card-border: rgba(42, 157, 74, 0.18);
-  --hc-card-shadow: rgba(31, 107, 61, 0.08);
+  --hc-card: rgba(255, 255, 255, 0.92);
+  --hc-card-border: rgba(0, 86, 179, 0.12);
+  --hc-card-shadow: rgba(0, 86, 179, 0.08);
 
-  --hc-green-soft: #e8f6eb;
-  --hc-green-soft-strong: #d4eed9;
+  --hc-green-soft: #eef6ef;
+  --hc-green-soft-strong: #dceee0;
 
-  /* Chữ — tương phản tốt (WCAG-friendly trên nền sáng) */
-  --hc-text: #153d24;
-  --hc-text-muted: #4a6b55;
+  --hc-text: #0d3d66;
+  --hc-text-muted: #3d5f78;
   --hc-text-on-green: #ffffff;
 
   /* Alias tương thích component cũ */
@@ -67,34 +60,15 @@ body {
   background-color: var(--hc-bg-mid);
 }
 
-/* ─── Nền trang: kem ấm + lá mờ góc (giống ảnh logo) ─── */
+/* ─── Nền trang: màu logo + logo phủ full màn hình (cover) ─── */
 .hc-page-bg {
   min-height: 100vh;
   position: relative;
   background-color: var(--hc-bg-cream);
-  background-image: linear-gradient(
-    165deg,
-    var(--hc-bg-top) 0%,
-    var(--hc-bg-mid) 48%,
-    var(--hc-bg-bottom) 100%
-  );
 }
 
-/* Lá xanh mờ hai góc */
+/* Logo gốc — thu phóng cover toàn trang, giữ tỷ lệ */
 .hc-page-bg::before {
-  content: "";
-  pointer-events: none;
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  background:
-    radial-gradient(ellipse 55% 45% at -8% -6%, var(--hc-glow-soft), transparent 68%),
-    radial-gradient(ellipse 50% 42% at 108% 106%, var(--hc-glow-mid), transparent 66%),
-    radial-gradient(ellipse 70% 50% at 50% 120%, rgba(245, 247, 242, 0.85), transparent 70%);
-}
-
-/* Logo mờ giữa trang — watermark thương hiệu */
-.hc-page-bg::after {
   content: "";
   pointer-events: none;
   position: fixed;
@@ -102,9 +76,29 @@ body {
   z-index: 0;
   background-image: var(--hc-logo-watermark);
   background-repeat: no-repeat;
-  background-position: center 40%;
-  background-size: min(90vw, 700px);
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed;
   opacity: var(--hc-logo-watermark-opacity);
+}
+
+/* Lớp phủ kem + lá góc (đọc chữ rõ, vẫn lộ tông màu logo) */
+.hc-page-bg::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--hc-bg-cream) 58%, transparent) 0%,
+      color-mix(in srgb, var(--hc-bg-cream) 44%, transparent) 42%,
+      color-mix(in srgb, var(--hc-bg-cream) 54%, transparent) 100%
+    ),
+    radial-gradient(ellipse 52% 44% at -6% -5%, var(--hc-glow-soft), transparent 72%),
+    radial-gradient(ellipse 48% 40% at 106% 104%, var(--hc-glow-mid), transparent 70%),
+    radial-gradient(ellipse 70% 55% at 50% -15%, var(--hc-glow-blue), transparent 75%);
 }
 
 .hc-page-bg > * {
@@ -126,7 +120,7 @@ body {
 
 /* ─── Header ─── */
 .hc-header-glass {
-  background: rgba(255, 255, 255, 0.82);
+  background: color-mix(in srgb, var(--hc-bg-cream) 88%, white 12%);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--hc-card-border);
   box-shadow: 0 2px 20px var(--hc-card-shadow);
@@ -153,12 +147,12 @@ body {
   transform: translateY(-2px);
 }
 
-/* ─── Nút chính: #7DFF7A → #32CD32 (cân bằng, không chói) ─── */
+/* ─── Nút chính: xanh lá logo ─── */
 .hc-btn-primary {
   background: linear-gradient(
     160deg,
-    #5ee06a 0%,
-    var(--hc-brand) 45%,
+    var(--hc-brand-light) 0%,
+    var(--hc-brand) 48%,
     var(--hc-primary-hover) 100%
   );
   color: var(--hc-text-on-green);

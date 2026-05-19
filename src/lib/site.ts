@@ -10,7 +10,12 @@ export const siteConfig = {
     logoWatermarkSrc: "/brand/homecare365-logo.png",
     logoAlt: "Home Care 365 — Sạch từ tâm, ấm từng nhà",
     slogan: "SẠCH TỪ TÂM – ẤM TỪNG NHÀ",
-    bgCream: "#f8faf5",
+    /** Màu lấy từ file logo gốc */
+    bgCream: "#f9faf5",
+    blue: "#0056b3",
+    blueLight: "#0088ce",
+    green: "#4caf50",
+    greenDark: "#3d8b40",
   },
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://homecare365.vn",
   locale: "vi_VN",
