@@ -30,13 +30,13 @@ export default function HomePage() {
             <span className="text-lg font-bold tracking-tight text-[var(--hc-text)]">{siteConfig.name}</span>
           </Link>
           <nav className="hidden items-center gap-6 text-sm font-medium text-[var(--hc-text-muted)] sm:flex">
-            <a href="#video-gioi-thieu" className="transition hover:text-[var(--hc-green-deep)]">
+            <a href="#video-gioi-thieu" className="transition hover:text-[var(--hc-primary)]">
               Giới thiệu
             </a>
-            <a href="#dich-vu" className="transition hover:text-[var(--hc-green-deep)]">
+            <a href="#dich-vu" className="transition hover:text-[var(--hc-primary)]">
               Dịch vụ
             </a>
-            <a href="#lien-he" className="transition hover:text-[var(--hc-green-deep)]">
+            <a href="#lien-he" className="transition hover:text-[var(--hc-primary)]">
               Liên hệ
             </a>
             <a
@@ -52,8 +52,8 @@ export default function HomePage() {
       <main className="relative z-10 mx-auto max-w-6xl px-6 pb-16">
         <section className="grid items-start gap-10 py-10 lg:grid-cols-2 lg:py-16">
           <div className="space-y-5">
-            <p className="hc-badge inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold uppercase tracking-wide text-[var(--hc-green-dark)]">
-              <span className="h-2 w-2 animate-pulse rounded-full bg-[var(--hc-green)] shadow-[0_0_8px_var(--hc-green-bright)]" />
+            <p className="hc-badge inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold uppercase tracking-wide">
+              <span className="hc-badge-dot h-2 w-2 animate-pulse rounded-full" />
               {siteConfig.domain} · {siteConfig.tagline}
             </p>
 
@@ -63,7 +63,7 @@ export default function HomePage() {
               </p>
               <h1 className="text-xl font-semibold leading-snug text-[var(--hc-text-muted)] sm:text-2xl lg:text-[1.65rem] lg:leading-snug">
                 Bạn vẫn xứng đáng sống trong một căn nhà{" "}
-                <span className="font-bold text-[var(--hc-green)]">sạch sẽ</span>
+                <span className="hc-highlight-word">sạch sẽ</span>
               </h1>
             </div>
 
@@ -76,7 +76,7 @@ export default function HomePage() {
               </p>
             </div>
 
-            <p className="text-lg font-bold uppercase tracking-wide text-[var(--hc-green-deep)] sm:text-xl drop-shadow-[0_0_12px_rgba(125,255,122,0.4)]">
+            <p className="hc-slogan text-lg font-bold uppercase sm:text-xl">
               Sạch nhà · Gọn gàng · Thư giãn mỗi ngày
             </p>
 
@@ -91,10 +91,7 @@ export default function HomePage() {
               >
                 Đặt lịch dọn dẹp
               </a>
-              <a
-                href="#dich-vu"
-                className="rounded-xl border border-[var(--hc-card-border)] bg-[var(--hc-card)] px-6 py-3 text-sm font-semibold text-[var(--hc-text)] backdrop-blur-sm hover:border-[var(--hc-green)]"
-              >
+              <a href="#dich-vu" className="hc-btn-secondary rounded-xl px-6 py-3 text-sm font-semibold">
                 Xem dịch vụ
               </a>
             </div>
@@ -112,11 +109,8 @@ export default function HomePage() {
           </p>
           <div className="mt-6 grid gap-4 sm:grid-cols-3">
             {services.map((item) => (
-              <article
-                key={item.title}
-                className="hc-card rounded-2xl p-5 transition hover:border-[var(--hc-green)] hover:shadow-lg"
-              >
-                <div className="mb-3 h-1 w-10 rounded-full bg-[var(--hc-green)]" />
+              <article key={item.title} className="hc-card rounded-2xl p-5">
+                <div className="mb-3 h-1 w-10 rounded-full bg-gradient-to-r from-[var(--hc-brand-light)] to-[var(--hc-brand)]" />
                 <h3 className="font-bold text-[var(--hc-text)]">{item.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-[var(--hc-text-muted)]">{item.desc}</p>
               </article>

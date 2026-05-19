@@ -57,7 +57,7 @@ export function ServiceVideoSection() {
     <section id="video-gioi-thieu" className="scroll-mt-24 py-14">
       <div className="grid items-center gap-10 lg:grid-cols-2">
         <div>
-          <p className="text-sm font-bold uppercase tracking-wider text-[var(--hc-green)]">
+          <p className="text-sm font-bold uppercase tracking-wider text-[var(--hc-primary)]">
             Lĩnh vực phục vụ
           </p>
           <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-[var(--hc-text)] sm:text-4xl">
@@ -69,7 +69,7 @@ export function ServiceVideoSection() {
           <ul className="mt-6 space-y-3">
             {highlights.map((item) => (
               <li key={item} className="flex gap-3 text-sm leading-relaxed text-[var(--hc-text-muted)]">
-                <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--hc-green-soft)] text-[var(--hc-green-deep)]">
+                <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--hc-green-soft)] text-[var(--hc-deep)] font-bold">
                   ✓
                 </span>
                 {item}
@@ -85,12 +85,9 @@ export function ServiceVideoSection() {
         </div>
 
         <div
-          className="overflow-hidden rounded-2xl p-1 shadow-[0_12px_40px_rgba(50,205,50,0.25)]"
-          style={{
-            background: "linear-gradient(135deg, var(--hc-green-bright), var(--hc-green))",
-          }}
+          className="hc-video-frame"
         >
-          <div className="relative aspect-video w-full">
+          <div className="relative aspect-video w-full overflow-hidden rounded-[12px] bg-[var(--hc-deep-dark)]">
             <VideoPlayer />
           </div>
         </div>

@@ -4,7 +4,7 @@ import { FormEvent, useState } from "react";
 import { siteConfig } from "@/lib/site";
 
 const inputClass =
-  "w-full rounded-lg border border-[var(--hc-card-border)] bg-white/90 px-4 py-2.5 text-sm text-[var(--hc-text)] outline-none focus:border-[var(--hc-green)] focus:ring-1 focus:ring-[var(--hc-green)]";
+  "hc-input w-full rounded-lg border border-[var(--hc-card-border)] bg-white px-4 py-2.5 text-sm text-[var(--hc-text)] outline-none";
 
 export function ConsultationForm() {
   const [sent, setSent] = useState(false);
@@ -60,7 +60,7 @@ export function ConsultationForm() {
       <p className="mt-1 text-sm text-[var(--hc-text-muted)]">Chúng tôi liên hệ trong vòng 24 giờ.</p>
 
       {sent ? (
-        <p className="mt-4 rounded-lg bg-[var(--hc-green-soft)] px-4 py-3 text-sm text-[var(--hc-green-deep)]">
+        <p className="mt-4 rounded-lg bg-[var(--hc-green-soft)] px-4 py-3 text-sm text-[var(--hc-deep)]">
           Đã mở ứng dụng email. Nếu không thấy, vui lòng gọi hotline hoặc nhắn Zalo.
         </p>
       ) : null}
