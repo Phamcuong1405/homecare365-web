@@ -38,7 +38,7 @@ function VideoPlayer() {
   }
 
   return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-emerald-800 to-slate-900 px-6 text-center text-white">
+    <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-[var(--hc-green-deep)] to-[#1a4d35] px-6 text-center text-white">
       <span className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/15 ring-2 ring-white/30">
         <svg className="h-8 w-8 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
           <path d="M8 5v14l11-7L8 5z" />
@@ -57,19 +57,19 @@ export function ServiceVideoSection() {
     <section id="video-gioi-thieu" className="scroll-mt-24 py-14">
       <div className="grid items-center gap-10 lg:grid-cols-2">
         <div>
-          <p className="text-sm font-bold uppercase tracking-wider text-emerald-600">
+          <p className="text-sm font-bold uppercase tracking-wider text-[var(--hc-green)]">
             Lĩnh vực phục vụ
           </p>
-          <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+          <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-[var(--hc-text)] sm:text-4xl">
             {siteConfig.serviceVideo.title}
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-slate-600">
+          <p className="mt-4 text-base leading-relaxed text-[var(--hc-text-muted)]">
             {siteConfig.serviceVideo.description}
           </p>
           <ul className="mt-6 space-y-3">
             {highlights.map((item) => (
-              <li key={item} className="flex gap-3 text-sm leading-relaxed text-slate-700">
-                <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+              <li key={item} className="flex gap-3 text-sm leading-relaxed text-[var(--hc-text-muted)]">
+                <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--hc-green-soft)] text-[var(--hc-green-deep)]">
                   ✓
                 </span>
                 {item}
@@ -78,13 +78,13 @@ export function ServiceVideoSection() {
           </ul>
           <a
             href="#dat-lich-tu-van"
-            className="mt-8 inline-flex rounded-xl bg-emerald-600 px-6 py-3 text-sm font-bold text-white hover:bg-emerald-500"
+            className="mt-8 inline-flex rounded-xl hc-btn-primary px-6 py-3 text-sm font-bold text-white"
           >
             Đặt lịch ngay
           </a>
         </div>
 
-        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-900 shadow-xl shadow-slate-900/10">
+        <div className="hc-card overflow-hidden rounded-2xl bg-[var(--hc-green-deep)] p-1 shadow-xl">
           <div className="relative aspect-video w-full">
             <VideoPlayer />
           </div>

@@ -4,7 +4,7 @@ import { FormEvent, useState } from "react";
 import { siteConfig } from "@/lib/site";
 
 const inputClass =
-  "w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500";
+  "w-full rounded-lg border border-[var(--hc-card-border)] bg-white/90 px-4 py-2.5 text-sm text-[var(--hc-text)] outline-none focus:border-[var(--hc-green)] focus:ring-1 focus:ring-[var(--hc-green)]";
 
 export function ConsultationForm() {
   const [sent, setSent] = useState(false);
@@ -55,25 +55,25 @@ export function ConsultationForm() {
   }
 
   return (
-    <div className="rounded-3xl border border-emerald-100 bg-white p-6 shadow-xl shadow-emerald-900/5">
-      <h2 className="text-lg font-semibold text-slate-900">Đặt lịch tư vấn miễn phí</h2>
-      <p className="mt-1 text-sm text-slate-500">Chúng tôi liên hệ trong vòng 24 giờ.</p>
+    <div className="hc-card rounded-3xl p-6">
+      <h2 className="text-lg font-semibold text-[var(--hc-text)]">Đặt lịch tư vấn miễn phí</h2>
+      <p className="mt-1 text-sm text-[var(--hc-text-muted)]">Chúng tôi liên hệ trong vòng 24 giờ.</p>
 
       {sent ? (
-        <p className="mt-4 rounded-lg bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+        <p className="mt-4 rounded-lg bg-[var(--hc-green-soft)] px-4 py-3 text-sm text-[var(--hc-green-deep)]">
           Đã mở ứng dụng email. Nếu không thấy, vui lòng gọi hotline hoặc nhắn Zalo.
         </p>
       ) : null}
 
       <form className="mt-5 space-y-4" onSubmit={onSubmit} id="dat-lich-tu-van">
         <fieldset className="space-y-3">
-          <legend className="text-sm font-semibold text-slate-700">Thông tin liên hệ</legend>
+          <legend className="text-sm font-semibold text-[var(--hc-text)]">Thông tin liên hệ</legend>
           <input type="text" name="name" placeholder="Họ và tên *" required className={inputClass} />
           <input type="tel" name="phone" placeholder="Số điện thoại *" required className={inputClass} />
         </fieldset>
 
         <fieldset className="space-y-3">
-          <legend className="text-sm font-semibold text-slate-700">Địa chỉ cần dọn dẹp</legend>
+          <legend className="text-sm font-semibold text-[var(--hc-text)]">Địa chỉ cần dọn dẹp</legend>
           <div className="grid gap-3 sm:grid-cols-2">
             <input
               type="text"
@@ -98,7 +98,7 @@ export function ConsultationForm() {
         </fieldset>
 
         <fieldset className="space-y-3">
-          <legend className="text-sm font-semibold text-slate-700">Nhu cầu dọn dẹp</legend>
+          <legend className="text-sm font-semibold text-[var(--hc-text)]">Nhu cầu dọn dẹp</legend>
           <textarea
             name="note"
             placeholder="Diện tích nhà, tần suất (1 lần/tuần), yêu cầu đặc biệt..."
@@ -109,7 +109,7 @@ export function ConsultationForm() {
 
         <button
           type="submit"
-          className="w-full rounded-lg bg-emerald-600 py-3 text-sm font-semibold text-white hover:bg-emerald-500"
+          className="w-full rounded-lg hc-btn-primary py-3 text-sm font-semibold text-white"
         >
           Gửi yêu cầu
         </button>

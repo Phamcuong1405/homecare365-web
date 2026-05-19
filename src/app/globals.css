@@ -1,20 +1,85 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f8fafb;
-  --foreground: #0f172a;
+  /* Nền xanh lá mát, pha ấm nhẹ (cream) */
+  --hc-bg-top: #f8fcf9;
+  --hc-bg-mid: #edf7f0;
+  --hc-bg-bottom: #dceee3;
+  --hc-warm-glow: rgba(255, 245, 230, 0.55);
+  --hc-green-glow: rgba(72, 160, 115, 0.18);
+
+  --hc-card: rgba(255, 255, 255, 0.92);
+  --hc-card-border: rgba(58, 140, 95, 0.22);
+
+  --hc-green: #3d9b68;
+  --hc-green-light: #5cb882;
+  --hc-green-deep: #267a4d;
+  --hc-green-soft: #e8f5ec;
+
+  --hc-text: #1a3328;
+  --hc-text-muted: #456b55;
+
+  --foreground: var(--hc-text);
 }
 
 @theme inline {
-  --color-background: var(--background);
+  --color-background: var(--hc-bg-mid);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans), "Be Vietnam Pro", system-ui, sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  color: var(--hc-text);
   font-family: var(--font-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--hc-bg-mid);
+}
+
+/* Nền toàn trang — xanh mát + điểm ấm */
+.hc-page-bg {
+  min-height: 100vh;
+  background-color: var(--hc-bg-mid);
+  background-image:
+    radial-gradient(ellipse 90% 55% at 50% -15%, var(--hc-warm-glow), transparent 55%),
+    radial-gradient(ellipse 55% 45% at 0% 60%, var(--hc-green-glow), transparent 50%),
+    radial-gradient(ellipse 50% 40% at 100% 85%, rgba(90, 175, 130, 0.14), transparent 45%),
+    linear-gradient(
+      175deg,
+      var(--hc-bg-top) 0%,
+      var(--hc-bg-mid) 42%,
+      var(--hc-bg-bottom) 100%
+    );
+}
+
+.hc-header-glass {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--hc-card-border);
+}
+
+.hc-card {
+  background: var(--hc-card);
+  border: 1px solid var(--hc-card-border);
+  box-shadow: 0 8px 32px rgba(38, 122, 77, 0.08);
+}
+
+.hc-btn-primary {
+  background: linear-gradient(135deg, var(--hc-green-light) 0%, var(--hc-green) 55%, var(--hc-green-deep) 100%);
+  box-shadow: 0 6px 20px rgba(45, 130, 85, 0.35);
+}
+
+.hc-btn-primary:hover {
+  background: linear-gradient(135deg, #6bc992 0%, var(--hc-green-light) 55%, var(--hc-green) 100%);
+}
+
+.hc-contact-band {
+  background: linear-gradient(135deg, var(--hc-green-deep) 0%, var(--hc-green) 45%, #3a8f5c 100%);
+  box-shadow: 0 12px 40px rgba(38, 100, 65, 0.25);
+}
+
+.hc-footer {
+  background: rgba(255, 255, 255, 0.65);
+  border-top: 1px solid var(--hc-card-border);
+  backdrop-filter: blur(6px);
 }
