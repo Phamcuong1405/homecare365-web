@@ -203,28 +203,35 @@ body {
   font-weight: 700;
 }
 
-/* Nhấn mạnh "sạch sẽ" — điểm nhấn chính hero */
+/* Nhấn mạnh "SẠCH SẺ" — in hoa + bóng nổi */
 .hc-emphasis-clean {
   display: inline-block;
-  margin: 0 0.12em;
-  padding: 0.08em 0.45em 0.12em;
-  font-size: 1.15em;
-  font-weight: 800;
-  line-height: 1.2;
-  letter-spacing: 0.02em;
+  margin: 0.15em 0 0.1em;
+  padding: 0.12em 0.55em 0.16em;
+  font-size: 1.22em;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--hc-deep-dark);
   background: linear-gradient(
-    135deg,
-    rgba(125, 255, 122, 0.55) 0%,
-    rgba(50, 205, 50, 0.35) 50%,
-    rgba(125, 255, 122, 0.45) 100%
+    165deg,
+    rgba(125, 255, 122, 0.65) 0%,
+    rgba(50, 205, 50, 0.4) 45%,
+    rgba(125, 255, 122, 0.5) 100%
   );
-  border-radius: 0.35em;
+  border-radius: 0.4em;
+  border: 2px solid rgba(50, 205, 50, 0.45);
   box-shadow:
-    0 0 0 2px rgba(50, 205, 50, 0.35),
-    0 4px 16px rgba(125, 255, 122, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.65);
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+    0 5px 0 rgba(31, 107, 61, 0.4),
+    0 8px 20px rgba(50, 205, 50, 0.35),
+    0 12px 36px rgba(125, 255, 122, 0.4),
+    inset 0 2px 0 rgba(255, 255, 255, 0.75);
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.95),
+    0 2px 6px rgba(50, 205, 50, 0.55),
+    0 4px 14px rgba(125, 255, 122, 0.45);
+  transform: translateY(-1px);
 }
 
 /* Khối liên hệ — xanh đậm tin cậy, không neon */
