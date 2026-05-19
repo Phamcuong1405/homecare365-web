@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ConsultationForm } from "@/components/ConsultationForm";
+import { ServiceVideoSection } from "@/components/ServiceVideoSection";
 import { siteConfig } from "@/lib/site";
 
 const services = [
@@ -30,6 +31,9 @@ export default function HomePage() {
           <span className="text-lg font-bold tracking-tight text-slate-900">{siteConfig.name}</span>
         </Link>
         <nav className="hidden items-center gap-6 text-sm font-medium text-slate-600 sm:flex">
+          <a href="#video-gioi-thieu" className="hover:text-emerald-700">
+            Giới thiệu
+          </a>
           <a href="#dich-vu" className="hover:text-emerald-700">
             Dịch vụ
           </a>
@@ -96,6 +100,8 @@ export default function HomePage() {
 
           <ConsultationForm />
         </section>
+
+        <ServiceVideoSection />
 
         <section id="dich-vu" className="py-12">
           <h2 className="text-2xl font-bold text-slate-900">Dịch vụ nổi bật</h2>
