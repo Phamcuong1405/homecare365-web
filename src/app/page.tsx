@@ -76,8 +76,8 @@ export default function HomePage() {
               </p>
             </div>
 
-            <p className="hc-slogan text-lg font-bold uppercase sm:text-xl">
-              Sạch nhà · Gọn gàng · Thư giãn mỗi ngày
+            <p className="hc-emphasis-clean hc-emphasis-clean--slogan">
+              SẠCH NHÀ · GỌN GÀNG · THƯ GIÃN MỖI NGÀY
             </p>
 
             <p className="max-w-lg text-base leading-relaxed text-[var(--hc-text-muted)]">

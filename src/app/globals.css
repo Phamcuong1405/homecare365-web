@@ -193,17 +193,12 @@ body {
   color: transparent;
 }
 
-.hc-slogan {
-  color: var(--hc-deep);
-  letter-spacing: 0.04em;
-}
-
 .hc-highlight-word {
   color: var(--hc-primary);
   font-weight: 700;
 }
 
-/* Nhấn mạnh "SẠCH SẺ" — in hoa + bóng nổi */
+/* Nhấn mạnh in hoa + bóng nổi (SẠCH SẺ, slogan) */
 .hc-emphasis-clean {
   display: inline-block;
   margin: 0.15em 0 0.1em;
@@ -232,6 +227,13 @@ body {
     0 2px 6px rgba(50, 205, 50, 0.55),
     0 4px 14px rgba(125, 255, 122, 0.45);
   transform: translateY(-1px);
+}
+
+/* Cùng style, chỉnh kích thước cho dòng slogan dài hơn */
+.hc-emphasis-clean--slogan {
+  font-size: 1.22em;
+  letter-spacing: 0.12em;
+  padding: 0.12em 0.65em 0.16em;
 }
 
 /* Khối liên hệ — xanh đậm tin cậy, không neon */
