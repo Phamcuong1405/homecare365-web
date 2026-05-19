@@ -203,6 +203,30 @@ body {
   font-weight: 700;
 }
 
+/* Nhấn mạnh "sạch sẽ" — điểm nhấn chính hero */
+.hc-emphasis-clean {
+  display: inline-block;
+  margin: 0 0.12em;
+  padding: 0.08em 0.45em 0.12em;
+  font-size: 1.15em;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  color: var(--hc-deep-dark);
+  background: linear-gradient(
+    135deg,
+    rgba(125, 255, 122, 0.55) 0%,
+    rgba(50, 205, 50, 0.35) 50%,
+    rgba(125, 255, 122, 0.45) 100%
+  );
+  border-radius: 0.35em;
+  box-shadow:
+    0 0 0 2px rgba(50, 205, 50, 0.35),
+    0 4px 16px rgba(125, 255, 122, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
 /* Khối liên hệ — xanh đậm tin cậy, không neon */
 .hc-contact-band {
   background: linear-gradient(

@@ -63,7 +63,7 @@ export default function HomePage() {
               </p>
               <h1 className="text-xl font-semibold leading-snug text-[var(--hc-text-muted)] sm:text-2xl lg:text-[1.65rem] lg:leading-snug">
                 Bạn vẫn xứng đáng sống trong một căn nhà{" "}
-                <span className="hc-highlight-word">sạch sẽ</span>
+                <span className="hc-emphasis-clean">sạch sẽ</span>
               </h1>
             </div>
 
