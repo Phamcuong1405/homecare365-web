@@ -16,6 +16,8 @@ export const siteConfig = {
     blueLight: "#0088ce",
     green: "#4caf50",
     greenDark: "#3d8b40",
+    /** Gradient chủ đạo: xanh dương → xanh lá (như khối liên hệ) */
+    gradientMid: "#2d9a52",
   },
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://homecare365.vn",
   locale: "vi_VN",

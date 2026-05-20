@@ -62,7 +62,7 @@ export function ConsultationForm() {
       </div>
 
       {sent ? (
-        <p className="mt-4 rounded-lg bg-[var(--hc-green-soft)] px-4 py-3 text-sm text-[var(--hc-deep)]">
+        <p className="mt-4 rounded-lg bg-[var(--hc-blue-soft)] px-4 py-3 text-sm text-[var(--hc-brand-blue)]">
           Đã mở ứng dụng email. Nếu không thấy, vui lòng gọi hotline hoặc nhắn Zalo.
         </p>
       ) : null}

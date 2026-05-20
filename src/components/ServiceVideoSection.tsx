@@ -38,7 +38,10 @@ function VideoPlayer() {
   }
 
   return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-[var(--hc-green-deep)] to-[#1a4d35] px-6 text-center text-white">
+    <div
+      className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center text-white"
+      style={{ background: "var(--hc-gradient-brand)" }}
+    >
       <span className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/15 ring-2 ring-white/30">
         <svg className="h-8 w-8 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
           <path d="M8 5v14l11-7L8 5z" />
@@ -57,7 +60,7 @@ export function ServiceVideoSection() {
     <section id="video-gioi-thieu" className="scroll-mt-24 py-14">
       <div className="grid items-center gap-10 lg:grid-cols-2">
         <div>
-          <p className="text-sm font-bold uppercase tracking-wider text-[var(--hc-primary)]">
+          <p className="text-sm font-bold uppercase tracking-wider text-[var(--hc-brand-blue)]">
             Lĩnh vực phục vụ
           </p>
           <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-[var(--hc-text)] sm:text-4xl">
@@ -69,7 +72,10 @@ export function ServiceVideoSection() {
           <ul className="mt-6 space-y-3">
             {highlights.map((item) => (
               <li key={item} className="flex gap-3 text-sm leading-relaxed text-[var(--hc-text-muted)]">
-                <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--hc-green-soft)] text-[var(--hc-deep)] font-bold">
+                <span
+                  className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full font-bold text-white"
+                  style={{ background: "var(--hc-gradient-brand)" }}
+                >
                   ✓
                 </span>
                 {item}

@@ -52,6 +52,7 @@ export default function RootLayout({
     ["--hc-primary-hover" as string]: brand.greenDark,
     ["--hc-deep" as string]: brand.blue,
     ["--hc-deep-dark" as string]: brand.blue,
+    ["--hc-gradient-mid" as string]: brand.gradientMid,
     ["--hc-logo-watermark" as string]: `url("${brand.logoWatermarkSrc}")`,
   } satisfies CSSProperties;
 

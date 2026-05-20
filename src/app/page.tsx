@@ -25,14 +25,14 @@ export default function HomePage() {
       <header className="hc-header-glass sticky top-0 z-20">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <BrandLogo variant="header" linkHome />
-          <nav className="hidden items-center gap-6 text-sm font-medium text-[var(--hc-text-muted)] sm:flex">
-            <a href="#video-gioi-thieu" className="transition hover:text-[var(--hc-primary)]">
+          <nav className="hidden items-center gap-6 text-sm font-medium sm:flex">
+            <a href="#video-gioi-thieu" className="hc-link-brand">
               Giới thiệu
             </a>
-            <a href="#dich-vu" className="transition hover:text-[var(--hc-primary)]">
+            <a href="#dich-vu" className="hc-link-brand">
               Dịch vụ
             </a>
-            <a href="#lien-he" className="transition hover:text-[var(--hc-primary)]">
+            <a href="#lien-he" className="hc-link-brand">
               Liên hệ
             </a>
             <a
@@ -110,7 +110,7 @@ export default function HomePage() {
           <div className="mt-6 grid gap-4 sm:grid-cols-3">
             {services.map((item) => (
               <article key={item.title} className="hc-card rounded-2xl p-5">
-                <div className="mb-3 h-1 w-10 rounded-full bg-gradient-to-r from-[var(--hc-brand-light)] to-[var(--hc-brand)]" />
+                <div className="hc-gradient-bar mb-3 w-12" />
                 <h3 className="font-bold text-[var(--hc-text)]">{item.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-[var(--hc-text-muted)]">{item.desc}</p>
               </article>
