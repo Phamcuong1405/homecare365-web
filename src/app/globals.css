@@ -149,6 +149,24 @@ body {
   box-shadow: 0 2px 20px var(--hc-card-shadow);
 }
 
+.hc-header-motto {
+  margin: 0;
+  padding-left: 0.75rem;
+  border-left: 2px solid color-mix(in srgb, var(--hc-brand-blue) 35%, var(--hc-brand-green));
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--hc-text-muted);
+}
+
+@media (min-width: 1024px) {
+  .hc-header-motto {
+    padding-left: 1rem;
+    font-size: 0.8125rem;
+    max-width: 16rem;
+  }
+}
+
 /* ─── Thẻ: trắng sạch + bóng nhẹ ─── */
 .hc-card {
   background: var(--hc-card);

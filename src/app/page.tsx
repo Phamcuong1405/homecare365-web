@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BrandLogo } from "@/components/BrandLogo";
+import { HeaderBrand } from "@/components/HeaderBrand";
 import { ConsultationForm } from "@/components/ConsultationForm";
 import { ServiceVideoSection } from "@/components/ServiceVideoSection";
 import { phoneTelHref, siteConfig } from "@/lib/site";
@@ -24,7 +25,7 @@ export default function HomePage() {
     <div className="hc-page-bg text-[var(--hc-text)]">
       <header className="hc-header-glass sticky top-0 z-20">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <BrandLogo variant="header" linkHome />
+          <HeaderBrand />
           <nav className="hidden items-center gap-6 text-sm font-medium sm:flex">
             <a href="#video-gioi-thieu" className="hc-link-brand">
               Giới thiệu

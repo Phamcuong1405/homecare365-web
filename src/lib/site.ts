@@ -13,6 +13,7 @@ export const siteConfig = {
     logoWatermarkSrc: "/brand/homecare365-logo.png",
     logoAlt: "Home Care 365 — Sạch từ tâm, ấm từng nhà",
     slogan: "SẠCH TỪ TÂM – ẤM TỪNG NHÀ",
+    headerMotto: "Trao việc nhà cho HomeCare365 – Giữ thời gian cho chính bạn",
     /** Màu lấy từ file logo gốc */
     bgCream: "#f9faf5",
     blue: "#0056b3",
