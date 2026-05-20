@@ -1,67 +1,71 @@
-# Ghi form tư vấn vào Google Sheet
+# Google Sheet — Form tư vấn HomeCare365
 
-Khi khách gửi form **Đặt lịch tư vấn miễn phí**, mỗi lần gửi sẽ thêm **một dòng** vào Google Sheet với các cột:
+**Bảng dữ liệu:** [HomeCare365 — Khách hàng](https://docs.google.com/spreadsheets/d/1G84ZEO31bvWJGxdaaQHSGcF_z0SGTvWuOL3zVpw1Kg8/edit?gid=0#gid=0)
 
-| Cột | Nội dung |
-|-----|----------|
-| Thời gian | Lúc khách gửi (giờ Việt Nam) |
-| Họ và tên | Họ tên khách |
-| Số điện thoại | SĐT liên hệ |
-| Số nhà | Số nhà |
-| Ngõ/Hẻm | Ngõ, hẻm (nếu có) |
-| Tên đường | Tên đường |
-| Phường/Xã | Phường / xã |
-| Quận/Huyện | Quận / huyện |
-| Nhu cầu dọn dẹp | Diện tích, tần suất, yêu cầu… |
-| Địa chỉ đầy đủ | Gộp tự động từ các ô địa chỉ |
+**Form trên web:** [homecare365.vn — Đặt lịch tư vấn](https://www.homecare365.vn/#dat-lich-tu-van)
 
-## Bước 1 — Tạo Google Sheet
+## Ánh xạ trường (Form → Sheet)
 
-1. Mở [Google Sheets](https://sheets.google.com) → **Tạo bảng tính mới**.
-2. Đổi tên sheet (tab dưới) thành **Khách hàng** (hoặc giữ sheet mặc định).
-3. Dòng 1, nhập tiêu đề (tùy chọn — script có thể tự thêm nếu sheet trống):
+| Cột (dòng 1) | Trường form trên web | Bắt buộc |
+|--------------|----------------------|----------|
+| Thời gian | Tự động khi gửi | — |
+| Họ và tên | Họ và tên * | Có |
+| Số điện thoại | Số điện thoại * | Có |
+| Số nhà | Số nhà * | Có |
+| Ngõ/Hẻm | Ngõ / Hẻm | Không |
+| Tên đường | Tên đường * | Có |
+| Phường/Xã | Phường / Xã * | Có |
+| Quận/Huyện | Quận / Huyện * | Có |
+| Nhu cầu dọn dẹp | Diện tích, tần suất, yêu cầu… | Không |
+| Địa chỉ đầy đủ | Gộp từ các ô địa chỉ | Tự động |
 
-```
-Thời gian | Họ và tên | Số điện thoại | Số nhà | Ngõ/Hẻm | Tên đường | Phường/Xã | Quận/Huyện | Nhu cầu dọn dẹp | Địa chỉ đầy đủ
-```
+## Bước 1 — Cài Apps Script trên Sheet
 
-## Bước 2 — Cài Apps Script
+1. Mở [Google Sheet](https://docs.google.com/spreadsheets/d/1G84ZEO31bvWJGxdaaQHSGcF_z0SGTvWuOL3zVpw1Kg8/edit?gid=0#gid=0).
+2. **Extensions** → **Apps Script**.
+3. Xóa code mặc định, dán nội dung file `scripts/google-sheet-consultation.gs` trong repo.
+4. **Save** (Ctrl+S).
 
-1. Trong Sheet: **Extensions** → **Apps Script**.
-2. Xóa code mặc định, dán nội dung file `scripts/google-sheet-consultation.gs` trong repo.
-3. **Save** (Ctrl+S).
+## Bước 2 — Tạo tiêu đề cột (chạy 1 lần)
+
+1. Trong Apps Script, chọn hàm **`setupHomeCare365Sheet`** → **Run**.
+2. Cho phép quyền truy cập Sheet (tài khoản Google sở hữu file).
+3. Quay lại Sheet: dòng 1 có đủ 10 cột như bảng trên, tab đổi tên **Khách hàng**.
 
 ## Bước 3 — Deploy Web App
 
-1. **Deploy** → **New deployment**.
-2. Loại: **Web app**.
-3. **Execute as:** Me  
-4. **Who has access:** Anyone  
-5. **Deploy** → cho phép quyền → **Copy URL** (dạng `https://script.google.com/macros/s/.../exec`).
+1. **Deploy** → **New deployment** → loại **Web app**.
+2. **Execute as:** Me  
+3. **Who has access:** Anyone  
+4. **Deploy** → copy URL dạng `https://script.google.com/macros/s/.../exec`.
 
-## Bước 4 — Cấu hình website
+## Bước 4 — Gắn vào website (Vercel)
 
-### Trên máy local (`.env.local`)
+1. Vercel → project **homecare365-web** → **Settings** → **Environment Variables**.
+2. Thêm:
 
 ```env
 GOOGLE_SHEETS_WEB_APP_URL=https://script.google.com/macros/s/XXXX/exec
 ```
 
-### Trên Vercel
+3. **Redeploy** (Production).
 
-1. Project **homecare365-web** → **Settings** → **Environment Variables**
-2. Thêm biến:
-   - **Name:** `GOOGLE_SHEETS_WEB_APP_URL`
-   - **Value:** URL Web App vừa copy
-3. **Redeploy** project.
+### Local (`.env.local`)
+
+```env
+GOOGLE_SHEETS_WEB_APP_URL=https://script.google.com/macros/s/XXXX/exec
+```
 
 ## Kiểm tra
 
-1. Chạy `npm run dev`, mở form, điền thử và **Gửi yêu cầu**.
-2. Mở Google Sheet → dòng mới xuất hiện.
-3. Nếu lỗi: kiểm tra URL env, quyền deploy **Anyone**, và xem **Executions** trong Apps Script.
+1. Mở [form trên site](https://www.homecare365.vn/#dat-lich-tu-van), điền thử → **Gửi yêu cầu**.
+2. Mở Sheet → dòng mới với đủ 10 cột.
+3. Nếu lỗi trên site: kiểm tra biến `GOOGLE_SHEETS_WEB_APP_URL` trên Vercel đã redeploy chưa.
 
-## Lưu ý bảo mật
+## Sheet ID (tham khảo)
 
-- Không chia sẻ URL Web App công khai trên mạng xã hội; chỉ đặt trong biến môi trường server (Vercel).
-- Website gọi qua API `/api/consultation` (server), không gọi trực tiếp từ trình duyệt.
+```
+1G84ZEO31bvWJGxdaaQHSGcF_z0SGTvWuOL3zVpw1Kg8
+```
+
+Đã cấu hình sẵn trong `scripts/google-sheet-consultation.gs` và `src/lib/consultation-sheet.ts`.

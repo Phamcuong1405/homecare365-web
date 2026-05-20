@@ -1,3 +1,4 @@
+import type { ConsultationSheetRow } from "@/lib/consultation-sheet";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
@@ -67,7 +68,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const sheetRow = {
+  const sheetRow: ConsultationSheetRow = {
     submittedAt: new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }),
     fullName: data.fullName,
     phone: data.phone,

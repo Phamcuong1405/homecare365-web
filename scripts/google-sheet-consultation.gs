@@ -1,43 +1,66 @@
 /**
- * HomeCare365 — Ghi form tư vấn vào Google Sheet
+ * HomeCare365 — Ghi form Đặt lịch tư vấn vào Google Sheet
  *
- * CÁCH CÀI:
- * 1. Tạo Google Sheet mới, dòng 1 (tiêu đề):
- *    Thời gian | Họ và tên | Số điện thoại | Số nhà | Ngõ/Hẻm | Tên đường | Phường/Xã | Quận/Huyện | Nhu cầu dọn dẹp | Địa chỉ đầy đủ
- * 2. Extensions → Apps Script → dán toàn bộ file này → Save
- * 3. Deploy → New deployment → Web app
- *    - Execute as: Me
- *    - Who has access: Anyone
- * 4. Copy URL deployment → dán vào Vercel/local:
- *    GOOGLE_SHEETS_WEB_APP_URL=<url>
+ * Sheet: https://docs.google.com/spreadsheets/d/1G84ZEO31bvWJGxdaaQHSGcF_z0SGTvWuOL3zVpw1Kg8/edit
+ *
+ * CÀI ĐẶT:
+ * 1. Mở Sheet trên → Extensions → Apps Script
+ * 2. Dán file này → Save
+ * 3. Chạy 1 lần: setupHomeCare365Sheet (cho phép quyền)
+ * 4. Deploy → New deployment → Web app (Execute as: Me, Anyone)
+ * 5. Copy URL → Vercel env GOOGLE_SHEETS_WEB_APP_URL
  */
 
-var SHEET_NAME = "Khách hàng";
+var SPREADSHEET_ID = "1G84ZEO31bvWJGxdaaQHSGcF_z0SGTvWuOL3zVpw1Kg8";
+var SHEET_GID = 0;
+var SHEET_TAB_NAME = "Khách hàng";
+
+var HEADERS = [
+  "Thời gian",
+  "Họ và tên",
+  "Số điện thoại",
+  "Số nhà",
+  "Ngõ/Hẻm",
+  "Tên đường",
+  "Phường/Xã",
+  "Quận/Huyện",
+  "Nhu cầu dọn dẹp",
+  "Địa chỉ đầy đủ",
+];
+
+function getSpreadsheet_() {
+  return SpreadsheetApp.openById(SPREADSHEET_ID);
+}
 
 function getSheet_() {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = ss.getSheetByName(SHEET_NAME);
-  if (!sheet) {
-    sheet = ss.getActiveSheet();
+  var ss = getSpreadsheet_();
+  var sheets = ss.getSheets();
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].getSheetId() === SHEET_GID) {
+      return sheets[i];
+    }
   }
-  return sheet;
+  return sheets[0];
+}
+
+/** Chạy 1 lần trong trình soạn Apps Script để tạo tiêu đề cột */
+function setupHomeCare365Sheet() {
+  var sheet = getSheet_();
+  sheet.setName(SHEET_TAB_NAME);
+  sheet.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]);
+  sheet.getRange(1, 1, 1, HEADERS.length)
+    .setFontWeight("bold")
+    .setBackground("#0047ab")
+    .setFontColor("#ffffff");
+  sheet.setFrozenRows(1);
+  sheet.autoResizeColumns(1, HEADERS.length);
 }
 
 function ensureHeaderRow_() {
   var sheet = getSheet_();
-  if (sheet.getLastRow() === 0) {
-    sheet.appendRow([
-      "Thời gian",
-      "Họ và tên",
-      "Số điện thoại",
-      "Số nhà",
-      "Ngõ/Hẻm",
-      "Tên đường",
-      "Phường/Xã",
-      "Quận/Huyện",
-      "Nhu cầu dọn dẹp",
-      "Địa chỉ đầy đủ",
-    ]);
+  var firstCell = sheet.getRange(1, 1).getValue();
+  if (firstCell !== HEADERS[0]) {
+    setupHomeCare365Sheet();
   }
 }
 
@@ -65,7 +88,12 @@ function jsonResponse_(payload) {
 }
 
 function doGet() {
-  return jsonResponse_({ ok: true, message: "HomeCare365 consultation webhook" });
+  return jsonResponse_({
+    ok: true,
+    message: "HomeCare365 consultation webhook",
+    spreadsheetId: SPREADSHEET_ID,
+    columns: HEADERS,
+  });
 }
 
 function doPost(e) {
