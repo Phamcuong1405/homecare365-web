@@ -46,7 +46,7 @@ export function AboutBrandSection() {
   return (
     <section id="gioi-thieu" className="scroll-mt-24 py-14">
       <div className="grid items-start gap-10 lg:grid-cols-2">
-        <div>
+        <div className="min-w-0">
           <p className="text-sm font-bold uppercase tracking-wider text-[var(--hc-brand-blue)]">
             {about.eyebrow}
           </p>
@@ -72,14 +72,16 @@ export function AboutBrandSection() {
               </li>
             ))}
           </ul>
-          <a href="#dat-lich-tu-van" className="hc-cta-promo-banner mt-8">
-            <span className="hc-cta-promo-text" aria-label={about.cta}>
-              <span className="hc-cta-promo-text-stroke" aria-hidden="true">
-                {about.cta}
+          <div className="mt-8 flex w-full min-w-0 justify-center lg:justify-start">
+            <a href="#dat-lich-tu-van" className="hc-cta-promo-banner">
+              <span className="hc-cta-promo-text" aria-label={about.cta}>
+                <span className="hc-cta-promo-text-stroke" aria-hidden="true">
+                  {about.cta}
+                </span>
+                <span className="hc-cta-promo-text-fill">{about.cta}</span>
               </span>
-              <span className="hc-cta-promo-text-fill">{about.cta}</span>
-            </span>
-          </a>
+            </a>
+          </div>
         </div>
 
         <div className="hc-video-frame">

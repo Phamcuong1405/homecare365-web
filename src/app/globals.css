@@ -238,15 +238,17 @@ body {
     inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
-/* Banner CTA giới thiệu — chữ giữa, một dòng, bóng + viền bọc kín */
+/* Banner CTA giới thiệu — khung ôm trọn chữ, một dòng */
 .hc-cta-promo-banner {
-  display: flex;
-  width: 100%;
+  container-type: inline-size;
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  box-sizing: border-box;
   align-items: center;
   justify-content: center;
-  overflow: visible;
   border-radius: 1rem;
-  padding: 1.15rem clamp(1rem, 3vw, 2rem);
+  padding: 1.15rem clamp(1.1rem, 2.5vw, 2rem);
   text-decoration: none;
   background: var(--hc-gradient-brand);
   box-shadow:
@@ -271,15 +273,15 @@ body {
 .hc-cta-promo-text {
   position: relative;
   display: inline-block;
+  width: fit-content;
   max-width: 100%;
-  padding: 0.2em 0.35em;
-  overflow: visible;
+  padding: 0.15em 0.5em;
   text-align: center;
   font-weight: 800;
   line-height: 1.35;
   letter-spacing: 0.02em;
   white-space: nowrap;
-  font-size: clamp(0.58rem, 2.15vw, 1.05rem);
+  font-size: clamp(0.58rem, 2.8cqi, 1.05rem);
 }
 
 .hc-cta-promo-text-stroke,
@@ -325,13 +327,19 @@ body {
     0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
+@container (max-width: 520px) {
+  .hc-cta-promo-text {
+    font-size: clamp(0.5rem, 3.4cqi, 0.88rem);
+  }
+}
+
 @media (min-width: 640px) {
   .hc-cta-promo-banner {
-    padding: 1.3rem clamp(1.25rem, 3.5vw, 2.25rem);
+    padding: 1.3rem clamp(1.25rem, 2.5vw, 2.25rem);
   }
 
   .hc-cta-promo-text {
-    font-size: clamp(0.72rem, 1.55vw, 1.1rem);
+    font-size: clamp(0.72rem, 2.4cqi, 1.1rem);
   }
 
   .hc-cta-promo-text-stroke {
@@ -354,7 +362,7 @@ body {
 
 @media (min-width: 1024px) {
   .hc-cta-promo-text {
-    font-size: clamp(0.85rem, 1.15vw, 1.125rem);
+    font-size: clamp(0.78rem, 2.2cqi, 1.05rem);
   }
 }
 
