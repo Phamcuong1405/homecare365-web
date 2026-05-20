@@ -105,6 +105,7 @@ export const siteConfig = {
         icon: "🏢",
         title: "Dọn dẹp văn phòng",
         desc: "Không gian sạch sẽ giúp tăng hiệu suất làm việc.",
+        videoSrc: "/videos/services/don-dep-van-phong.mp4",
       },
       {
         icon: "🧼",
