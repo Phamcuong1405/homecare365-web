@@ -24,6 +24,7 @@ var HEADERS = [
   "Tên đường",
   "Phường/Xã",
   "Quận/Huyện",
+  "Thành phố",
   "Nhu cầu dọn dẹp",
   "Địa chỉ đầy đủ",
 ];
@@ -137,7 +138,8 @@ function testAppendSampleRow() {
     street: "Phố Huế",
     ward: "Kim Liên",
     district: "Đống Đa",
+    city: "Hà Nội",
     note: "Dọn 80m2, 1 lần/tuần",
-    fullAddress: "Số nhà 12, Ngõ/Hẻm Ngõ 5, Đường Phố Huế, Phường/Xã Kim Liên, Quận/Huyện Đống Đa",
+    fullAddress: "Số nhà 12, Ngõ/Hẻm Ngõ 5, Đường Phố Huế, Phường/Xã Kim Liên, Quận/Huyện Đống Đa, Thành phố Hà Nội",
   });
 }

@@ -38,6 +38,7 @@ export function ConsultationForm() {
       street: String(data.get("street") ?? "").trim(),
       ward: String(data.get("ward") ?? "").trim(),
       district: String(data.get("district") ?? "").trim(),
+      city: String(data.get("city") ?? "").trim(),
       note: String(data.get("note") ?? "").trim(),
     };
 
@@ -170,11 +171,21 @@ export function ConsultationForm() {
               name="district"
               placeholder="Quận / Huyện *"
               className={fieldClass("district")}
-              enterKeyHint="done"
+              enterKeyHint="next"
               aria-required="true"
               aria-invalid={invalidFields.includes("district")}
             />
           </div>
+          <input
+            type="text"
+            name="city"
+            placeholder="Thành phố * (vd: Hà Nội)"
+            className={fieldClass("city")}
+            autoComplete="address-level1"
+            enterKeyHint="done"
+            aria-required="true"
+            aria-invalid={invalidFields.includes("city")}
+          />
         </fieldset>
 
         <fieldset className="space-y-3" disabled={status === "loading"}>

@@ -6,6 +6,7 @@ export type ConsultationFormPayload = {
   street: string;
   ward: string;
   district: string;
+  city: string;
   note: string;
 };
 
@@ -17,6 +18,7 @@ const FIELD_LABELS: Record<keyof ConsultationFormPayload, string> = {
   street: "Tên đường",
   ward: "Phường / Xã",
   district: "Quận / Huyện",
+  city: "Thành phố",
   note: "Nhu cầu dọn dẹp",
 };
 
@@ -59,7 +61,8 @@ export type ConsultationFieldKey =
   | "houseNumber"
   | "street"
   | "ward"
-  | "district";
+  | "district"
+  | "city";
 
 /** Kiểm tra trước normalize — không coi ngõ/hẻm là đã điền tên đường khi còn trống */
 export function getMissingFieldKeys(payload: ConsultationFormPayload): ConsultationFieldKey[] {
@@ -75,6 +78,7 @@ export function getMissingFieldKeys(payload: ConsultationFormPayload): Consultat
   if (!payload.street.trim() && !payload.alley.trim()) missing.push("street");
   if (!payload.ward.trim()) missing.push("ward");
   if (!payload.district.trim()) missing.push("district");
+  if (!payload.city.trim()) missing.push("city");
 
   return missing;
 }
@@ -101,6 +105,7 @@ export function getMissingFieldLabels(keys: ConsultationFieldKey[]): string[] {
     street: "Tên đường (hoặc Ngõ / Hẻm)",
     ward: FIELD_LABELS.ward,
     district: FIELD_LABELS.district,
+    city: FIELD_LABELS.city,
   };
   return keys.map((k) => labelMap[k]);
 }
@@ -112,6 +117,7 @@ export function buildFullAddress(payload: ConsultationFormPayload): string {
     payload.street && `Đường ${payload.street}`,
     payload.ward && `Phường/Xã ${payload.ward}`,
     payload.district && `Quận/Huyện ${payload.district}`,
+    payload.city && `Thành phố ${payload.city}`,
   ].filter(Boolean);
 
   return parts.join(", ");

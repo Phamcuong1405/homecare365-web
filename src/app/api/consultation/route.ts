@@ -18,6 +18,7 @@ export type ConsultationPayload = {
   street: string;
   ward: string;
   district: string;
+  city: string;
   note: string;
 };
 
@@ -33,6 +34,7 @@ function parseBody(body: unknown): ConsultationPayload | null {
     street: String(b.street ?? "").trim(),
     ward: String(b.ward ?? "").trim(),
     district: String(b.district ?? "").trim(),
+    city: String(b.city ?? "").trim(),
     note: String(b.note ?? "").trim(),
   };
 
@@ -79,6 +81,7 @@ export async function POST(request: Request) {
     street: data.street,
     ward: data.ward,
     district: data.district,
+    city: data.city,
     note: data.note,
     fullAddress: buildFullAddress(data),
   };

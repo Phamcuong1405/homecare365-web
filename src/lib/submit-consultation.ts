@@ -29,6 +29,7 @@ function toSheetRow(payload: ConsultationFormPayload): ConsultationSheetRow {
     street: payload.street,
     ward: payload.ward,
     district: payload.district,
+    city: payload.city,
     note: payload.note,
     fullAddress: buildFullAddress(payload),
   };

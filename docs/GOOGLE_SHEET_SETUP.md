@@ -16,6 +16,7 @@
 | Tên đường | Tên đường * | Có |
 | Phường/Xã | Phường / Xã * | Có |
 | Quận/Huyện | Quận / Huyện * | Có |
+| Thành phố | Thành phố * | Có |
 | Nhu cầu dọn dẹp | Diện tích, tần suất, yêu cầu… | Không |
 | Địa chỉ đầy đủ | Gộp từ các ô địa chỉ | Tự động |
 
@@ -30,7 +31,9 @@
 
 1. Trong Apps Script, chọn hàm **`setupHomeCare365Sheet`** → **Run**.
 2. Cho phép quyền truy cập Sheet (tài khoản Google sở hữu file).
-3. Quay lại Sheet: dòng 1 có đủ 10 cột như bảng trên, tab đổi tên **Khách hàng**.
+3. Quay lại Sheet: dòng 1 có đủ 11 cột như bảng trên, tab đổi tên **Khách hàng**.
+
+**Sheet đã có sẵn:** chèn cột **I** tên **Thành phố** (sau Quận/Huyện, trước Nhu cầu dọn dẹp), rồi cập nhật Apps Script và Deploy lại.
 
 ## Bước 3 — Deploy Web App
 

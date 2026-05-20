@@ -17,6 +17,7 @@ export const CONSULTATION_SHEET_HEADERS = [
   "Tên đường",
   "Phường/Xã",
   "Quận/Huyện",
+  "Thành phố",
   "Nhu cầu dọn dẹp",
   "Địa chỉ đầy đủ",
 ] as const;
@@ -31,6 +32,7 @@ export type ConsultationSheetRow = {
   street: string;
   ward: string;
   district: string;
+  city: string;
   note: string;
   fullAddress: string;
 };
