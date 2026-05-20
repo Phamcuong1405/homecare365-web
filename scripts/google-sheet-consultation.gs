@@ -1,14 +1,14 @@
 /**
- * HomeCare365 — Ghi form Đặt lịch tư vấn vào Google Sheet
+ * HomeCare365 — Nhận form tư vấn từ website → ghi Google Sheet
  *
- * Sheet: https://docs.google.com/spreadsheets/d/1G84ZEO31bvWJGxdaaQHSGcF_z0SGTvWuOL3zVpw1Kg8/edit
+ * Apps Script (dán code vào đây):
+ * https://script.google.com/home/projects/1_lj5DMji92EOynZitTdrT1sSovzwyNMKWHjxJiexYTkqtZhjr_vFkJvs/edit
  *
- * CÀI ĐẶT:
- * 1. Mở Sheet trên → Extensions → Apps Script
- * 2. Dán file này → Save
- * 3. Chạy 1 lần: setupHomeCare365Sheet (cho phép quyền)
- * 4. Deploy → New deployment → Web app (Execute as: Me, Anyone)
- * 5. Copy URL → Vercel env GOOGLE_SHEETS_WEB_APP_URL
+ * Google Sheet:
+ * https://docs.google.com/spreadsheets/d/1G84ZEO31bvWJGxdaaQHSGcF_z0SGTvWuOL3zVpw1Kg8/edit
+ *
+ * CÀI: Save → chạy setupHomeCare365Sheet → Deploy Web app (Me, Anyone)
+ *      → copy URL /exec → Vercel GOOGLE_SHEETS_WEB_APP_URL
  */
 
 var SPREADSHEET_ID = "1G84ZEO31bvWJGxdaaQHSGcF_z0SGTvWuOL3zVpw1Kg8";
@@ -105,4 +105,20 @@ function doPost(e) {
   } catch (err) {
     return jsonResponse_({ ok: false, error: String(err) });
   }
+}
+
+/** Chạy thử trong editor — kiểm tra ghi Sheet (không cần website) */
+function testAppendSampleRow() {
+  appendRow_({
+    submittedAt: new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }),
+    fullName: "Nguyễn Văn Test",
+    phone: "0901234567",
+    houseNumber: "12",
+    alley: "Ngõ 5",
+    street: "Phố Huế",
+    ward: "Kim Liên",
+    district: "Đống Đa",
+    note: "Dọn 80m2, 1 lần/tuần",
+    fullAddress: "Số nhà 12, Ngõ/Hẻm Ngõ 5, Đường Phố Huế, Phường/Xã Kim Liên, Quận/Huyện Đống Đa",
+  });
 }
