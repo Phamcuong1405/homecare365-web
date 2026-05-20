@@ -16,12 +16,12 @@ export const siteConfig = {
     headerMotto: "Trao việc nhà cho HomeCare365 – Giữ thời gian cho chính bạn",
     /** Màu lấy từ file logo gốc */
     bgCream: "#f9faf5",
-    blue: "#0056b3",
-    blueLight: "#0088ce",
+    blue: "#0047ab",
+    blueLight: "#0066cc",
     green: "#4caf50",
-    greenDark: "#3d8b40",
-    /** Gradient chủ đạo: xanh dương → xanh lá (như khối liên hệ) */
-    gradientMid: "#2d9a52",
+    greenDark: "#3d9a42",
+    /** Giữa gradient xanh dương → xanh lá (màu tổng thể trang) */
+    gradientMid: "#1e9e6a",
   },
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://homecare365.vn",
   locale: "vi_VN",
