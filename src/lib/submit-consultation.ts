@@ -1,9 +1,7 @@
 import type { ConsultationFormPayload } from "@/lib/consultation-form-utils";
 import {
   buildFullAddress,
-  getMissingFieldKeys,
-  getMissingFieldLabels,
-  normalizeConsultationPayload,
+  validateConsultationPayload,
 } from "@/lib/consultation-form-utils";
 import type { ConsultationSheetRow } from "@/lib/consultation-sheet";
 import { submitViaHiddenForm } from "@/lib/submit-to-google-sheet";
@@ -75,16 +73,15 @@ async function postToApi(payload: ConsultationFormPayload): Promise<{
 export async function submitConsultation(
   raw: ConsultationFormPayload,
 ): Promise<SubmitResult> {
-  const payload = normalizeConsultationPayload(raw);
-  const missing = getMissingFieldKeys(payload);
-
-  if (missing.length > 0) {
+  const validated = validateConsultationPayload(raw);
+  if (!validated.ok) {
     return {
       ok: false,
       type: "validation",
-      message: `Vui lòng điền: ${getMissingFieldLabels(missing).join(", ")}.`,
+      message: validated.message,
     };
   }
+  const payload = validated.payload;
 
   for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
     const result = await postToApi(payload);

@@ -1,6 +1,7 @@
 import {
   buildFullAddress,
-  normalizeConsultationPayload,
+  validateConsultationPayload,
+  type ConsultationFormPayload,
 } from "@/lib/consultation-form-utils";
 import { appendRowToGoogleSheet, getWebhookUrl } from "@/lib/google-sheet-upstream";
 import type { ConsultationSheetRow } from "@/lib/consultation-sheet";
@@ -24,7 +25,7 @@ function parseBody(body: unknown): ConsultationPayload | null {
   if (!body || typeof body !== "object") return null;
   const b = body as Record<string, unknown>;
 
-  const normalized = normalizeConsultationPayload({
+  const raw: ConsultationFormPayload = {
     fullName: String(b.fullName ?? "").trim(),
     phone: String(b.phone ?? "").trim(),
     houseNumber: String(b.houseNumber ?? "").trim(),
@@ -33,20 +34,10 @@ function parseBody(body: unknown): ConsultationPayload | null {
     ward: String(b.ward ?? "").trim(),
     district: String(b.district ?? "").trim(),
     note: String(b.note ?? "").trim(),
-  });
+  };
 
-  if (
-    !normalized.fullName ||
-    !normalized.phone ||
-    !normalized.houseNumber ||
-    !normalized.street ||
-    !normalized.ward ||
-    !normalized.district
-  ) {
-    return null;
-  }
-
-  return normalized;
+  const result = validateConsultationPayload(raw);
+  return result.ok ? result.payload : null;
 }
 
 export async function GET() {

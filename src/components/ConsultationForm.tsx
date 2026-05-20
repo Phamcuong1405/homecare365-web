@@ -2,10 +2,8 @@
 
 import { FormEvent, useRef, useState } from "react";
 import {
-  getMissingFieldKeys,
-  getMissingFieldLabels,
-  normalizeConsultationPayload,
   type ConsultationFieldKey,
+  validateConsultationPayload,
 } from "@/lib/consultation-form-utils";
 import { submitConsultation } from "@/lib/submit-consultation";
 import { phoneTelHref, siteConfig } from "@/lib/site";
@@ -32,7 +30,7 @@ export function ConsultationForm() {
 
     const form = event.currentTarget;
     const data = new FormData(form);
-    const payload = normalizeConsultationPayload({
+    const raw = {
       fullName: String(data.get("name") ?? "").trim(),
       phone: String(data.get("phone") ?? "").trim(),
       houseNumber: String(data.get("houseNumber") ?? "").trim(),
@@ -41,13 +39,13 @@ export function ConsultationForm() {
       ward: String(data.get("ward") ?? "").trim(),
       district: String(data.get("district") ?? "").trim(),
       note: String(data.get("note") ?? "").trim(),
-    });
+    };
 
-    const missingKeys = getMissingFieldKeys(payload);
-    if (missingKeys.length > 0) {
+    const validated = validateConsultationPayload(raw);
+    if (!validated.ok) {
       setStatus("error");
-      setInvalidFields(missingKeys);
-      setErrorMessage(`Vui lòng điền: ${getMissingFieldLabels(missingKeys).join(", ")}.`);
+      setInvalidFields(validated.missingKeys);
+      setErrorMessage(validated.message);
       submittingRef.current = false;
       return;
     }
@@ -56,15 +54,16 @@ export function ConsultationForm() {
     setStatus("loading");
     setErrorMessage("");
 
-    const result = await submitConsultation(payload);
+    const result = await submitConsultation(raw);
 
     if (result.ok) {
       setStatus("success");
       form.reset();
     } else if (result.type === "validation") {
+      const again = validateConsultationPayload(raw);
       setStatus("error");
       setErrorMessage(result.message);
-      setInvalidFields(getMissingFieldKeys(payload));
+      setInvalidFields(again.ok ? [] : again.missingKeys);
     } else {
       setStatus("error");
       setErrorMessage(result.message);
@@ -108,15 +107,20 @@ export function ConsultationForm() {
             className={fieldClass("name")}
             autoComplete="name"
             enterKeyHint="next"
+            aria-required="true"
+            aria-invalid={invalidFields.includes("name")}
+            minLength={2}
           />
           <input
             type="tel"
             name="phone"
-            placeholder="Số điện thoại *"
+            placeholder="Số điện thoại * (10 số)"
             className={fieldClass("phone")}
             autoComplete="tel"
             inputMode="tel"
             enterKeyHint="next"
+            aria-required="true"
+            aria-invalid={invalidFields.includes("phone")}
           />
         </fieldset>
 
@@ -129,6 +133,8 @@ export function ConsultationForm() {
               placeholder="Số nhà *"
               className={fieldClass("houseNumber")}
               enterKeyHint="next"
+              aria-required="true"
+              aria-invalid={invalidFields.includes("houseNumber")}
             />
             <input
               type="text"
@@ -138,12 +144,16 @@ export function ConsultationForm() {
               enterKeyHint="next"
             />
           </div>
+          <p className="text-xs text-[var(--hc-text-muted)]">
+            Bắt buộc: điền <strong>Tên đường</strong> hoặc <strong>Ngõ/Hẻm</strong> (ít nhất một).
+          </p>
           <input
             type="text"
             name="street"
-            placeholder="Tên đường * (hoặc điền ở Ngõ/Hẻm phía trên)"
+            placeholder="Tên đường"
             className={fieldClass("street")}
             enterKeyHint="next"
+            aria-invalid={invalidFields.includes("street")}
           />
           <div className="grid gap-3 sm:grid-cols-2">
             <input
@@ -152,6 +162,8 @@ export function ConsultationForm() {
               placeholder="Phường / Xã *"
               className={fieldClass("ward")}
               enterKeyHint="next"
+              aria-required="true"
+              aria-invalid={invalidFields.includes("ward")}
             />
             <input
               type="text"
@@ -159,6 +171,8 @@ export function ConsultationForm() {
               placeholder="Quận / Huyện *"
               className={fieldClass("district")}
               enterKeyHint="done"
+              aria-required="true"
+              aria-invalid={invalidFields.includes("district")}
             />
           </div>
         </fieldset>

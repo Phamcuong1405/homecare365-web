@@ -24,6 +24,18 @@ function normalizePhone(phone: string): string {
   return phone.replace(/\s+/g, "").trim();
 }
 
+/** Số VN: 9–11 chữ số sau khi bỏ ký tự thừa */
+export function isValidPhone(phone: string): boolean {
+  const digits = phone.replace(/\D/g, "");
+  if (digits.startsWith("84") && digits.length >= 11) {
+    return digits.length <= 12;
+  }
+  if (digits.startsWith("0")) {
+    return digits.length >= 10 && digits.length <= 11;
+  }
+  return digits.length >= 9 && digits.length <= 11;
+}
+
 /** Chuẩn hóa — nhiều khách chỉ điền ngõ/hẻm, bỏ trống tên đường */
 export function normalizeConsultationPayload(
   raw: ConsultationFormPayload,
@@ -49,17 +61,36 @@ export type ConsultationFieldKey =
   | "ward"
   | "district";
 
+/** Kiểm tra trước normalize — không coi ngõ/hẻm là đã điền tên đường khi còn trống */
 export function getMissingFieldKeys(payload: ConsultationFormPayload): ConsultationFieldKey[] {
   const missing: ConsultationFieldKey[] = [];
 
-  if (!payload.fullName) missing.push("name");
-  if (!payload.phone) missing.push("phone");
-  if (!payload.houseNumber) missing.push("houseNumber");
-  if (!payload.street) missing.push("street");
-  if (!payload.ward) missing.push("ward");
-  if (!payload.district) missing.push("district");
+  if (!payload.fullName.trim() || payload.fullName.trim().length < 2) {
+    missing.push("name");
+  }
+  if (!payload.phone.trim() || !isValidPhone(normalizePhone(payload.phone))) {
+    missing.push("phone");
+  }
+  if (!payload.houseNumber.trim()) missing.push("houseNumber");
+  if (!payload.street.trim() && !payload.alley.trim()) missing.push("street");
+  if (!payload.ward.trim()) missing.push("ward");
+  if (!payload.district.trim()) missing.push("district");
 
   return missing;
+}
+
+export function validateConsultationPayload(
+  raw: ConsultationFormPayload,
+): { ok: true; payload: ConsultationFormPayload } | { ok: false; missingKeys: ConsultationFieldKey[]; message: string } {
+  const missingKeys = getMissingFieldKeys(raw);
+  if (missingKeys.length > 0) {
+    return {
+      ok: false,
+      missingKeys,
+      message: `Vui lòng điền đầy đủ: ${getMissingFieldLabels(missingKeys).join(", ")}.`,
+    };
+  }
+  return { ok: true, payload: normalizeConsultationPayload(raw) };
 }
 
 export function getMissingFieldLabels(keys: ConsultationFieldKey[]): string[] {
