@@ -112,6 +112,12 @@ export const siteConfig = {
         desc: "Xử lý bụi bẩn và vệ sinh hoàn thiện chuyên nghiệp.",
         videoSrc: "/videos/services/goi-dinh-ky-365.mp4",
       },
+      {
+        icon: "📅",
+        title: "Dịch vụ chăm sóc nhà định kỳ theo tuần, tháng, năm",
+        desc: "Đặt lịch cố định linh hoạt — đội ngũ quen nhà bạn, nhà luôn sạch ổn định lâu dài.",
+        videoSrc: "/videos/services/cham-soc-dinh-ky.mp4",
+      },
     ],
   },
   benefitsSection: {
