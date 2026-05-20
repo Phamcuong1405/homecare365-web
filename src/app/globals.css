@@ -238,17 +238,15 @@ body {
     inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
-/* Banner CTA giới thiệu — khung ôm trọn chữ, một dòng */
+/* Banner CTA giới thiệu — khung gradient ôm đúng chiều dài chữ */
 .hc-cta-promo-banner {
-  container-type: inline-size;
-  display: inline-flex;
-  width: fit-content;
+  display: inline-block;
+  width: max-content;
   max-width: 100%;
   box-sizing: border-box;
-  align-items: center;
-  justify-content: center;
   border-radius: 1rem;
-  padding: 1.15rem clamp(1.1rem, 2.5vw, 2rem);
+  padding: 1.15rem 1.35rem;
+  text-align: center;
   text-decoration: none;
   background: var(--hc-gradient-brand);
   box-shadow:
@@ -271,37 +269,13 @@ body {
 }
 
 .hc-cta-promo-text {
-  position: relative;
   display: inline-block;
-  width: fit-content;
-  max-width: 100%;
-  padding: 0.15em 0.5em;
-  text-align: center;
+  white-space: nowrap;
   font-weight: 800;
   line-height: 1.35;
   letter-spacing: 0.02em;
-  white-space: nowrap;
-  font-size: clamp(0.58rem, 2.8cqi, 1.05rem);
-}
-
-.hc-cta-promo-text-stroke,
-.hc-cta-promo-text-fill {
-  display: block;
-  white-space: inherit;
-  font: inherit;
-  letter-spacing: inherit;
-  line-height: inherit;
-}
-
-/* Lớp viền — stroke + bóng 8 hướng, phủ cả dấu tiếng Việt */
-.hc-cta-promo-text-stroke {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  color: transparent;
-  -webkit-text-stroke: 2px #003d7a;
-  paint-order: stroke fill;
+  color: #ffffff;
+  font-size: clamp(0.55rem, 2.1vw, 1.05rem);
   text-shadow:
     -1.5px -1.5px 0 #003d7a,
     1.5px -1.5px 0 #003d7a,
@@ -311,39 +285,18 @@ body {
     0 1.5px 0 #003d7a,
     -1.5px 0 0 #003d7a,
     1.5px 0 0 #003d7a,
-    -2px 0 0 #002855,
-    2px 0 0 #002855,
     0 0 3px #002855,
-    0 0 5px rgba(0, 40, 105, 0.85);
-}
-
-.hc-cta-promo-text-fill {
-  position: relative;
-  z-index: 1;
-  color: #ffffff;
-  text-shadow:
     0 2px 5px rgba(0, 0, 0, 0.5),
-    0 4px 12px rgba(0, 25, 70, 0.4),
     0 1px 0 rgba(255, 255, 255, 0.3);
-}
-
-@container (max-width: 520px) {
-  .hc-cta-promo-text {
-    font-size: clamp(0.5rem, 3.4cqi, 0.88rem);
-  }
 }
 
 @media (min-width: 640px) {
   .hc-cta-promo-banner {
-    padding: 1.3rem clamp(1.25rem, 2.5vw, 2.25rem);
+    padding: 1.3rem 1.6rem;
   }
 
   .hc-cta-promo-text {
-    font-size: clamp(0.72rem, 2.4cqi, 1.1rem);
-  }
-
-  .hc-cta-promo-text-stroke {
-    -webkit-text-stroke: 2.5px #003d7a;
+    font-size: clamp(0.68rem, 1.45vw, 1.1rem);
     text-shadow:
       -2px -2px 0 #003d7a,
       2px -2px 0 #003d7a,
@@ -353,16 +306,15 @@ body {
       0 2px 0 #003d7a,
       -2px 0 0 #003d7a,
       2px 0 0 #003d7a,
-      -2.5px 0 0 #002855,
-      2.5px 0 0 #002855,
       0 0 4px #002855,
-      0 0 6px rgba(0, 40, 105, 0.85);
+      0 2px 6px rgba(0, 0, 0, 0.5),
+      0 1px 0 rgba(255, 255, 255, 0.3);
   }
 }
 
 @media (min-width: 1024px) {
   .hc-cta-promo-text {
-    font-size: clamp(0.78rem, 2.2cqi, 1.05rem);
+    font-size: clamp(0.75rem, 1.05vw, 1.05rem);
   }
 }
 
