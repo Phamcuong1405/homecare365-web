@@ -2,16 +2,45 @@
 
 import { FormEvent, useState } from "react";
 import type { ConsultationSheetRow } from "@/lib/consultation-sheet";
-import {
-  getPublicSheetWebhookUrl,
-  submitToGoogleSheetDirect,
-} from "@/lib/submit-to-google-sheet";
+import { submitToGoogleSheetDirect } from "@/lib/submit-to-google-sheet";
 import { phoneTelHref, siteConfig } from "@/lib/site";
 
 const inputClass =
   "hc-input w-full rounded-lg border border-[var(--hc-card-border)] bg-white px-4 py-2.5 text-sm text-[var(--hc-text)] outline-none";
 
 type FormStatus = "idle" | "loading" | "success" | "error";
+
+function buildSheetRow(payload: {
+  fullName: string;
+  phone: string;
+  houseNumber: string;
+  alley: string;
+  street: string;
+  ward: string;
+  district: string;
+  note: string;
+}): ConsultationSheetRow {
+  return {
+    submittedAt: new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }),
+    fullName: payload.fullName,
+    phone: payload.phone,
+    houseNumber: payload.houseNumber,
+    alley: payload.alley,
+    street: payload.street,
+    ward: payload.ward,
+    district: payload.district,
+    note: payload.note,
+    fullAddress: [
+      payload.houseNumber && `Số nhà ${payload.houseNumber}`,
+      payload.alley && `Ngõ/Hẻm ${payload.alley}`,
+      payload.street && `Đường ${payload.street}`,
+      payload.ward && `Phường/Xã ${payload.ward}`,
+      payload.district && `Quận/Huyện ${payload.district}`,
+    ]
+      .filter(Boolean)
+      .join(", "),
+  };
+}
 
 export function ConsultationForm() {
   const [status, setStatus] = useState<FormStatus>("idle");
@@ -33,69 +62,31 @@ export function ConsultationForm() {
       note: String(data.get("note") ?? "").trim(),
     };
 
-    const sheetRow: ConsultationSheetRow = {
-      submittedAt: new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }),
-      fullName: payload.fullName,
-      phone: payload.phone,
-      houseNumber: payload.houseNumber,
-      alley: payload.alley,
-      street: payload.street,
-      ward: payload.ward,
-      district: payload.district,
-      note: payload.note,
-      fullAddress: [
-        payload.houseNumber && `Số nhà ${payload.houseNumber}`,
-        payload.alley && `Ngõ/Hẻm ${payload.alley}`,
-        payload.street && `Đường ${payload.street}`,
-        payload.ward && `Phường/Xã ${payload.ward}`,
-        payload.district && `Quận/Huyện ${payload.district}`,
-      ]
-        .filter(Boolean)
-        .join(", "),
-    };
+    if (!payload.fullName || !payload.phone || !payload.houseNumber || !payload.street || !payload.ward || !payload.district) {
+      setStatus("error");
+      setErrorMessage("Vui lòng điền đầy đủ các trường bắt buộc (*).");
+      return;
+    }
+
+    const sheetRow = buildSheetRow(payload);
 
     setStatus("loading");
     setErrorMessage("");
 
-    const directUrl = getPublicSheetWebhookUrl();
-
     try {
-      const res = await fetch("/api/consultation", {
+      submitToGoogleSheetDirect(sheetRow);
+
+      void fetch("/api/consultation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
-      });
+      }).catch(() => undefined);
 
-      const result = (await res.json().catch(() => ({}))) as { error?: string };
-
-      if (res.ok) {
-        setStatus("success");
-        form.reset();
-        return;
-      }
-
-      if (directUrl) {
-        submitToGoogleSheetDirect(directUrl, sheetRow);
-        setStatus("success");
-        form.reset();
-        return;
-      }
-
-      setStatus("error");
-      setErrorMessage(
-        res.status === 503
-          ? "Hệ thống đang cập nhật. Vui lòng gọi hotline hoặc thử lại sau vài phút."
-          : (result.error ?? "Gửi thất bại. Vui lòng thử lại."),
-      );
+      setStatus("success");
+      form.reset();
     } catch {
-      if (directUrl) {
-        submitToGoogleSheetDirect(directUrl, sheetRow);
-        setStatus("success");
-        form.reset();
-        return;
-      }
       setStatus("error");
-      setErrorMessage("Không kết nối được máy chủ. Kiểm tra mạng và thử lại.");
+      setErrorMessage("Gửi thất bại. Vui lòng gọi hotline.");
     }
   }
 
@@ -125,7 +116,7 @@ export function ConsultationForm() {
         <fieldset className="space-y-3" disabled={status === "loading"}>
           <legend className="text-sm font-semibold text-[var(--hc-text)]">Thông tin liên hệ</legend>
           <input type="text" name="name" placeholder="Họ và tên *" required className={inputClass} />
-          <input type="tel" name="phone" placeholder="Số điện thoại *" required className={inputClass} />
+          <input type="tel" name="phone" placeholder="Số điện thoại *" required className={inputClass} autoComplete="tel" />
         </fieldset>
 
         <fieldset className="space-y-3" disabled={status === "loading"}>

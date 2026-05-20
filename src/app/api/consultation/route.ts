@@ -1,15 +1,18 @@
-import type { ConsultationSheetRow } from "@/lib/consultation-sheet";
+import {
+  GOOGLE_SHEETS_WEB_APP_URL,
+  type ConsultationSheetRow,
+} from "@/lib/consultation-sheet";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
 
-function getWebhookUrl(): string | null {
+function getWebhookUrl(): string {
   const raw = process.env.GOOGLE_SHEETS_WEB_APP_URL?.trim().replace(/^['"]|['"]$/g, "");
-  if (!raw?.startsWith("https://script.google.com/macros/s/") || !raw.endsWith("/exec")) {
-    return null;
+  if (raw?.startsWith("https://script.google.com/macros/s/") && raw.endsWith("/exec")) {
+    return raw;
   }
-  return raw;
+  return GOOGLE_SHEETS_WEB_APP_URL;
 }
 
 export type ConsultationPayload = {
@@ -55,12 +58,6 @@ function parseBody(body: unknown): ConsultationPayload | null {
 
 export async function POST(request: Request) {
   const webhookUrl = getWebhookUrl();
-  if (!webhookUrl) {
-    return NextResponse.json(
-      { error: "Hệ thống chưa kết nối Google Sheet. Vui lòng liên hệ quản trị viên." },
-      { status: 503 },
-    );
-  }
 
   let body: unknown;
   try {

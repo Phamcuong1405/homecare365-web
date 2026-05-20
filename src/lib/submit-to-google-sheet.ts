@@ -1,7 +1,13 @@
-import type { ConsultationSheetRow } from "@/lib/consultation-sheet";
+import {
+  GOOGLE_SHEETS_WEB_APP_URL,
+  type ConsultationSheetRow,
+} from "@/lib/consultation-sheet";
 
-/** Gửi qua form ẩn — tránh CORS, không mở hộp thoại đăng nhập Windows Mail */
-export function submitToGoogleSheetDirect(webAppUrl: string, row: ConsultationSheetRow): void {
+/** Gửi qua form ẩn — không mở email, không bắt đăng nhập Google */
+export function submitToGoogleSheetDirect(
+  row: ConsultationSheetRow,
+  webAppUrl: string = GOOGLE_SHEETS_WEB_APP_URL,
+): void {
   const frameName = `hc-sheet-${Date.now()}`;
   const iframe = document.createElement("iframe");
   iframe.name = frameName;
@@ -14,6 +20,7 @@ export function submitToGoogleSheetDirect(webAppUrl: string, row: ConsultationSh
   form.action = webAppUrl;
   form.target = frameName;
   form.style.display = "none";
+  form.setAttribute("accept-charset", "UTF-8");
 
   const input = document.createElement("input");
   input.type = "hidden";
@@ -30,10 +37,13 @@ export function submitToGoogleSheetDirect(webAppUrl: string, row: ConsultationSh
   }, 4000);
 }
 
-export function getPublicSheetWebhookUrl(): string | null {
-  const raw = process.env.NEXT_PUBLIC_GOOGLE_SHEETS_WEB_APP_URL?.trim();
-  if (!raw?.startsWith("https://script.google.com/macros/s/") || !raw.endsWith("/exec")) {
-    return null;
+export function getSheetWebhookUrl(): string {
+  const fromEnv = process.env.NEXT_PUBLIC_GOOGLE_SHEETS_WEB_APP_URL?.trim();
+  if (
+    fromEnv?.startsWith("https://script.google.com/macros/s/") &&
+    fromEnv.endsWith("/exec")
+  ) {
+    return fromEnv;
   }
-  return raw;
+  return GOOGLE_SHEETS_WEB_APP_URL;
 }

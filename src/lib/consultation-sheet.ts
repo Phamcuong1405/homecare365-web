@@ -4,6 +4,10 @@
  */
 export const GOOGLE_SHEET_ID = "1G84ZEO31bvWJGxdaaQHSGcF_z0SGTvWuOL3zVpw1Kg8";
 
+/** Web App Deploy (Execute as: Me, Who has access: Anyone) */
+export const GOOGLE_SHEETS_WEB_APP_URL =
+  "https://script.google.com/macros/s/AKfycby26ARqQtcfMdkUshQ47pnyUGFEOH947Phcn0uU9NwFEOonLUsQO6t3shcvA0YnauLHrw/exec";
+
 export const CONSULTATION_SHEET_HEADERS = [
   "Thời gian",
   "Họ và tên",
