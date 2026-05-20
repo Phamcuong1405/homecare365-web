@@ -384,6 +384,21 @@ body {
   height: 100%;
 }
 
+.hc-review-card--fade {
+  animation: hc-review-fade 0.45s ease;
+}
+
+@keyframes hc-review-fade {
+  from {
+    opacity: 0.35;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .hc-section-title {
   font-size: 1.5rem;
   font-weight: 800;

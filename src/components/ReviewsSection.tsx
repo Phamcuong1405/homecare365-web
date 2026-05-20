@@ -1,7 +1,9 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { siteConfig } from "@/lib/site";
+
+const ROTATE_MS = 3000;
 
 type ReviewItem = { name: string; quote: string };
 
@@ -37,10 +39,14 @@ export function ReviewsSection() {
     return (parts[0]?.[0] ?? "?").toUpperCase();
   }, []);
 
-  const reshuffle = useMemo(
-    () => () => setReviews(buildRandomReviews(displayCount)),
-    [displayCount],
-  );
+  const reshuffle = useCallback(() => {
+    setReviews(buildRandomReviews(displayCount));
+  }, [displayCount]);
+
+  useEffect(() => {
+    const timer = window.setInterval(reshuffle, ROTATE_MS);
+    return () => window.clearInterval(timer);
+  }, [reshuffle]);
 
   return (
     <section id="danh-gia" className="scroll-mt-24 py-12">
@@ -55,11 +61,14 @@ export function ReviewsSection() {
         </button>
       </div>
       <p className="mt-2 text-sm text-[var(--hc-text-muted)]">
-        Hiển thị ngẫu nhiên từ hơn 20 khách hàng đã trải nghiệm dịch vụ.
+        Tự động đổi phản hồi mỗi 3 giây — hơn 20 khách hàng đã trải nghiệm dịch vụ.
       </p>
       <div className="mt-6 grid gap-4 md:grid-cols-3">
-        {reviews.map((item) => (
-          <blockquote key={`${item.name}-${item.quote.slice(0, 12)}`} className="hc-card hc-review-card rounded-2xl p-6">
+        {reviews.map((item, index) => (
+          <blockquote
+            key={`${index}-${item.name}-${item.quote.slice(0, 16)}`}
+            className="hc-card hc-review-card hc-review-card--fade rounded-2xl p-6"
+          >
             <div className="mb-4 flex items-center gap-3">
               <span
                 className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
