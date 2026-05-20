@@ -378,6 +378,12 @@ body {
   color: var(--hc-brand-blue);
 }
 
+.hc-review-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .hc-section-title {
   font-size: 1.5rem;
   font-weight: 800;

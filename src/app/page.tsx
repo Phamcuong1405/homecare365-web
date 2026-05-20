@@ -1,11 +1,12 @@
 import { AboutBrandSection } from "@/components/ServiceVideoSection";
 import { ConsultationForm } from "@/components/ConsultationForm";
 import { HeaderBrand } from "@/components/HeaderBrand";
+import { ReviewsSection } from "@/components/ReviewsSection";
 import { ServicePackageCard } from "@/components/ServicePackageCard";
 import { phoneTelHref, siteConfig } from "@/lib/site";
 
 export default function HomePage() {
-  const { hero, servicesSection, benefitsSection, reviewsSection, finalCta } = siteConfig;
+  const { hero, servicesSection, benefitsSection, finalCta } = siteConfig;
 
   return (
     <div className="hc-page-bg text-[var(--hc-text)]">
@@ -132,17 +133,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ĐÁNH GIÁ */}
-        <section id="danh-gia" className="scroll-mt-24 py-12">
-          <h2 className="text-2xl font-bold text-[var(--hc-text)] sm:text-3xl">{reviewsSection.title}</h2>
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
-            {reviewsSection.items.map((quote, i) => (
-              <blockquote key={i} className="hc-card rounded-2xl p-6">
-                <p className="text-sm leading-relaxed text-[var(--hc-text-muted)]">&ldquo;{quote}&rdquo;</p>
-              </blockquote>
-            ))}
-          </div>
-        </section>
+        <ReviewsSection />
 
         {/* CTA CUỐI */}
         <section className="hc-contact-band mt-4 rounded-2xl px-6 py-10 text-white sm:px-10">
