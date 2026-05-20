@@ -38,8 +38,8 @@ export default function HomePage() {
 
       <main className="relative z-10 mx-auto max-w-6xl px-6 pb-16">
         {/* HERO */}
-        <section className="grid items-start gap-10 py-10 lg:grid-cols-2 lg:py-16">
-          <div className="space-y-5">
+        <section className="py-10 lg:py-16">
+          <div className="mx-auto max-w-3xl space-y-5 lg:max-w-4xl">
             <p className="hc-badge inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold uppercase tracking-wide">
               <span className="hc-badge-dot h-2 w-2 animate-pulse rounded-full" />
               {siteConfig.domain} · {siteConfig.brand.slogan}
@@ -94,9 +94,9 @@ export default function HomePage() {
               ))}
             </ul>
           </div>
-
-          <ServicesGridSection compact className="lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto lg:pr-1" />
         </section>
+
+        <ServicesGridSection />
 
         <AboutBrandSection />
 

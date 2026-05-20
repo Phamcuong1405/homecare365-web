@@ -47,7 +47,7 @@ export function ReviewsSection() {
 
   const reshuffleAll = useCallback(() => {
     setReviews(buildRandomReviews(displayCount));
-    setFadeKeys(Array.from({ length: displayCount }, (k) => k + 1));
+    setFadeKeys(Array.from({ length: displayCount }, (_, k) => k + 1));
   }, [displayCount]);
 
   useEffect(() => {
