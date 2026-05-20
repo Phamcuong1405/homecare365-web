@@ -42,7 +42,11 @@ export function ConsultationForm() {
 
       if (!res.ok) {
         setStatus("error");
-        setErrorMessage(result.error ?? "Gửi thất bại. Vui lòng thử lại.");
+        setErrorMessage(
+          res.status === 503
+            ? "Hệ thống đang cập nhật. Vui lòng gọi hotline hoặc thử lại sau vài phút."
+            : (result.error ?? "Gửi thất bại. Vui lòng thử lại."),
+        );
         return;
       }
 

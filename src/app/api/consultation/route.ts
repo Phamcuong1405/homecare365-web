@@ -87,6 +87,7 @@ export async function POST(request: Request) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(sheetRow),
       cache: "no-store",
+      redirect: "follow",
     });
 
     const text = await upstream.text();
