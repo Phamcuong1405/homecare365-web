@@ -11,8 +11,8 @@ type BrandLogoProps = {
 export function BrandLogo({ variant = "full", className = "", linkHome = false }: BrandLogoProps) {
   const isHeader = variant === "header";
   const src = siteConfig.brand.logoSrc;
-  const width = isHeader ? 180 : 280;
-  const height = isHeader ? 56 : 88;
+  const width = isHeader ? 200 : 320;
+  const height = isHeader ? 62 : 100;
 
   const image = (
     <Image
@@ -20,7 +20,7 @@ export function BrandLogo({ variant = "full", className = "", linkHome = false }
       alt={siteConfig.brand.logoAlt}
       width={width}
       height={height}
-      className={`h-auto w-auto object-contain ${isHeader ? "max-h-14" : "max-h-24"} ${className}`}
+      className={`h-auto w-auto object-contain ${isHeader ? "max-h-16" : "max-h-28"} ${className}`}
       priority
     />
   );

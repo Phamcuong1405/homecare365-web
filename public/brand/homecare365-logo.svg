@@ -1,41 +1,121 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 320" role="img" aria-label="Home Care 365">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" role="img" aria-label="Home Care 365">
   <defs>
-    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0088ce"/>
+    <linearGradient id="hcBlue" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0077c8"/>
       <stop offset="100%" stop-color="#0056b3"/>
     </linearGradient>
-    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#6bc06e"/>
+    <linearGradient id="hcGreen" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#5dbd4a"/>
       <stop offset="100%" stop-color="#4caf50"/>
     </linearGradient>
+    <filter id="leafBlur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
   </defs>
-  <rect width="520" height="320" fill="#f9faf5"/>
-  <g transform="translate(210 20)">
-    <path d="M-55 75 Q-75 45 -55 25 L-25 5 Q0 -5 25 5 L55 25 Q75 45 55 75 L0 95 Z" fill="none" stroke="url(#greenGrad)" stroke-width="5"/>
-    <path d="M-70 55 Q-40 15 0 25 Q40 15 70 55" fill="none" stroke="url(#blueGrad)" stroke-width="4"/>
-    <path d="M-35 10 L35 10 L45 55 L-45 55 Z" fill="none" stroke="url(#blueGrad)" stroke-width="4" stroke-linejoin="round"/>
-    <rect x="-12" y="28" width="24" height="20" rx="2" fill="none" stroke="url(#greenGrad)" stroke-width="3"/>
-    <line x1="-6" y1="28" x2="-6" y2="48" stroke="#6ab82e" stroke-width="2"/>
-    <line x1="6" y1="28" x2="6" y2="48" stroke="#6ab82e" stroke-width="2"/>
-    <line x1="-12" y1="38" x2="12" y2="38" stroke="#6ab82e" stroke-width="2"/>
-    <path d="M-28 55 L-18 20 L-8 55" fill="none" stroke="url(#blueGrad)" stroke-width="3" stroke-linecap="round"/>
-    <rect x="12" y="42" width="18" height="14" rx="3" fill="none" stroke="url(#blueGrad)" stroke-width="3"/>
-    <circle cx="21" cy="32" r="2" fill="#1a7fd4"/>
-    <circle cx="17" cy="28" r="1.5" fill="#1a7fd4"/>
-    <circle cx="25" cy="29" r="1.2" fill="#6ab82e"/>
-    <path d="M-48 48 Q-52 38 -58 32" fill="none" stroke="url(#greenGrad)" stroke-width="3"/>
-    <ellipse cx="-52" cy="30" rx="8" ry="5" fill="#6ab82e" transform="rotate(-25 -52 30)"/>
-    <ellipse cx="-58" cy="36" rx="7" ry="4" fill="#4a9420" transform="rotate(-40 -58 36)"/>
-    <path d="M42 18 L48 8 M48 18 L54 10 M50 28 L58 22" stroke="#1a7fd4" stroke-width="2" stroke-linecap="round"/>
-    <path d="M52 12 L58 6 M56 16 L62 12" stroke="#6ab82e" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Nền kem + lá mờ góc (ảnh logo gốc) -->
+  <rect width="800" height="520" fill="#f9faf5"/>
+  <ellipse cx="80" cy="70" rx="140" ry="100" fill="#7bc96f" opacity="0.22" filter="url(#leafBlur)"/>
+  <ellipse cx="720" cy="460" rx="160" ry="110" fill="#6ab85a" opacity="0.2" filter="url(#leafBlur)"/>
+
+  <!-- Icon nhà + vệ sinh (giữa trên) -->
+  <g transform="translate(400 118)">
+    <!-- Vòng cung xanh + lá trái -->
+    <path
+      d="M-118 -8 A118 118 0 0 1 -42 92"
+      fill="none"
+      stroke="url(#hcGreen)"
+      stroke-width="9"
+      stroke-linecap="round"
+    />
+    <ellipse cx="-108" cy="18" rx="22" ry="13" fill="#4caf50" transform="rotate(-32 -108 18)"/>
+    <ellipse cx="-98" cy="42" rx="18" ry="11" fill="#3d9a42" transform="rotate(-18 -98 42)"/>
+
+    <!-- Sóng xanh dưới nhà -->
+    <path
+      d="M-95 78 Q-40 98 0 88 Q40 78 95 82 L95 98 Q40 108 0 102 Q-40 96 -95 100 Z"
+      fill="url(#hcBlue)"
+      opacity="0.95"
+    />
+
+    <!-- Khung nhà -->
+    <path
+      d="M-72 -42 L0 -88 L72 -42 L72 72 L-72 72 Z"
+      fill="none"
+      stroke="url(#hcBlue)"
+      stroke-width="7"
+      stroke-linejoin="round"
+    />
+    <!-- Ống khói -->
+    <rect x="38" y="-72" width="18" height="32" rx="2" fill="none" stroke="url(#hcBlue)" stroke-width="5"/>
+    <!-- Cửa sổ 4 ô -->
+    <rect x="-22" y="-8" width="44" height="36" rx="2" fill="none" stroke="#4caf50" stroke-width="4"/>
+    <line x1="-22" y1="10" x2="22" y2="10" stroke="#4caf50" stroke-width="3"/>
+    <line x1="0" y1="-8" x2="0" y2="28" stroke="#4caf50" stroke-width="3"/>
+
+    <!-- Chổi -->
+    <line x1="-48" y1="72" x2="-32" y2="-18" stroke="url(#hcBlue)" stroke-width="6" stroke-linecap="round"/>
+    <path d="M-58 72 L-38 72 L-32 58 L-52 58 Z" fill="url(#hcBlue)"/>
+
+    <!-- Xô + bọt -->
+    <path
+      d="M28 38 L52 38 L56 72 L24 72 Z"
+      fill="none"
+      stroke="url(#hcBlue)"
+      stroke-width="5"
+      stroke-linejoin="round"
+    />
+    <circle cx="36" cy="28" r="5" fill="#fff" stroke="#0077c8" stroke-width="2"/>
+    <circle cx="48" cy="22" r="4" fill="#fff" stroke="#0077c8" stroke-width="2"/>
+    <circle cx="54" cy="32" r="3.5" fill="#e8f4fc" stroke="#4caf50" stroke-width="1.5"/>
+
+    <!-- Sao lấp lánh -->
+    <g fill="#0056b3" stroke="none">
+      <path d="M88 -28 l4 8 9 1-6 6 2 9-8-4-8 4 2-9-6-6 9-1z"/>
+      <path d="M102 -8 l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z" fill="#4caf50"/>
+      <path d="M94 18 l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/>
+    </g>
   </g>
-  <text x="260" y="175" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700">
-    <tspan fill="#0056b3">Home </tspan><tspan fill="#0088ce">Care</tspan><tspan fill="#4caf50"> 365</tspan>
+
+  <!-- Wordmark -->
+  <text
+    x="400"
+    y="318"
+    text-anchor="middle"
+    font-family="'Segoe UI', Arial, Helvetica, sans-serif"
+    font-size="62"
+    font-weight="700"
+    letter-spacing="-1"
+  >
+    <tspan fill="#0056b3">Home </tspan>
+    <tspan fill="#4caf50">Care</tspan>
+    <tspan fill="#0056b3"> 365</tspan>
   </text>
-  <line x1="120" y1="198" x2="180" y2="198" stroke="#4caf50" stroke-width="3"/>
-  <line x1="340" y1="198" x2="400" y2="198" stroke="#4caf50" stroke-width="3"/>
-  <text x="260" y="228" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#0056b3" letter-spacing="1.5">
+
+  <!-- Cung xanh trên số 365 -->
+  <path
+    d="M498 268 Q540 248 582 268"
+    fill="none"
+    stroke="#4caf50"
+    stroke-width="5"
+    stroke-linecap="round"
+  />
+
+  <!-- Gạch ngang slogan -->
+  <line x1="248" y1="358" x2="318" y2="358" stroke="#4caf50" stroke-width="4" stroke-linecap="round"/>
+  <line x1="482" y1="358" x2="552" y2="358" stroke="#4caf50" stroke-width="4" stroke-linecap="round"/>
+
+  <text
+    x="400"
+    y="398"
+    text-anchor="middle"
+    font-family="'Segoe UI', Arial, Helvetica, sans-serif"
+    font-size="22"
+    font-weight="700"
+    fill="#0056b3"
+    letter-spacing="3"
+  >
     S&#7840;CH T&#7910; T&#194;M &#8211; &#7844;M T&#7910;NG NH&#192;
   </text>
 </svg>

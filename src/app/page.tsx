@@ -51,9 +51,6 @@ export default function HomePage() {
             <div className="hc-hero-logo-wrap">
               <BrandLogo variant="full" linkHome />
             </div>
-            <p className="text-center text-xs font-bold uppercase tracking-[0.2em] text-[var(--hc-brand-blue)] sm:text-left">
-              {siteConfig.brand.slogan}
-            </p>
             <p className="hc-badge inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold uppercase tracking-wide">
               <span className="hc-badge-dot h-2 w-2 animate-pulse rounded-full" />
               {siteConfig.domain} · {siteConfig.tagline}

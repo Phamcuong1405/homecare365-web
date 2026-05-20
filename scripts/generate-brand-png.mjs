@@ -9,8 +9,8 @@ const svgPath = join(brandDir, "homecare365-logo.svg");
 const pngPath = join(brandDir, "homecare365-logo.png");
 
 const svg = await readFile(svgPath);
-const png = await sharp(svg, { density: 300 })
-  .resize(1040, 640, { fit: "inside", withoutEnlargement: false })
+const png = await sharp(svg, { density: 320 })
+  .resize(1600, 1040, { fit: "inside", withoutEnlargement: false })
   .png({ compressionLevel: 9 })
   .toBuffer();
 
