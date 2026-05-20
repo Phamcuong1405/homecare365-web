@@ -1,70 +1,54 @@
 "use client";
 
-import { FormEvent, useState } from "react";
-import type { ConsultationSheetRow } from "@/lib/consultation-sheet";
+import { FormEvent, useRef, useState } from "react";
 import {
-  buildFullAddress,
   getMissingFieldKeys,
   getMissingFieldLabels,
   normalizeConsultationPayload,
   type ConsultationFieldKey,
-  type ConsultationFormPayload,
 } from "@/lib/consultation-form-utils";
-import { submitToGoogleSheetDirect } from "@/lib/submit-to-google-sheet";
+import { submitConsultation } from "@/lib/submit-consultation";
 import { phoneTelHref, siteConfig } from "@/lib/site";
 
 const inputClass =
-  "hc-input w-full rounded-lg border border-[var(--hc-card-border)] bg-white px-4 py-2.5 text-sm text-[var(--hc-text)] outline-none";
+  "hc-input w-full rounded-lg border border-[var(--hc-card-border)] bg-white px-4 py-2.5 text-base text-[var(--hc-text)] outline-none sm:text-sm";
 
 const inputErrorClass =
-  "hc-input w-full rounded-lg border-2 border-red-400 bg-white px-4 py-2.5 text-sm text-[var(--hc-text)] outline-none";
+  "hc-input w-full rounded-lg border-2 border-red-400 bg-white px-4 py-2.5 text-base text-[var(--hc-text)] outline-none sm:text-sm";
 
 type FormStatus = "idle" | "loading" | "success" | "error";
-
-function readPayload(form: HTMLFormElement): ConsultationFormPayload {
-  const data = new FormData(form);
-  return normalizeConsultationPayload({
-    fullName: String(data.get("name") ?? "").trim(),
-    phone: String(data.get("phone") ?? "").trim(),
-    houseNumber: String(data.get("houseNumber") ?? "").trim(),
-    alley: String(data.get("alley") ?? "").trim(),
-    street: String(data.get("street") ?? "").trim(),
-    ward: String(data.get("ward") ?? "").trim(),
-    district: String(data.get("district") ?? "").trim(),
-    note: String(data.get("note") ?? "").trim(),
-  });
-}
-
-function toSheetRow(payload: ConsultationFormPayload): ConsultationSheetRow {
-  return {
-    submittedAt: new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }),
-    fullName: payload.fullName,
-    phone: payload.phone,
-    houseNumber: payload.houseNumber,
-    alley: payload.alley,
-    street: payload.street,
-    ward: payload.ward,
-    district: payload.district,
-    note: payload.note,
-    fullAddress: buildFullAddress(payload),
-  };
-}
 
 export function ConsultationForm() {
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [invalidFields, setInvalidFields] = useState<ConsultationFieldKey[]>([]);
+  const submittingRef = useRef(false);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const form = event.currentTarget;
-    const payload = readPayload(form);
-    const missingKeys = getMissingFieldKeys(payload);
 
+    if (submittingRef.current) return;
+    submittingRef.current = true;
+
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    const payload = normalizeConsultationPayload({
+      fullName: String(data.get("name") ?? "").trim(),
+      phone: String(data.get("phone") ?? "").trim(),
+      houseNumber: String(data.get("houseNumber") ?? "").trim(),
+      alley: String(data.get("alley") ?? "").trim(),
+      street: String(data.get("street") ?? "").trim(),
+      ward: String(data.get("ward") ?? "").trim(),
+      district: String(data.get("district") ?? "").trim(),
+      note: String(data.get("note") ?? "").trim(),
+    });
+
+    const missingKeys = getMissingFieldKeys(payload);
     if (missingKeys.length > 0) {
       setStatus("error");
       setInvalidFields(missingKeys);
       setErrorMessage(`Vui lòng điền: ${getMissingFieldLabels(missingKeys).join(", ")}.`);
+      submittingRef.current = false;
       return;
     }
 
@@ -72,43 +56,21 @@ export function ConsultationForm() {
     setStatus("loading");
     setErrorMessage("");
 
-    const sheetRow = toSheetRow(payload);
+    const result = await submitConsultation(payload);
 
-    try {
-      const res = await fetch("/api/consultation", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const result = (await res.json().catch(() => ({}))) as { error?: string };
-
-      if (res.ok) {
-        setStatus("success");
-        form.reset();
-        return;
-      }
-
-      await submitToGoogleSheetDirect(sheetRow);
-
-      if (res.status >= 500) {
-        setStatus("success");
-        form.reset();
-        return;
-      }
-
+    if (result.ok) {
+      setStatus("success");
+      form.reset();
+    } else if (result.type === "validation") {
       setStatus("error");
-      setErrorMessage(result.error ?? "Gửi thất bại. Vui lòng thử lại hoặc gọi hotline.");
-    } catch {
-      try {
-        await submitToGoogleSheetDirect(sheetRow);
-        setStatus("success");
-        form.reset();
-      } catch {
-        setStatus("error");
-        setErrorMessage("Không kết nối được máy chủ. Vui lòng gọi hotline.");
-      }
+      setErrorMessage(result.message);
+      setInvalidFields(getMissingFieldKeys(payload));
+    } else {
+      setStatus("error");
+      setErrorMessage(result.message);
     }
+
+    submittingRef.current = false;
   }
 
   const fieldClass = (key: ConsultationFieldKey) =>
@@ -144,6 +106,8 @@ export function ConsultationForm() {
             name="name"
             placeholder="Họ và tên *"
             className={fieldClass("name")}
+            autoComplete="name"
+            enterKeyHint="next"
           />
           <input
             type="tel"
@@ -151,6 +115,8 @@ export function ConsultationForm() {
             placeholder="Số điện thoại *"
             className={fieldClass("phone")}
             autoComplete="tel"
+            inputMode="tel"
+            enterKeyHint="next"
           />
         </fieldset>
 
@@ -162,12 +128,14 @@ export function ConsultationForm() {
               name="houseNumber"
               placeholder="Số nhà *"
               className={fieldClass("houseNumber")}
+              enterKeyHint="next"
             />
             <input
               type="text"
               name="alley"
               placeholder="Ngõ / Hẻm (nếu có)"
               className={inputClass}
+              enterKeyHint="next"
             />
           </div>
           <input
@@ -175,6 +143,7 @@ export function ConsultationForm() {
             name="street"
             placeholder="Tên đường * (hoặc điền ở Ngõ/Hẻm phía trên)"
             className={fieldClass("street")}
+            enterKeyHint="next"
           />
           <div className="grid gap-3 sm:grid-cols-2">
             <input
@@ -182,12 +151,14 @@ export function ConsultationForm() {
               name="ward"
               placeholder="Phường / Xã *"
               className={fieldClass("ward")}
+              enterKeyHint="next"
             />
             <input
               type="text"
               name="district"
               placeholder="Quận / Huyện *"
               className={fieldClass("district")}
+              enterKeyHint="done"
             />
           </div>
         </fieldset>
@@ -205,9 +176,9 @@ export function ConsultationForm() {
         <button
           type="submit"
           disabled={status === "loading"}
-          className="w-full rounded-lg hc-btn-primary py-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-70"
+          className="w-full rounded-lg hc-btn-primary py-3.5 text-base font-semibold text-white disabled:cursor-not-allowed disabled:opacity-70 sm:py-3 sm:text-sm"
         >
-          {status === "loading" ? "Đang gửi..." : "Gửi yêu cầu"}
+          {status === "loading" ? "Đang gửi, vui lòng đợi..." : "Gửi yêu cầu"}
         </button>
       </form>
     </div>

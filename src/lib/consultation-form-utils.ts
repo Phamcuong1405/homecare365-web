@@ -20,11 +20,15 @@ const FIELD_LABELS: Record<keyof ConsultationFormPayload, string> = {
   note: "Nhu cầu dọn dẹp",
 };
 
+function normalizePhone(phone: string): string {
+  return phone.replace(/\s+/g, "").trim();
+}
+
 /** Chuẩn hóa — nhiều khách chỉ điền ngõ/hẻm, bỏ trống tên đường */
 export function normalizeConsultationPayload(
   raw: ConsultationFormPayload,
 ): ConsultationFormPayload {
-  const payload = { ...raw };
+  const payload = { ...raw, phone: normalizePhone(raw.phone) };
 
   if (!payload.street && payload.alley) {
     payload.street = payload.alley;

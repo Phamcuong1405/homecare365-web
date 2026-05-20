@@ -4,28 +4,40 @@ import {
 } from "@/lib/consultation-sheet";
 
 /**
- * Gửi thẳng tới Apps Script (JSON POST, no-cors).
- * Không mở email / không bắt đăng nhập — khách chỉ thấy thông báo thành công trên web.
+ * Dự phòng khi API server lỗi — POST form ẩn (iframe).
+ * Tương thích Safari iOS / Chrome Android, không mở email hay đăng nhập Google.
  */
-export async function submitToGoogleSheetDirect(
+export function submitViaHiddenForm(
   row: ConsultationSheetRow,
   webAppUrl: string = GOOGLE_SHEETS_WEB_APP_URL,
-): Promise<void> {
-  await fetch(webAppUrl, {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(row),
-  });
-}
+): void {
+  const frameName = `hc-sheet-${Date.now()}`;
+  const iframe = document.createElement("iframe");
+  iframe.name = frameName;
+  iframe.style.cssText = "position:absolute;width:0;height:0;border:0;visibility:hidden";
+  iframe.setAttribute("aria-hidden", "true");
+  iframe.setAttribute("tabindex", "-1");
+  document.body.appendChild(iframe);
 
-export function getSheetWebhookUrl(): string {
-  const fromEnv = process.env.NEXT_PUBLIC_GOOGLE_SHEETS_WEB_APP_URL?.trim();
-  if (
-    fromEnv?.startsWith("https://script.google.com/macros/s/") &&
-    fromEnv.endsWith("/exec")
-  ) {
-    return fromEnv;
-  }
-  return GOOGLE_SHEETS_WEB_APP_URL;
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = webAppUrl;
+  form.target = frameName;
+  form.acceptCharset = "UTF-8";
+  form.style.cssText = "position:absolute;width:0;height:0;visibility:hidden";
+  form.setAttribute("aria-hidden", "true");
+
+  const input = document.createElement("input");
+  input.type = "hidden";
+  input.name = "payload";
+  input.value = JSON.stringify(row);
+  form.appendChild(input);
+
+  document.body.appendChild(form);
+  form.submit();
+
+  window.setTimeout(() => {
+    form.remove();
+    iframe.remove();
+  }, 5000);
 }

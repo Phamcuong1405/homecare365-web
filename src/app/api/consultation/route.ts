@@ -1,20 +1,13 @@
-import { buildFullAddress, normalizeConsultationPayload } from "@/lib/consultation-form-utils";
 import {
-  GOOGLE_SHEETS_WEB_APP_URL,
-  type ConsultationSheetRow,
-} from "@/lib/consultation-sheet";
+  buildFullAddress,
+  normalizeConsultationPayload,
+} from "@/lib/consultation-form-utils";
+import { appendRowToGoogleSheet, getWebhookUrl } from "@/lib/google-sheet-upstream";
+import type { ConsultationSheetRow } from "@/lib/consultation-sheet";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
-
-function getWebhookUrl(): string {
-  const raw = process.env.GOOGLE_SHEETS_WEB_APP_URL?.trim().replace(/^['"]|['"]$/g, "");
-  if (raw?.startsWith("https://script.google.com/macros/s/") && raw.endsWith("/exec")) {
-    return raw;
-  }
-  return GOOGLE_SHEETS_WEB_APP_URL;
-}
 
 export type ConsultationPayload = {
   fullName: string;
@@ -56,9 +49,21 @@ function parseBody(body: unknown): ConsultationPayload | null {
   return normalized;
 }
 
-export async function POST(request: Request) {
-  const webhookUrl = getWebhookUrl();
+export async function GET() {
+  try {
+    const res = await fetch(getWebhookUrl(), { cache: "no-store" });
+    const text = await res.text();
+    const data = JSON.parse(text) as { ok?: boolean };
+    if (data.ok) {
+      return NextResponse.json({ ok: true, channel: "google-sheet" });
+    }
+    return NextResponse.json({ ok: false }, { status: 502 });
+  } catch {
+    return NextResponse.json({ ok: false }, { status: 502 });
+  }
+}
 
+export async function POST(request: Request) {
   let body: unknown;
   try {
     body = await request.json();
@@ -87,56 +92,11 @@ export async function POST(request: Request) {
     fullAddress: buildFullAddress(data),
   };
 
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 20000);
+  const result = await appendRowToGoogleSheet(sheetRow);
 
-    const upstream = await fetch(webhookUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(sheetRow),
-      cache: "no-store",
-      redirect: "follow",
-      signal: controller.signal,
-    });
-
-    clearTimeout(timeout);
-
-    const text = await upstream.text();
-
-    if (
-      text.includes("accounts.google.com") ||
-      text.includes("Sign in") ||
-      text.trimStart().startsWith("<!")
-    ) {
-      return NextResponse.json(
-        {
-          error:
-            "Google Apps Script chưa mở công khai. Deploy lại Web app với Who has access: Anyone.",
-        },
-        { status: 502 },
-      );
-    }
-
-    let result: { ok?: boolean; error?: string } = {};
-    try {
-      result = JSON.parse(text) as { ok?: boolean; error?: string };
-    } catch {
-      result = { ok: upstream.ok };
-    }
-
-    if (!upstream.ok || result.ok === false) {
-      return NextResponse.json(
-        { error: result.error ?? "Không ghi được dữ liệu vào Google Sheet." },
-        { status: 502 },
-      );
-    }
-
-    return NextResponse.json({ ok: true });
-  } catch {
-    return NextResponse.json(
-      { error: "Không kết nối được Google Sheet. Thử lại sau vài phút." },
-      { status: 502 },
-    );
+  if (!result.ok) {
+    return NextResponse.json({ error: result.error ?? "Ghi Sheet thất bại." }, { status: 502 });
   }
+
+  return NextResponse.json({ ok: true });
 }

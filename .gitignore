@@ -48,3 +48,5 @@ public/brand/homecare365-logo-source.png
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.vercel
