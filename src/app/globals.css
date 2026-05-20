@@ -169,6 +169,22 @@ body {
     transform 0.22s ease;
 }
 
+.hc-service-video-wrap {
+  overflow: hidden;
+  border-radius: 0.75rem;
+  border: 1px solid var(--hc-card-border);
+  background: #0d2137;
+  box-shadow: 0 4px 16px rgba(0, 71, 171, 0.12);
+}
+
+.hc-service-video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  vertical-align: middle;
+}
+
 .hc-card:hover {
   border-color: color-mix(in srgb, var(--hc-brand-blue) 35%, var(--hc-brand-green));
   box-shadow:

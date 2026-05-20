@@ -2,23 +2,9 @@ import Link from "next/link";
 import { BrandLogo } from "@/components/BrandLogo";
 import { HeaderBrand } from "@/components/HeaderBrand";
 import { ConsultationForm } from "@/components/ConsultationForm";
+import { ServicePackageCard } from "@/components/ServicePackageCard";
 import { ServiceVideoSection } from "@/components/ServiceVideoSection";
 import { phoneTelHref, siteConfig } from "@/lib/site";
-
-const services = [
-  {
-    title: "Dọn dẹp tổng thể",
-    desc: "Lau chùi, hút bụi, vệ sinh phòng khách, bếp, phòng ngủ theo tiêu chuẩn.",
-  },
-  {
-    title: "Sắp xếp không gian",
-    desc: "Gọn gàng tủ đồ, bếp, bàn làm việc — nhà ngăn nắp, dễ sinh hoạt.",
-  },
-  {
-    title: "Gói định kỳ 365 ngày",
-    desc: "Đặt lịch cố định theo tuần/tháng, đội ngũ quen nhà bạn, ổn định lâu dài.",
-  },
-];
 
 export default function HomePage() {
   return (
@@ -105,13 +91,14 @@ export default function HomePage() {
           <p className="mt-2 text-[var(--hc-text-muted)]">
             Giải pháp dọn dẹp & sắp xếp tại nhà theo nhu cầu của bạn.
           </p>
-          <div className="mt-6 grid gap-4 sm:grid-cols-3">
-            {services.map((item) => (
-              <article key={item.title} className="hc-card rounded-2xl p-5">
-                <div className="hc-gradient-bar mb-3 w-12" />
-                <h3 className="font-bold text-[var(--hc-text)]">{item.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-[var(--hc-text-muted)]">{item.desc}</p>
-              </article>
+          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {siteConfig.servicePackages.map((item) => (
+              <ServicePackageCard
+                key={item.title}
+                title={item.title}
+                desc={item.desc}
+                videoSrc={item.videoSrc}
+              />
             ))}
           </div>
         </section>

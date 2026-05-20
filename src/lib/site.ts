@@ -33,6 +33,23 @@ export const siteConfig = {
     mp4Src: process.env.NEXT_PUBLIC_SERVICE_VIDEO_MP4 ?? "",
     posterSrc: process.env.NEXT_PUBLIC_SERVICE_VIDEO_POSTER ?? "/video-poster.svg",
   },
+  servicePackages: [
+    {
+      title: "Dọn dẹp tổng thể",
+      desc: "Lau chùi, hút bụi, vệ sinh phòng khách, bếp, phòng ngủ theo tiêu chuẩn.",
+      videoSrc: "/videos/services/don-dep-tong-the.mp4",
+    },
+    {
+      title: "Sắp xếp không gian",
+      desc: "Gọn gàng tủ đồ, bếp, bàn làm việc — nhà ngăn nắp, dễ sinh hoạt.",
+      videoSrc: "/videos/services/sap-xep-khong-gian.mp4",
+    },
+    {
+      title: "Gói định kỳ 365 ngày",
+      desc: "Đặt lịch cố định theo tuần/tháng, đội ngũ quen nhà bạn, ổn định lâu dài.",
+      videoSrc: "/videos/services/goi-dinh-ky-365.mp4",
+    },
+  ],
   contact: {
     phone: "+84 867050558",
     email: "homecare365.vn@gmail.com",
