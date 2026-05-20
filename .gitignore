@@ -39,6 +39,9 @@ yarn-error.log*
 # user uploads
 /data
 
+# bản logo gốc chưa nén (giữ trên ổ E:)
+public/brand/homecare365-logo-source.png
+
 # vercel
 .vercel
 

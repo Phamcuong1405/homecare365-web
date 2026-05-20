@@ -6,6 +6,9 @@ export const siteConfig = {
     "Dịch vụ dọn dẹp, sắp xếp nhà cửa chuyên nghiệp. Bạn bận đến mấy vẫn được sống trong căn nhà sạch sẽ, gọn gàng mỗi ngày.",
   tagline: "Chăm sóc 365 ngày",
   brand: {
+    /** File gốc: E:\EDIT VIDEO\WEB\55597f9f-0ec7-4ce9-8f70-b2fcf2e06349.png */
+    logoFile: "/brand/homecare365-logo.png",
+    logoVersion: "official-v2",
     logoSrc: "/brand/homecare365-logo.png",
     logoWatermarkSrc: "/brand/homecare365-logo.png",
     logoAlt: "Home Care 365 — Sạch từ tâm, ấm từng nhà",

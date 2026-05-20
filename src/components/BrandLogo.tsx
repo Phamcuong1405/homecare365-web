@@ -10,7 +10,7 @@ type BrandLogoProps = {
 
 export function BrandLogo({ variant = "full", className = "", linkHome = false }: BrandLogoProps) {
   const isHeader = variant === "header";
-  const src = siteConfig.brand.logoSrc;
+  const src = `${siteConfig.brand.logoSrc}?v=${siteConfig.brand.logoVersion}`;
   const width = isHeader ? 200 : 320;
   const height = isHeader ? 62 : 100;
 

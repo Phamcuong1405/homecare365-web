@@ -25,11 +25,16 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     locale: siteConfig.locale,
     type: "website",
-    images: [{ url: siteConfig.brand.logoSrc, alt: siteConfig.brand.logoAlt }],
+    images: [
+      {
+        url: `${siteConfig.brand.logoSrc}?v=${siteConfig.brand.logoVersion}`,
+        alt: siteConfig.brand.logoAlt,
+      },
+    ],
   },
   icons: {
-    icon: siteConfig.brand.logoSrc,
-    apple: siteConfig.brand.logoSrc,
+    icon: `${siteConfig.brand.logoSrc}?v=${siteConfig.brand.logoVersion}`,
+    apple: `${siteConfig.brand.logoSrc}?v=${siteConfig.brand.logoVersion}`,
   },
 };
 
@@ -53,7 +58,7 @@ export default function RootLayout({
     ["--hc-deep" as string]: brand.blue,
     ["--hc-deep-dark" as string]: brand.blue,
     ["--hc-gradient-mid" as string]: brand.gradientMid,
-    ["--hc-logo-watermark" as string]: `url("${brand.logoWatermarkSrc}")`,
+    ["--hc-logo-watermark" as string]: `url("${brand.logoWatermarkSrc}?v=${brand.logoVersion}")`,
   } satisfies CSSProperties;
 
   return (
