@@ -72,11 +72,6 @@ export function AboutBrandSection() {
               </li>
             ))}
           </ul>
-          <div className="mt-8 flex w-full min-w-0 justify-center lg:justify-start">
-            <a href="#dat-lich-tu-van" className="hc-cta-promo-banner">
-              <span className="hc-cta-promo-text">{about.cta}</span>
-            </a>
-          </div>
         </div>
 
         <div className="hc-video-frame">
@@ -84,6 +79,10 @@ export function AboutBrandSection() {
             <VideoPlayer />
           </div>
         </div>
+
+        <a href="#dat-lich-tu-van" className="hc-cta-promo-banner lg:col-span-2">
+          <span className="hc-cta-promo-text">{about.cta}</span>
+        </a>
       </div>
     </section>
   );

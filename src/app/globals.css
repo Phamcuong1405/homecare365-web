@@ -238,14 +238,14 @@ body {
     inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
-/* Banner CTA giới thiệu — khung gradient ôm đúng chiều dài chữ */
+/* Banner CTA giới thiệu — full width, chữ luôn nằm trong khung gradient */
 .hc-cta-promo-banner {
-  display: inline-block;
-  width: max-content;
-  max-width: 100%;
+  display: block;
+  width: 100%;
   box-sizing: border-box;
+  margin-top: 0.5rem;
   border-radius: 1rem;
-  padding: 1.15rem 1.35rem;
+  padding: 1.15rem 1rem;
   text-align: center;
   text-decoration: none;
   background: var(--hc-gradient-brand);
@@ -269,13 +269,12 @@ body {
 }
 
 .hc-cta-promo-text {
-  display: inline-block;
-  white-space: nowrap;
+  display: inline;
   font-weight: 800;
-  line-height: 1.35;
-  letter-spacing: 0.02em;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
   color: #ffffff;
-  font-size: clamp(0.55rem, 2.1vw, 1.05rem);
+  font-size: clamp(0.62rem, 2.85vw, 1.05rem);
   text-shadow:
     -1.5px -1.5px 0 #003d7a,
     1.5px -1.5px 0 #003d7a,
@@ -290,13 +289,19 @@ body {
     0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
+@media (min-width: 768px) {
+  .hc-cta-promo-text {
+    white-space: nowrap;
+  }
+}
+
 @media (min-width: 640px) {
   .hc-cta-promo-banner {
-    padding: 1.3rem 1.6rem;
+    padding: 1.3rem 1.5rem;
   }
 
   .hc-cta-promo-text {
-    font-size: clamp(0.68rem, 1.45vw, 1.1rem);
+    font-size: clamp(0.8rem, 1.35vw, 1.1rem);
     text-shadow:
       -2px -2px 0 #003d7a,
       2px -2px 0 #003d7a,
@@ -309,12 +314,6 @@ body {
       0 0 4px #002855,
       0 2px 6px rgba(0, 0, 0, 0.5),
       0 1px 0 rgba(255, 255, 255, 0.3);
-  }
-}
-
-@media (min-width: 1024px) {
-  .hc-cta-promo-text {
-    font-size: clamp(0.75rem, 1.05vw, 1.05rem);
   }
 }
 
