@@ -26,11 +26,20 @@
 
 ## Bước 4 — Vercel
 
+Thêm biến môi trường (Production + Preview):
+
 ```
-GOOGLE_SHEETS_WEB_APP_URL=<URL exec vừa copy>
+GOOGLE_SHEETS_WEB_APP_URL=https://script.google.com/macros/s/AKfycbw8qNQGp7X6yAeGzPK_La2wFj8eOq8FvFdYEDpoa4lJN3fC4A1bpk5mTAD51gh-v8h62w/exec
 ```
 
 Redeploy project **homecare365-web**.
+
+### Quan trọng: URL phải mở được không cần đăng nhập
+
+Mở URL `/exec` trên trình duyệt **ẩn danh**:
+
+- Đúng: thấy JSON `{"ok":true,...}`
+- Sai: trang **Sign in** Google → vào **Deploy → Manage deployments → Edit** → **Who has access: Anyone** → Deploy lại → copy URL mới nếu đổi.
 
 ## Bước 5 — Test
 

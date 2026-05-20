@@ -90,6 +90,21 @@ export async function POST(request: Request) {
     });
 
     const text = await upstream.text();
+
+    if (
+      text.includes("accounts.google.com") ||
+      text.includes("Sign in") ||
+      text.trimStart().startsWith("<!")
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "Google Apps Script chưa mở công khai. Deploy lại Web app với Who has access: Anyone.",
+        },
+        { status: 502 },
+      );
+    }
+
     let result: { ok?: boolean; error?: string } = {};
     try {
       result = JSON.parse(text) as { ok?: boolean; error?: string };
