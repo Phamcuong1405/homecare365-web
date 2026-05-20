@@ -93,7 +93,7 @@ export const siteConfig = {
         icon: "✨",
         title: "Tổng vệ sinh nhà cửa",
         desc: "Làm sạch chuyên sâu toàn bộ không gian sống.",
-        videoSrc: "/videos/services/don-dep-tong-the.mp4",
+        videoSrc: "/videos/services/tong-ve-sinh-nha.mp4",
       },
       {
         icon: "🛋️",
