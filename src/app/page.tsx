@@ -2,11 +2,11 @@ import { AboutBrandSection } from "@/components/ServiceVideoSection";
 import { ConsultationForm } from "@/components/ConsultationForm";
 import { HeaderBrand } from "@/components/HeaderBrand";
 import { ReviewsSection } from "@/components/ReviewsSection";
-import { ServicePackageCard } from "@/components/ServicePackageCard";
+import { ServicesGridSection } from "@/components/ServicesGridSection";
 import { phoneTelHref, siteConfig } from "@/lib/site";
 
 export default function HomePage() {
-  const { hero, servicesSection, benefitsSection, finalCta } = siteConfig;
+  const { hero, benefitsSection, finalCta } = siteConfig;
 
   return (
     <div className="hc-page-bg text-[var(--hc-text)]">
@@ -95,27 +95,14 @@ export default function HomePage() {
             </ul>
           </div>
 
-          <div id="dat-lich-tu-van" className="scroll-mt-28">
-            <ConsultationForm />
-          </div>
+          <ServicesGridSection compact className="lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto lg:pr-1" />
         </section>
 
         <AboutBrandSection />
 
-        {/* DỊCH VỤ */}
-        <section id="dich-vu" className="scroll-mt-24 py-12">
-          <h2 className="text-2xl font-bold text-[var(--hc-text)] sm:text-3xl">{servicesSection.title}</h2>
-          <p className="mt-2 text-[var(--hc-text-muted)]">{servicesSection.subtitle}</p>
-          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {servicesSection.items.map((item) => (
-              <ServicePackageCard
-                key={item.title}
-                icon={item.icon}
-                title={item.title}
-                desc={item.desc}
-                videoSrc={"videoSrc" in item ? (item.videoSrc as string) : undefined}
-              />
-            ))}
+        <section id="dat-lich-tu-van" className="scroll-mt-24 py-12">
+          <div className="mx-auto max-w-xl">
+            <ConsultationForm />
           </div>
         </section>
 
