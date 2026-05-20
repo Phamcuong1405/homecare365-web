@@ -238,6 +238,72 @@ body {
     inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
+/* Banner CTA giới thiệu — chữ giữa, một dòng, bóng + viền */
+.hc-cta-promo-banner {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  padding: 1.1rem 1rem;
+  text-decoration: none;
+  background: var(--hc-gradient-brand);
+  box-shadow:
+    0 8px 28px rgba(0, 86, 179, 0.3),
+    0 4px 16px rgba(76, 175, 80, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.hc-cta-promo-banner:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+  box-shadow:
+    0 12px 36px rgba(0, 86, 179, 0.38),
+    0 6px 20px rgba(76, 175, 80, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.32);
+}
+
+.hc-cta-promo-text {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  white-space: nowrap;
+  font-size: clamp(0.58rem, 2.15vw, 1.05rem);
+  text-shadow:
+    0 0 1px rgba(0, 35, 95, 0.95),
+    0 0 2px rgba(0, 35, 95, 0.85),
+    0 2px 4px rgba(0, 0, 0, 0.55),
+    0 4px 14px rgba(0, 25, 70, 0.45),
+    0 1px 0 rgba(255, 255, 255, 0.35);
+  -webkit-text-stroke: 0.65px rgba(0, 40, 105, 0.75);
+  paint-order: stroke fill;
+}
+
+@media (min-width: 640px) {
+  .hc-cta-promo-banner {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .hc-cta-promo-text {
+    font-size: clamp(0.72rem, 1.55vw, 1.1rem);
+    -webkit-text-stroke: 0.75px rgba(0, 40, 105, 0.7);
+  }
+}
+
+@media (min-width: 1024px) {
+  .hc-cta-promo-text {
+    font-size: clamp(0.85rem, 1.15vw, 1.125rem);
+  }
+}
+
 /* Nút phụ */
 .hc-btn-secondary {
   background: var(--hc-card);

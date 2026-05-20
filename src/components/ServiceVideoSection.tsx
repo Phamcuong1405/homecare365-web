@@ -72,11 +72,8 @@ export function AboutBrandSection() {
               </li>
             ))}
           </ul>
-          <a
-            href="#dat-lich-tu-van"
-            className="mt-8 inline-flex rounded-xl hc-btn-primary px-6 py-3 text-sm font-bold text-white"
-          >
-            {about.cta}
+          <a href="#dat-lich-tu-van" className="hc-cta-promo-banner mt-8">
+            <span className="hc-cta-promo-text">{about.cta}</span>
           </a>
         </div>
 
