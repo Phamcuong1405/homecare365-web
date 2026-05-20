@@ -1,3 +1,4 @@
+import { buildFullAddress, normalizeConsultationPayload } from "@/lib/consultation-form-utils";
 import {
   GOOGLE_SHEETS_WEB_APP_URL,
   type ConsultationSheetRow,
@@ -26,34 +27,33 @@ export type ConsultationPayload = {
   note: string;
 };
 
-function buildFullAddress(data: ConsultationPayload): string {
-  const parts = [
-    data.houseNumber && `Số nhà ${data.houseNumber}`,
-    data.alley && `Ngõ/Hẻm ${data.alley}`,
-    data.street && `Đường ${data.street}`,
-    data.ward && `Phường/Xã ${data.ward}`,
-    data.district && `Quận/Huyện ${data.district}`,
-  ].filter(Boolean);
-  return parts.join(", ");
-}
-
 function parseBody(body: unknown): ConsultationPayload | null {
   if (!body || typeof body !== "object") return null;
   const b = body as Record<string, unknown>;
-  const fullName = String(b.fullName ?? "").trim();
-  const phone = String(b.phone ?? "").trim();
-  const houseNumber = String(b.houseNumber ?? "").trim();
-  const alley = String(b.alley ?? "").trim();
-  const street = String(b.street ?? "").trim();
-  const ward = String(b.ward ?? "").trim();
-  const district = String(b.district ?? "").trim();
-  const note = String(b.note ?? "").trim();
 
-  if (!fullName || !phone || !houseNumber || !street || !ward || !district) {
+  const normalized = normalizeConsultationPayload({
+    fullName: String(b.fullName ?? "").trim(),
+    phone: String(b.phone ?? "").trim(),
+    houseNumber: String(b.houseNumber ?? "").trim(),
+    alley: String(b.alley ?? "").trim(),
+    street: String(b.street ?? "").trim(),
+    ward: String(b.ward ?? "").trim(),
+    district: String(b.district ?? "").trim(),
+    note: String(b.note ?? "").trim(),
+  });
+
+  if (
+    !normalized.fullName ||
+    !normalized.phone ||
+    !normalized.houseNumber ||
+    !normalized.street ||
+    !normalized.ward ||
+    !normalized.district
+  ) {
     return null;
   }
 
-  return { fullName, phone, houseNumber, alley, street, ward, district, note };
+  return normalized;
 }
 
 export async function POST(request: Request) {

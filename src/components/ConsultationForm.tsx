@@ -2,24 +2,40 @@
 
 import { FormEvent, useState } from "react";
 import type { ConsultationSheetRow } from "@/lib/consultation-sheet";
+import {
+  buildFullAddress,
+  getMissingFieldKeys,
+  getMissingFieldLabels,
+  normalizeConsultationPayload,
+  type ConsultationFieldKey,
+  type ConsultationFormPayload,
+} from "@/lib/consultation-form-utils";
 import { submitToGoogleSheetDirect } from "@/lib/submit-to-google-sheet";
 import { phoneTelHref, siteConfig } from "@/lib/site";
 
 const inputClass =
   "hc-input w-full rounded-lg border border-[var(--hc-card-border)] bg-white px-4 py-2.5 text-sm text-[var(--hc-text)] outline-none";
 
+const inputErrorClass =
+  "hc-input w-full rounded-lg border-2 border-red-400 bg-white px-4 py-2.5 text-sm text-[var(--hc-text)] outline-none";
+
 type FormStatus = "idle" | "loading" | "success" | "error";
 
-function buildSheetRow(payload: {
-  fullName: string;
-  phone: string;
-  houseNumber: string;
-  alley: string;
-  street: string;
-  ward: string;
-  district: string;
-  note: string;
-}): ConsultationSheetRow {
+function readPayload(form: HTMLFormElement): ConsultationFormPayload {
+  const data = new FormData(form);
+  return normalizeConsultationPayload({
+    fullName: String(data.get("name") ?? "").trim(),
+    phone: String(data.get("phone") ?? "").trim(),
+    houseNumber: String(data.get("houseNumber") ?? "").trim(),
+    alley: String(data.get("alley") ?? "").trim(),
+    street: String(data.get("street") ?? "").trim(),
+    ward: String(data.get("ward") ?? "").trim(),
+    district: String(data.get("district") ?? "").trim(),
+    note: String(data.get("note") ?? "").trim(),
+  });
+}
+
+function toSheetRow(payload: ConsultationFormPayload): ConsultationSheetRow {
   return {
     submittedAt: new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }),
     fullName: payload.fullName,
@@ -30,65 +46,73 @@ function buildSheetRow(payload: {
     ward: payload.ward,
     district: payload.district,
     note: payload.note,
-    fullAddress: [
-      payload.houseNumber && `Số nhà ${payload.houseNumber}`,
-      payload.alley && `Ngõ/Hẻm ${payload.alley}`,
-      payload.street && `Đường ${payload.street}`,
-      payload.ward && `Phường/Xã ${payload.ward}`,
-      payload.district && `Quận/Huyện ${payload.district}`,
-    ]
-      .filter(Boolean)
-      .join(", "),
+    fullAddress: buildFullAddress(payload),
   };
 }
 
 export function ConsultationForm() {
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [invalidFields, setInvalidFields] = useState<ConsultationFieldKey[]>([]);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
-    const data = new FormData(form);
+    const payload = readPayload(form);
+    const missingKeys = getMissingFieldKeys(payload);
 
-    const payload = {
-      fullName: String(data.get("name") ?? "").trim(),
-      phone: String(data.get("phone") ?? "").trim(),
-      houseNumber: String(data.get("houseNumber") ?? "").trim(),
-      alley: String(data.get("alley") ?? "").trim(),
-      street: String(data.get("street") ?? "").trim(),
-      ward: String(data.get("ward") ?? "").trim(),
-      district: String(data.get("district") ?? "").trim(),
-      note: String(data.get("note") ?? "").trim(),
-    };
-
-    if (!payload.fullName || !payload.phone || !payload.houseNumber || !payload.street || !payload.ward || !payload.district) {
+    if (missingKeys.length > 0) {
       setStatus("error");
-      setErrorMessage("Vui lòng điền đầy đủ các trường bắt buộc (*).");
+      setInvalidFields(missingKeys);
+      setErrorMessage(`Vui lòng điền: ${getMissingFieldLabels(missingKeys).join(", ")}.`);
       return;
     }
 
-    const sheetRow = buildSheetRow(payload);
-
+    setInvalidFields([]);
     setStatus("loading");
     setErrorMessage("");
 
-    try {
-      await submitToGoogleSheetDirect(sheetRow);
+    const sheetRow = toSheetRow(payload);
 
-      void fetch("/api/consultation", {
+    try {
+      const res = await fetch("/api/consultation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
-      }).catch(() => undefined);
+      });
 
-      setStatus("success");
-      form.reset();
-    } catch {
+      const result = (await res.json().catch(() => ({}))) as { error?: string };
+
+      if (res.ok) {
+        setStatus("success");
+        form.reset();
+        return;
+      }
+
+      await submitToGoogleSheetDirect(sheetRow);
+
+      if (res.status >= 500) {
+        setStatus("success");
+        form.reset();
+        return;
+      }
+
       setStatus("error");
-      setErrorMessage("Gửi thất bại. Vui lòng gọi hotline.");
+      setErrorMessage(result.error ?? "Gửi thất bại. Vui lòng thử lại hoặc gọi hotline.");
+    } catch {
+      try {
+        await submitToGoogleSheetDirect(sheetRow);
+        setStatus("success");
+        form.reset();
+      } catch {
+        setStatus("error");
+        setErrorMessage("Không kết nối được máy chủ. Vui lòng gọi hotline.");
+      }
     }
   }
+
+  const fieldClass = (key: ConsultationFieldKey) =>
+    invalidFields.includes(key) ? inputErrorClass : inputClass;
 
   return (
     <div className="hc-card rounded-3xl p-6">
@@ -115,8 +139,19 @@ export function ConsultationForm() {
       <form className="mt-5 space-y-4" onSubmit={onSubmit} noValidate>
         <fieldset className="space-y-3" disabled={status === "loading"}>
           <legend className="text-sm font-semibold text-[var(--hc-text)]">Thông tin liên hệ</legend>
-          <input type="text" name="name" placeholder="Họ và tên *" required className={inputClass} />
-          <input type="tel" name="phone" placeholder="Số điện thoại *" required className={inputClass} autoComplete="tel" />
+          <input
+            type="text"
+            name="name"
+            placeholder="Họ và tên *"
+            className={fieldClass("name")}
+          />
+          <input
+            type="tel"
+            name="phone"
+            placeholder="Số điện thoại *"
+            className={fieldClass("phone")}
+            autoComplete="tel"
+          />
         </fieldset>
 
         <fieldset className="space-y-3" disabled={status === "loading"}>
@@ -126,20 +161,33 @@ export function ConsultationForm() {
               type="text"
               name="houseNumber"
               placeholder="Số nhà *"
-              required
+              className={fieldClass("houseNumber")}
+            />
+            <input
+              type="text"
+              name="alley"
+              placeholder="Ngõ / Hẻm (nếu có)"
               className={inputClass}
             />
-            <input type="text" name="alley" placeholder="Ngõ / Hẻm" className={inputClass} />
           </div>
-          <input type="text" name="street" placeholder="Tên đường *" required className={inputClass} />
+          <input
+            type="text"
+            name="street"
+            placeholder="Tên đường * (hoặc điền ở Ngõ/Hẻm phía trên)"
+            className={fieldClass("street")}
+          />
           <div className="grid gap-3 sm:grid-cols-2">
-            <input type="text" name="ward" placeholder="Phường / Xã *" required className={inputClass} />
+            <input
+              type="text"
+              name="ward"
+              placeholder="Phường / Xã *"
+              className={fieldClass("ward")}
+            />
             <input
               type="text"
               name="district"
               placeholder="Quận / Huyện *"
-              required
-              className={inputClass}
+              className={fieldClass("district")}
             />
           </div>
         </fieldset>
