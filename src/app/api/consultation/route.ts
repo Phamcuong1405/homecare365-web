@@ -2,6 +2,15 @@ import type { ConsultationSheetRow } from "@/lib/consultation-sheet";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
+export const maxDuration = 30;
+
+function getWebhookUrl(): string | null {
+  const raw = process.env.GOOGLE_SHEETS_WEB_APP_URL?.trim().replace(/^['"]|['"]$/g, "");
+  if (!raw?.startsWith("https://script.google.com/macros/s/") || !raw.endsWith("/exec")) {
+    return null;
+  }
+  return raw;
+}
 
 export type ConsultationPayload = {
   fullName: string;
@@ -45,7 +54,7 @@ function parseBody(body: unknown): ConsultationPayload | null {
 }
 
 export async function POST(request: Request) {
-  const webhookUrl = process.env.GOOGLE_SHEETS_WEB_APP_URL?.trim();
+  const webhookUrl = getWebhookUrl();
   if (!webhookUrl) {
     return NextResponse.json(
       { error: "Hệ thống chưa kết nối Google Sheet. Vui lòng liên hệ quản trị viên." },
@@ -82,13 +91,19 @@ export async function POST(request: Request) {
   };
 
   try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 20000);
+
     const upstream = await fetch(webhookUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(sheetRow),
       cache: "no-store",
       redirect: "follow",
+      signal: controller.signal,
     });
+
+    clearTimeout(timeout);
 
     const text = await upstream.text();
 

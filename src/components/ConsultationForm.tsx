@@ -1,6 +1,11 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import type { ConsultationSheetRow } from "@/lib/consultation-sheet";
+import {
+  getPublicSheetWebhookUrl,
+  submitToGoogleSheetDirect,
+} from "@/lib/submit-to-google-sheet";
 import { phoneTelHref, siteConfig } from "@/lib/site";
 
 const inputClass =
@@ -28,8 +33,31 @@ export function ConsultationForm() {
       note: String(data.get("note") ?? "").trim(),
     };
 
+    const sheetRow: ConsultationSheetRow = {
+      submittedAt: new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }),
+      fullName: payload.fullName,
+      phone: payload.phone,
+      houseNumber: payload.houseNumber,
+      alley: payload.alley,
+      street: payload.street,
+      ward: payload.ward,
+      district: payload.district,
+      note: payload.note,
+      fullAddress: [
+        payload.houseNumber && `Số nhà ${payload.houseNumber}`,
+        payload.alley && `Ngõ/Hẻm ${payload.alley}`,
+        payload.street && `Đường ${payload.street}`,
+        payload.ward && `Phường/Xã ${payload.ward}`,
+        payload.district && `Quận/Huyện ${payload.district}`,
+      ]
+        .filter(Boolean)
+        .join(", "),
+    };
+
     setStatus("loading");
     setErrorMessage("");
+
+    const directUrl = getPublicSheetWebhookUrl();
 
     try {
       const res = await fetch("/api/consultation", {
@@ -40,19 +68,32 @@ export function ConsultationForm() {
 
       const result = (await res.json().catch(() => ({}))) as { error?: string };
 
-      if (!res.ok) {
-        setStatus("error");
-        setErrorMessage(
-          res.status === 503
-            ? "Hệ thống đang cập nhật. Vui lòng gọi hotline hoặc thử lại sau vài phút."
-            : (result.error ?? "Gửi thất bại. Vui lòng thử lại."),
-        );
+      if (res.ok) {
+        setStatus("success");
+        form.reset();
         return;
       }
 
-      setStatus("success");
-      form.reset();
+      if (directUrl) {
+        submitToGoogleSheetDirect(directUrl, sheetRow);
+        setStatus("success");
+        form.reset();
+        return;
+      }
+
+      setStatus("error");
+      setErrorMessage(
+        res.status === 503
+          ? "Hệ thống đang cập nhật. Vui lòng gọi hotline hoặc thử lại sau vài phút."
+          : (result.error ?? "Gửi thất bại. Vui lòng thử lại."),
+      );
     } catch {
+      if (directUrl) {
+        submitToGoogleSheetDirect(directUrl, sheetRow);
+        setStatus("success");
+        form.reset();
+        return;
+      }
       setStatus("error");
       setErrorMessage("Không kết nối được máy chủ. Kiểm tra mạng và thử lại.");
     }
@@ -80,7 +121,7 @@ export function ConsultationForm() {
         </p>
       ) : null}
 
-      <form className="mt-5 space-y-4" onSubmit={onSubmit}>
+      <form className="mt-5 space-y-4" onSubmit={onSubmit} noValidate>
         <fieldset className="space-y-3" disabled={status === "loading"}>
           <legend className="text-sm font-semibold text-[var(--hc-text)]">Thông tin liên hệ</legend>
           <input type="text" name="name" placeholder="Họ và tên *" required className={inputClass} />

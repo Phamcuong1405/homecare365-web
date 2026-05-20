@@ -98,7 +98,12 @@ function doGet() {
 
 function doPost(e) {
   try {
-    var raw = e && e.postData && e.postData.contents ? e.postData.contents : "{}";
+    var raw = "{}";
+    if (e && e.postData && e.postData.contents) {
+      raw = e.postData.contents;
+    } else if (e && e.parameter && e.parameter.payload) {
+      raw = e.parameter.payload;
+    }
     var data = JSON.parse(raw);
     appendRow_(data);
     return jsonResponse_({ ok: true });
