@@ -96,15 +96,29 @@ function doGet() {
   });
 }
 
+function parseIncoming_(e) {
+  if (e && e.parameter && e.parameter.payload) {
+    return JSON.parse(e.parameter.payload);
+  }
+  if (!e || !e.postData || !e.postData.contents) {
+    return {};
+  }
+  var raw = e.postData.contents;
+  if (e.postData.type === "application/x-www-form-urlencoded") {
+    var pairs = raw.split("&");
+    for (var i = 0; i < pairs.length; i++) {
+      var kv = pairs[i].split("=");
+      if (decodeURIComponent(kv[0]) === "payload" && kv[1]) {
+        return JSON.parse(decodeURIComponent(kv[1].replace(/\+/g, " ")));
+      }
+    }
+  }
+  return JSON.parse(raw);
+}
+
 function doPost(e) {
   try {
-    var raw = "{}";
-    if (e && e.postData && e.postData.contents) {
-      raw = e.postData.contents;
-    } else if (e && e.parameter && e.parameter.payload) {
-      raw = e.parameter.payload;
-    }
-    var data = JSON.parse(raw);
+    var data = parseIncoming_(e);
     appendRow_(data);
     return jsonResponse_({ ok: true });
   } catch (err) {

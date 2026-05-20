@@ -74,7 +74,7 @@ export function ConsultationForm() {
     setErrorMessage("");
 
     try {
-      submitToGoogleSheetDirect(sheetRow);
+      await submitToGoogleSheetDirect(sheetRow);
 
       void fetch("/api/consultation", {
         method: "POST",

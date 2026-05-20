@@ -3,38 +3,20 @@ import {
   type ConsultationSheetRow,
 } from "@/lib/consultation-sheet";
 
-/** Gửi qua form ẩn — không mở email, không bắt đăng nhập Google */
-export function submitToGoogleSheetDirect(
+/**
+ * Gửi thẳng tới Apps Script (JSON POST, no-cors).
+ * Không mở email / không bắt đăng nhập — khách chỉ thấy thông báo thành công trên web.
+ */
+export async function submitToGoogleSheetDirect(
   row: ConsultationSheetRow,
   webAppUrl: string = GOOGLE_SHEETS_WEB_APP_URL,
-): void {
-  const frameName = `hc-sheet-${Date.now()}`;
-  const iframe = document.createElement("iframe");
-  iframe.name = frameName;
-  iframe.style.display = "none";
-  iframe.setAttribute("aria-hidden", "true");
-  document.body.appendChild(iframe);
-
-  const form = document.createElement("form");
-  form.method = "POST";
-  form.action = webAppUrl;
-  form.target = frameName;
-  form.style.display = "none";
-  form.setAttribute("accept-charset", "UTF-8");
-
-  const input = document.createElement("input");
-  input.type = "hidden";
-  input.name = "payload";
-  input.value = JSON.stringify(row);
-  form.appendChild(input);
-
-  document.body.appendChild(form);
-  form.submit();
-
-  window.setTimeout(() => {
-    form.remove();
-    iframe.remove();
-  }, 4000);
+): Promise<void> {
+  await fetch(webAppUrl, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(row),
+  });
 }
 
 export function getSheetWebhookUrl(): string {
