@@ -7,14 +7,14 @@ export function HeaderBrand() {
   const name = siteConfig.name;
 
   return (
-    <Link href="/" className="flex min-w-0 max-w-[min(100%,520px)] items-center gap-3 sm:gap-4">
+    <Link href="/" className="flex min-w-0 flex-1 items-center gap-3 sm:gap-4 lg:max-w-[78%]">
       <BrandLogo variant="header" />
-      <p className="hc-header-motto hidden min-w-0 sm:block">
+      <p className="hc-header-motto hidden min-w-0 md:block">
         {motto.split(name).map((part, i, arr) =>
           i < arr.length - 1 ? (
             <span key={i}>
               {part}
-              <span className="font-bold text-[var(--hc-brand-green)]">{name}</span>
+              <span className="hc-motto-brand">{name}</span>
             </span>
           ) : (
             <span key={i}>{part}</span>
