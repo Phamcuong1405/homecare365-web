@@ -82,6 +82,10 @@ export const siteConfig = {
   servicesSection: {
     title: "Dịch vụ phù hợp cho mọi gia đình",
     subtitle: "Giải pháp dọn dẹp & vệ sinh linh hoạt theo nhu cầu của bạn.",
+    consultCta: {
+      label: "Liên hệ tư vấn ngay",
+      href: "#dat-lich-tu-van",
+    },
     items: [
       {
         icon: "🧹",

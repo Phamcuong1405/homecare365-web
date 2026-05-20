@@ -358,6 +358,55 @@ body {
   }
 }
 
+/* Nút gradient trong khung viền (như hero CTA chính) */
+.hc-btn-outer-frame {
+  display: inline-flex;
+  padding: 4px;
+  border-radius: 0.875rem;
+  border: 1.5px solid rgba(0, 30, 70, 0.42);
+  background: color-mix(in srgb, var(--hc-deep-dark) 18%, transparent);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.14),
+    inset 0 1px 3px rgba(0, 0, 0, 0.18);
+}
+
+.hc-btn-framed-gradient {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.35rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #ffffff;
+  text-decoration: none;
+  white-space: nowrap;
+  background: var(--hc-gradient-brand);
+  border: 1.5px solid rgba(0, 25, 55, 0.55);
+  box-shadow:
+    0 4px 14px rgba(0, 86, 179, 0.28),
+    0 2px 8px rgba(76, 175, 80, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.hc-btn-framed-gradient:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+  box-shadow:
+    0 6px 22px rgba(0, 86, 179, 0.35),
+    0 4px 14px rgba(76, 175, 80, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.hc-btn-outer-frame:hover {
+  border-color: rgba(0, 86, 179, 0.55);
+}
+
 /* Nút phụ */
 .hc-btn-secondary {
   background: var(--hc-card);
