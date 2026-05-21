@@ -8,7 +8,7 @@ import { homedir } from "node:os";
 
 const SCRIPT_ID = "1_lj5DMji92EOynZitTdrT1sSovzwyNMKWHjxJiexYTkqtZhjr_vFkJvs";
 const NEW_DEPLOYMENT_ID =
-  "AKfycbyPbkhEVW-5Mt4Dsn7WgCb-g9GySGlyYBoPdU5hJp54Zbot2MQq0owHa1q53mWMSMKkEg";
+  "AKfycbzhNkAT1_7UkqRWjRbSvAbm9aAbcBdt-7Mqc04ySvB6MzL05M2rnerIro1y3d6aAzGqqA";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
 const clasprc = JSON.parse(readFileSync(join(homedir(), ".clasprc.json"), "utf8"));

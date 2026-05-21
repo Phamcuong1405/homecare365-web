@@ -6,7 +6,7 @@ export const GOOGLE_SHEET_ID = "1G84ZEO31bvWJGxdaaQHSGcF_z0SGTvWuOL3zVpw1Kg8";
 
 /** Web App Deploy (Execute as: Me, Who has access: Anyone) */
 export const GOOGLE_SHEETS_WEB_APP_URL =
-  "https://script.google.com/macros/s/AKfycbyPbkhEVW-5Mt4Dsn7WgCb-g9GySGlyYBoPdU5hJp54Zbot2MQq0owHa1q53mWMSMKkEg/exec";
+  "https://script.google.com/macros/s/AKfycbzhNkAT1_7UkqRWjRbSvAbm9aAbcBdt-7Mqc04ySvB6MzL05M2rnerIro1y3d6aAzGqqA/exec";
 
 export const CONSULTATION_SHEET_HEADERS = [
   "Thời gian",

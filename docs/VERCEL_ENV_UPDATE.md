@@ -6,7 +6,7 @@ Form website production lấy URL từ biến môi trường Vercel.
 
 | Tên | Giá trị mới |
 |-----|-------------|
-| `GOOGLE_SHEETS_WEB_APP_URL` | `https://script.google.com/macros/s/AKfycbyPbkhEVW-5Mt4Dsn7WgCb-g9GySGlyYBoPdU5hJp54Zbot2MQq0owHa1q53mWMSMKkEg/exec` |
+| `GOOGLE_SHEETS_WEB_APP_URL` | `https://script.google.com/macros/s/AKfycbzhNkAT1_7UkqRWjRbSvAbm9aAbcBdt-7Mqc04ySvB6MzL05M2rnerIro1y3d6aAzGqqA/exec` |
 | `NEXT_PUBLIC_GOOGLE_SHEETS_WEB_APP_URL` | (cùng URL trên) |
 
 ## Các bước

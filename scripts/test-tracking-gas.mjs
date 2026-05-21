@@ -5,7 +5,7 @@
 const url =
   process.argv[2] ??
   process.env.GOOGLE_SHEETS_WEB_APP_URL ??
-  "https://script.google.com/macros/s/AKfycbyPbkhEVW-5Mt4Dsn7WgCb-g9GySGlyYBoPdU5hJp54Zbot2MQq0owHa1q53mWMSMKkEg/exec";
+  "https://script.google.com/macros/s/AKfycbzhNkAT1_7UkqRWjRbSvAbm9aAbcBdt-7Mqc04ySvB6MzL05M2rnerIro1y3d6aAzGqqA/exec";
 
 const testUrl = `${url.replace(/\/$/, "")}?action=trackingGet&jobId=HC-DEMO01`;
 console.log(`GET ${testUrl}\n`);

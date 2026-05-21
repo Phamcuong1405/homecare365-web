@@ -28,7 +28,7 @@ TAB 2 - Apps Script:
 VERCEL (bat buoc):
 Settings -> Environment Variables
 GOOGLE_SHEETS_WEB_APP_URL =
-https://script.google.com/macros/s/AKfycbyPbkhEVW-5Mt4Dsn7WgCb-g9GySGlyYBoPdU5hJp54Zbot2MQq0owHa1q53mWMSMKkEg/exec
+https://script.google.com/macros/s/AKfycbzhNkAT1_7UkqRWjRbSvAbm9aAbcBdt-7Mqc04ySvB6MzL05M2rnerIro1y3d6aAzGqqA/exec
 
 Redeploy Production
 
