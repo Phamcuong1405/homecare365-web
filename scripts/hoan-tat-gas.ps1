@@ -5,9 +5,10 @@ $codePath = Join-Path $root "scripts\google-sheet-consultation.gs"
 Get-Content $codePath -Raw | Set-Clipboard
 Write-Host "DA COPY Code.gs vao clipboard!" -ForegroundColor Green
 
-Start-Process "https://script.google.com/home/projects/1_lj5DMji92EOynZitTdrT1sSovzwyNMKWHjxJiexYTkqtZhjr_vFkJvs/edit"
+# Mo Sheet (cach chac chan) — Extensions → Apps Script
+Start-Process "https://docs.google.com/spreadsheets/d/1G84ZEO31bvWJGxdaaQHSGcF_z0SGTvWuOL3zVpw1Kg8/edit"
 Start-Sleep -Seconds 2
-Start-Process "https://script.google.com/home/deployments?project=1_lj5DMji92EOynZitTdrT1sSovzwyNMKWHjxJiexYTkqtZhjr_vFkJvs"
+Start-Process "https://script.google.com/home/projects/1_lj5DMji92EOynZitTdrT1sSovzwyNMKWHjxJiexYTkqtZhjr_vFkJvs/edit"
 
 Add-Type -AssemblyName System.Windows.Forms
 [System.Windows.Forms.MessageBox]::Show(
@@ -15,11 +16,14 @@ Add-Type -AssemblyName System.Windows.Forms
 
 DA COPY CODE VAO CLIPBOARD!
 
-Trong Apps Script (tab vua mo):
+TAB 1 - Sheet: Tien ich mo rong → Apps Script
+   (neu khong thay menu, dung TAB 2)
+
+TAB 2 - Apps Script:
 1. Code.gs -> Ctrl+A -> Ctrl+V -> Save
 2. Ham: setupTrackingSheet -> Run -> Allow
-3. Deploy -> Manage deployments -> Edit (web app)
-   -> New version -> Deploy
+3. Nut Deploy (goc phai) -> Manage deployments
+   -> Edit web app -> New version -> Deploy
 
 VERCEL (bat buoc):
 Settings -> Environment Variables
