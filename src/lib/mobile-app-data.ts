@@ -80,6 +80,12 @@ export const quickServices = [
     desc: "Loại bỏ bụi bẩn và mùi khó chịu trên sofa.",
     priceFrom: "Từ 350k",
     videoSrc: WEB_VIDEOS.fabric,
+    jobTasksLabel: "Ghi chú công việc",
+    jobTasks: [
+      "Giặt lại toàn bộ sofa hiện có trong phòng khách hoặc những vật dụng tương tự trong nhà",
+      "Giặt xong bố trí sắp đặt theo phương án của chủ nhà",
+      "Lau dọn toàn bộ khu vực phòng khách để hoàn thành công việc",
+    ],
   },
   {
     id: "mattress",
