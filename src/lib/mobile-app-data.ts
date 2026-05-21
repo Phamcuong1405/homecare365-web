@@ -152,6 +152,12 @@ export const quickServices = [
     desc: siteConfig.servicesSection.items[5].desc,
     priceFrom: "Ưu đãi",
     videoSrc: WEB_VIDEOS.recurring,
+    jobTasksLabel: "Ghi chú công việc",
+    jobTasks: [
+      "Định kỳ triển khai các công việc cụ thể theo thời gian khách hàng chỉ định theo ngày, tuần, tháng",
+      "Kiểm tra tình trạng của các thiết bị sử dụng điện trong nhà, đảm bảo hoạt động hoặc hư hại trực tiếp thông báo tới khách hàng",
+      "Nếu khách hàng ở xa hoặc đang đi công tác cần triển khai thêm công việc sẽ nắm bắt tình hình và đưa ra phương án thực thi",
+    ],
   },
 ] as const;
 
