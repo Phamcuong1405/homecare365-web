@@ -11,7 +11,12 @@
     "brand:optimize": "node scripts/optimize-brand-logo.mjs",
     "brand:sync": "node scripts/sync-brand-logo.mjs",
     "videos:sync": "node scripts/sync-service-videos.mjs",
-    "test:consultation": "node scripts/test-consultation-submit.mjs"
+    "test:consultation": "node scripts/test-consultation-submit.mjs",
+    "mobile:check": "npm run check --prefix mobile",
+    "mobile:sync": "npm run sync --prefix mobile",
+    "mobile:icons": "npm run icons --prefix mobile",
+    "mobile:android": "npm run build:android:debug --prefix mobile",
+    "mobile:open:android": "npm run open:android --prefix mobile"
   },
   "dependencies": {
     "ffmpeg-static": "^5.3.0",

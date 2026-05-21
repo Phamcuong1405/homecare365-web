@@ -1,0 +1,39 @@
+{
+  "name": "homecare365-mobile",
+  "version": "1.0.0",
+  "private": true,
+  "description": "HomeCare365 — Android & iOS (Capacitor)",
+  "scripts": {
+    "check": "node scripts/check.mjs",
+    "icons": "node scripts/generate-icons.mjs",
+    "assets": "npx @capacitor/assets generate --iconBackgroundColor \"#0047ab\" --splashBackgroundColor \"#0047ab\"",
+    "sync": "npm run check && npm run icons && npm run assets && npx cap sync",
+    "sync:android": "npm run sync && npx cap sync android",
+    "sync:ios": "npm run sync && npx cap sync ios",
+    "open:android": "npx cap open android",
+    "open:ios": "npx cap open ios",
+    "build:android:debug": "npm run sync:android && cd android && gradlew.bat assembleDebug",
+    "build:android:release": "npm run sync:android && cd android && gradlew.bat assembleRelease",
+    "build:ios": "npm run sync:ios && echo Build iOS on macOS: npx cap open ios"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.2.0",
+    "@capacitor/app": "^7.0.1",
+    "@capacitor/core": "^7.2.0",
+    "@capacitor/ios": "^7.2.0",
+    "@capacitor/splash-screen": "^7.0.1",
+    "@capacitor/status-bar": "^7.0.1"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^7.2.0",
+    "sharp": "^0.34.5",
+    "typescript": "^5.8.2"
+  },
+  "capacitor": {
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  }
+}

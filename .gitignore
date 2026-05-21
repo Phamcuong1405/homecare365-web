@@ -50,3 +50,15 @@ public/brand/homecare365-logo-source.png
 next-env.d.ts
 
 .vercel
+
+# mobile (Capacitor)
+mobile/node_modules
+mobile/android/.gradle
+mobile/android/app/build
+mobile/android/build
+mobile/android/local.properties
+mobile/android/keystore.properties
+mobile/ios/App/Pods
+mobile/ios/DerivedData
+*.keystore
+mobile/build/
