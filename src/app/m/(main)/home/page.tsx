@@ -97,7 +97,9 @@ export default function MobileHomePage() {
             {"jobTasks" in selected && selected.jobTasks?.length ? (
               <div className="m-card mt-3 p-3">
                 <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--m-trust)]">
-                  Mô tả công việc
+                  {"jobTasksLabel" in selected && selected.jobTasksLabel
+                    ? selected.jobTasksLabel
+                    : "Mô tả công việc"}
                 </p>
                 <ul className="mt-2 space-y-1.5 text-xs text-[var(--m-text)]">
                   {selected.jobTasks.map((task) => (

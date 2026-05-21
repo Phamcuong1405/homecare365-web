@@ -53,6 +53,11 @@ export const quickServices = [
     desc: siteConfig.servicesSection.items[0].desc,
     priceFrom: "120.000đ/giờ",
     videoSrc: WEB_VIDEOS.hourly,
+    jobTasksLabel: "Ghi chú công việc",
+    jobTasks: [
+      "Dọn dẹp nhà theo giờ theo công việc được khách hàng giao trong khoảng thời gian khách yêu cầu",
+      "Sau khi thống nhất nội dung sẽ lên phương án triển khai công việc",
+    ],
   },
   {
     id: "deep",

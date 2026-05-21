@@ -46,7 +46,11 @@ export default function ServiceDetailPage() {
         </div>
 
         <h2 className="mt-6 text-sm font-bold">
-          {"jobTasks" in service && service.jobTasks ? "Mô tả công việc" : "Bao gồm"}
+          {"jobTasks" in service && service.jobTasks
+            ? "jobTasksLabel" in service && service.jobTasksLabel
+              ? service.jobTasksLabel
+              : "Mô tả công việc"
+            : "Bao gồm"}
         </h2>
         <ul className="m-card mt-2 space-y-2 p-4 text-sm">
           {service.includes.map((item) => (
