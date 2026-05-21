@@ -3,8 +3,8 @@
 import Link from "next/link";
 
 const mockBookings = [
-  { id: "1", service: "Dọn nhà theo giờ", date: "22/05/2026 09:00", status: "Đang xử lý" },
-  { id: "2", service: "Tổng vệ sinh", date: "15/05/2026 14:00", status: "Hoàn thành" },
+  { id: "HC-DEMO01", service: "Dọn nhà theo giờ", date: "22/05/2026 09:00", status: "Đang xử lý" },
+  { id: "HC-DEMO02", service: "Tổng vệ sinh", date: "15/05/2026 14:00", status: "Hoàn thành" },
 ];
 
 export default function BookingsPage() {
@@ -16,7 +16,7 @@ export default function BookingsPage() {
       </Link>
       <div className="mt-6 space-y-3">
         {mockBookings.map((b) => (
-          <Link key={b.id} href="/m/tracking" className="m-card block p-4">
+          <Link key={b.id} href={`/m/tracking?job=${encodeURIComponent(b.id)}`} className="m-card block p-4">
             <p className="font-semibold">{b.service}</p>
             <p className="mt-1 text-xs text-[var(--m-muted)]">{b.date}</p>
             <span className="mt-2 inline-block rounded-full bg-[var(--m-primary)]/15 px-2 py-0.5 text-xs font-medium text-[var(--m-primary-dark)]">

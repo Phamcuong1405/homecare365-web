@@ -13,6 +13,8 @@ const routes = [
   "/m/book",
   "/m/membership",
   "/m/tracking",
+  "/m/staff/track",
+  "/api/tracking/HC-DEMO01",
 ];
 
 let pass = 0;

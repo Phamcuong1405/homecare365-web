@@ -3,7 +3,10 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, Suspense, useState } from "react";
+import { buildFullAddress } from "@/lib/consultation-form-utils";
 import { getQuickServiceById, quickServices } from "@/lib/mobile-app-data";
+import { postTrackingUpdate } from "@/lib/tracking-client";
+import { generateJobId } from "@/lib/tracking-utils";
 import { submitConsultation } from "@/lib/submit-consultation";
 
 const steps = ["Dịch vụ", "Thời gian", "Xác nhận"];
@@ -57,6 +60,19 @@ function MobileBookContent() {
     e.preventDefault();
     setLoading(true);
     setError("");
+    const fullAddress = buildFullAddress({
+      fullName: name,
+      phone,
+      houseNumber,
+      alley: "",
+      street,
+      ward,
+      district,
+      city,
+      note: "",
+    });
+    const jobId = generateJobId();
+
     const result = await submitConsultation({
       fullName: name,
       phone,
@@ -66,14 +82,25 @@ function MobileBookContent() {
       ward,
       district,
       city,
-      note: `[APP] ${serviceTitles || "—"} | ${area}m² | ${date} ${time}`,
+      note: `[APP] ${jobId} | ${serviceTitles || "—"} | ${area}m² | ${date} ${time}`,
     });
-    setLoading(false);
+
     if (result.ok) {
-      router.push("/m/tracking?new=1");
-    } else {
-      setError(result.message);
+      await postTrackingUpdate(jobId, {
+        action: "trackingStart",
+        destAddress: fullAddress,
+        staffName: "Nhân viên HomeCare365",
+        sharing: false,
+        status: "waiting",
+      });
+      localStorage.setItem("hc365_active_job", jobId);
+      setLoading(false);
+      router.push(`/m/tracking?job=${encodeURIComponent(jobId)}&new=1`);
+      return;
     }
+
+    setLoading(false);
+    setError(result.message);
   }
 
   return (

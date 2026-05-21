@@ -14,6 +14,7 @@
 var SPREADSHEET_ID = "1G84ZEO31bvWJGxdaaQHSGcF_z0SGTvWuOL3zVpw1Kg8";
 var SHEET_GID = 0;
 var SHEET_TAB_NAME = "Khách hàng";
+var TRACKING_TAB_NAME = "Theo_doi";
 
 var HEADERS = [
   "Thời gian",
@@ -88,7 +89,112 @@ function jsonResponse_(payload) {
   );
 }
 
-function doGet() {
+function getTrackingSheet_() {
+  var ss = getSpreadsheet_();
+  var sheet = ss.getSheetByName(TRACKING_TAB_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(TRACKING_TAB_NAME);
+    sheet.appendRow([
+      "jobId",
+      "status",
+      "staffName",
+      "sharing",
+      "staffLat",
+      "staffLng",
+      "destLat",
+      "destLng",
+      "destAddress",
+      "pathJson",
+      "updatedAt",
+    ]);
+    sheet.getRange(1, 1, 1, 11).setFontWeight("bold").setBackground("#4caf50").setFontColor("#ffffff");
+  }
+  return sheet;
+}
+
+function trackingGet_(jobId) {
+  var sheet = getTrackingSheet_();
+  var data = sheet.getDataRange().getValues();
+  for (var i = 1; i < data.length; i++) {
+    if (String(data[i][0]) === String(jobId)) {
+      var pathJson = data[i][9] || "[]";
+      var path = [];
+      try {
+        path = JSON.parse(pathJson);
+      } catch (e) {
+        path = [];
+      }
+      return jsonResponse_({
+        ok: true,
+        session: {
+          jobId: String(data[i][0]),
+          status: String(data[i][1] || "waiting"),
+          staffName: String(data[i][2] || "Nhân viên HomeCare365"),
+          sharing: data[i][3] === true || data[i][3] === "TRUE",
+          staffLat: Number(data[i][4]) || 21.02,
+          staffLng: Number(data[i][5]) || 105.82,
+          destLat: Number(data[i][6]) || 21.0285,
+          destLng: Number(data[i][7]) || 105.8542,
+          destAddress: String(data[i][8] || ""),
+          path: path,
+          updatedAt: Number(data[i][10]) || Date.now(),
+        },
+      });
+    }
+  }
+  return jsonResponse_({ ok: false, error: "not_found" });
+}
+
+function trackingUpsert_(data) {
+  var sheet = getTrackingSheet_();
+  var rows = sheet.getDataRange().getValues();
+  var rowIndex = -1;
+  for (var i = 1; i < rows.length; i++) {
+    if (String(rows[i][0]) === String(data.jobId)) {
+      rowIndex = i + 1;
+      break;
+    }
+  }
+
+  var existing = rowIndex > 0 ? rows[rowIndex - 1] : null;
+  var path = [];
+  if (existing && existing[9]) {
+    try {
+      path = JSON.parse(existing[9]);
+    } catch (e2) {
+      path = [];
+    }
+  }
+  if (data.pathJson) {
+    path = JSON.parse(data.pathJson);
+  }
+
+  var row = [
+    data.jobId,
+    data.status || "waiting",
+    data.staffName || "Nhân viên HomeCare365",
+    data.sharing === true,
+    Number(data.staffLat) || 21.02,
+    Number(data.staffLng) || 105.82,
+    Number(data.destLat) || 21.0285,
+    Number(data.destLng) || 105.8542,
+    data.destAddress || "",
+    JSON.stringify(path),
+    data.updatedAt || Date.now(),
+  ];
+
+  if (rowIndex > 0) {
+    sheet.getRange(rowIndex, 1, 1, 11).setValues([row]);
+  } else {
+    sheet.appendRow(row);
+  }
+  return jsonResponse_({ ok: true });
+}
+
+function doGet(e) {
+  if (e && e.parameter && e.parameter.action === "trackingGet" && e.parameter.jobId) {
+    return trackingGet_(e.parameter.jobId);
+  }
   return jsonResponse_({
     ok: true,
     message: "HomeCare365 consultation webhook",
@@ -120,6 +226,21 @@ function parseIncoming_(e) {
 function doPost(e) {
   try {
     var data = parseIncoming_(e);
+    if (data.action === "trackingStart" || data.action === "trackingUpdate" || data.action === "trackingStop") {
+      return trackingUpsert_({
+        jobId: data.jobId,
+        status: data.status,
+        staffName: data.staffName,
+        sharing: data.sharing,
+        staffLat: data.staffLat,
+        staffLng: data.staffLng,
+        destLat: data.destLat,
+        destLng: data.destLng,
+        destAddress: data.destAddress,
+        pathJson: data.pathJson,
+        updatedAt: data.updatedAt || Date.now(),
+      });
+    }
     appendRow_(data);
     return jsonResponse_({ ok: true });
   } catch (err) {
