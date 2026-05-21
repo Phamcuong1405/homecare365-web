@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from "@capacitor/cli";
 
 /** URL production — app native load web đã deploy (form, API hoạt động đầy đủ) */
-const APP_URL = process.env.HOMECARE365_APP_URL ?? "https://www.homecare365.vn";
+const APP_URL = process.env.HOMECARE365_APP_URL ?? "https://www.homecare365.vn/m/splash";
 
 const config: CapacitorConfig = {
   appId: "vn.homecare365.app",

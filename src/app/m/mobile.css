@@ -1,0 +1,61 @@
+/* HomeCare365 Mobile App — Grab/Airbnb-style shell */
+.m-app {
+  --m-primary: #4caf50;
+  --m-primary-dark: #3d9a42;
+  --m-trust: #0047ab;
+  --m-warm: #fff8e1;
+  --m-warm-accent: #f9a825;
+  --m-bg: #f5f7f5;
+  --m-card: #ffffff;
+  --m-text: #1a2e1a;
+  --m-muted: #5a6f5a;
+  --m-radius: 16px;
+  --m-radius-lg: 24px;
+  --m-shadow: 0 4px 24px rgba(0, 71, 171, 0.08);
+  --m-safe-b: env(safe-area-inset-bottom, 0px);
+  min-height: 100dvh;
+  background: var(--m-bg);
+  color: var(--m-text);
+  font-family: var(--font-sans), "Inter", system-ui, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.m-glass {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.m-card {
+  background: var(--m-card);
+  border-radius: var(--m-radius);
+  box-shadow: var(--m-shadow);
+}
+
+.m-btn-primary {
+  background: linear-gradient(135deg, var(--m-primary) 0%, var(--m-primary-dark) 100%);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(76, 175, 80, 0.35);
+}
+
+.m-btn-trust {
+  background: linear-gradient(135deg, var(--m-trust) 0%, #0066cc 100%);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 14px;
+}
+
+.m-input {
+  width: 100%;
+  border: 1px solid rgba(0, 71, 171, 0.12);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 16px;
+  background: #fff;
+}
+
+.m-tab-bar {
+  padding-bottom: calc(8px + var(--m-safe-b));
+}

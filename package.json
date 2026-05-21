@@ -17,6 +17,7 @@
     "mobile:icons": "npm run icons --prefix mobile",
     "mobile:android": "npm run test:android --prefix mobile",
     "mobile:setup": "npm run setup:android --prefix mobile",
+    "test:mobile": "node scripts/test-mobile-app.mjs",
     "mobile:open:android": "npm run open:android --prefix mobile"
   },
   "dependencies": {
