@@ -1,0 +1,5 @@
+mobile/.tools
+.next
+node_modules
+mobile/node_modules
+data
