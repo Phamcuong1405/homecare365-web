@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { MobileServiceVideoPlayer } from "@/components/mobile/MobileServiceVideoPlayer";
 import { getServiceById } from "@/lib/mobile-app-data";
 
 export default function ServiceDetailPage() {
@@ -21,15 +22,21 @@ export default function ServiceDetailPage() {
 
   return (
     <div className="min-h-dvh bg-[var(--m-bg)] pb-28">
-      <div className="relative h-48 bg-gradient-to-br from-[var(--m-primary)] to-[var(--m-trust)]">
-        <Link href="/m/home" className="absolute left-4 top-12 rounded-full bg-white/90 px-3 py-1 text-sm">
-          ←
+      <div className="relative bg-gradient-to-br from-[var(--m-primary)] to-[var(--m-trust)] px-4 pb-4 pt-12">
+        <Link href="/m/home" className="inline-block rounded-full bg-white/90 px-3 py-1 text-sm">
+          ← Trang chủ
         </Link>
-        <span className="absolute bottom-6 left-6 text-6xl">{service.icon}</span>
+        <h1 className="mt-4 text-xl font-bold text-white">
+          {service.icon} {service.title}
+        </h1>
       </div>
 
       <div className="px-4">
-        <h1 className="mt-4 text-xl font-bold">{service.title}</h1>
+        {"videoSrc" in service && service.videoSrc ? (
+          <div className="-mt-2">
+            <MobileServiceVideoPlayer videoSrc={service.videoSrc} title={service.title} showClose={false} />
+          </div>
+        ) : null}
         <p className="mt-2 text-sm text-[var(--m-muted)]">{service.desc}</p>
 
         <div className="m-card mt-4 p-4">

@@ -33,16 +33,88 @@ export const trustStats = [
   { value: "BH", label: "Bảo hiểm TS" },
 ] as const;
 
+/** Video lấy từ web — siteConfig.servicesSection.items */
+const WEB_VIDEOS = {
+  hourly: "/videos/services/don-dep-tong-the.mp4",
+  deep: "/videos/services/tong-ve-sinh-nha.mp4",
+  fabric: "/videos/services/sap-xep-khong-gian.mp4",
+  office: "/videos/services/don-dep-van-phong.mp4",
+  postBuild: "/videos/services/goi-dinh-ky-365.mp4",
+  recurring: "/videos/services/cham-soc-dinh-ky.mp4",
+} as const;
+
 export const quickServices = [
-  { id: "hourly", icon: "🧹", title: "Dọn nhà theo giờ", priceFrom: "120.000đ/giờ" },
-  { id: "deep", icon: "✨", title: "Tổng vệ sinh", priceFrom: "Từ 1.5tr" },
-  { id: "sofa", icon: "🛋️", title: "Giặt sofa", priceFrom: "Từ 350k" },
-  { id: "mattress", icon: "🛏️", title: "Giặt nệm", priceFrom: "Từ 280k" },
-  { id: "curtain", icon: "🪟", title: "Giặt rèm", priceFrom: "Từ 200k" },
-  { id: "ac", icon: "❄️", title: "Vệ sinh máy lạnh", priceFrom: "Từ 150k" },
-  { id: "elder", icon: "👵", title: "Chăm người già", priceFrom: "Liên hệ" },
-  { id: "recurring", icon: "📅", title: "Giúp việc định kỳ", priceFrom: "Ưu đãi" },
+  {
+    id: "hourly",
+    icon: "🧹",
+    title: "Dọn nhà theo giờ",
+    desc: siteConfig.servicesSection.items[0].desc,
+    priceFrom: "120.000đ/giờ",
+    videoSrc: WEB_VIDEOS.hourly,
+  },
+  {
+    id: "deep",
+    icon: "✨",
+    title: "Tổng vệ sinh",
+    desc: siteConfig.servicesSection.items[1].desc,
+    priceFrom: "Từ 1.5tr",
+    videoSrc: WEB_VIDEOS.deep,
+  },
+  {
+    id: "sofa",
+    icon: "🛋️",
+    title: "Giặt sofa",
+    desc: "Loại bỏ bụi bẩn và mùi khó chịu trên sofa.",
+    priceFrom: "Từ 350k",
+    videoSrc: WEB_VIDEOS.fabric,
+  },
+  {
+    id: "mattress",
+    icon: "🛏️",
+    title: "Giặt nệm",
+    desc: siteConfig.servicesSection.items[2].desc,
+    priceFrom: "Từ 280k",
+    videoSrc: WEB_VIDEOS.fabric,
+  },
+  {
+    id: "curtain",
+    icon: "🪟",
+    title: "Giặt rèm",
+    desc: "Vệ sinh rèm cửa chuyên sâu.",
+    priceFrom: "Từ 200k",
+    videoSrc: WEB_VIDEOS.fabric,
+  },
+  {
+    id: "ac",
+    icon: "❄️",
+    title: "Vệ sinh máy lạnh",
+    desc: "Làm sạch máy lạnh, khử mùi hiệu quả.",
+    priceFrom: "Từ 150k",
+    videoSrc: WEB_VIDEOS.deep,
+  },
+  {
+    id: "office",
+    icon: "🏢",
+    title: "Dọn văn phòng",
+    desc: siteConfig.servicesSection.items[3].desc,
+    priceFrom: "Liên hệ",
+    videoSrc: WEB_VIDEOS.office,
+  },
+  {
+    id: "recurring",
+    icon: "📅",
+    title: "Giúp việc định kỳ",
+    desc: siteConfig.servicesSection.items[5].desc,
+    priceFrom: "Ưu đãi",
+    videoSrc: WEB_VIDEOS.recurring,
+  },
 ] as const;
+
+export type QuickService = (typeof quickServices)[number];
+
+export function getQuickServiceById(id: string): QuickService | undefined {
+  return quickServices.find((s) => s.id === id);
+}
 
 export const promos = [
   { title: "Giảm 20% đơn đầu", sub: "Voucher NEW20", color: "#4caf50" },
@@ -64,14 +136,10 @@ export const uspBadges = [
 ] as const;
 
 export function getServiceById(id: string) {
-  const quick = quickServices.find((s) => s.id === id);
+  const quick = getQuickServiceById(id);
   if (quick) {
-    const web = siteConfig.servicesSection.items.find((w) =>
-      w.title.toLowerCase().includes(quick.title.split(" ")[0].toLowerCase()),
-    );
     return {
       ...quick,
-      desc: web?.desc ?? "Dịch vụ chuyên nghiệp, linh hoạt theo nhu cầu gia đình bạn.",
       includes: [
         "Công việc theo checklist chuẩn",
         "Dụng cụ & hóa chất an toàn",

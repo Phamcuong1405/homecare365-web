@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { MobileServiceVideoPlayer } from "@/components/mobile/MobileServiceVideoPlayer";
 import {
+  getQuickServiceById,
   mobileBrand,
   promos,
   quickServices,
@@ -13,12 +15,23 @@ import {
 export default function MobileHomePage() {
   const [name, setName] = useState("bạn");
   const [promoIdx, setPromoIdx] = useState(0);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  const selected = selectedId ? getQuickServiceById(selectedId) : null;
 
   useEffect(() => {
     setName(localStorage.getItem("hc365_user_name") ?? "bạn");
     const t = setInterval(() => setPromoIdx((i) => (i + 1) % promos.length), 4000);
     return () => clearInterval(t);
   }, []);
+
+  function handleSelectService(id: string) {
+    if (selectedId === id) {
+      setSelectedId(null);
+      return;
+    }
+    setSelectedId(id);
+  }
 
   const promo = promos[promoIdx];
 
@@ -51,19 +64,52 @@ export default function MobileHomePage() {
           <span className="text-sm text-[var(--m-muted)]">Bạn cần dọn gì hôm nay?</span>
         </div>
 
-        <h2 className="mb-3 mt-6 text-sm font-bold text-[var(--m-text)]">Dịch vụ nhanh</h2>
+        <h2 className="mb-1 mt-6 text-sm font-bold text-[var(--m-text)]">Dịch vụ nhanh</h2>
+        <p className="mb-3 text-[10px] text-[var(--m-muted)]">Chạm để xem video — chạm lại hoặc chọn mục khác để đổi</p>
+
         <div className="grid grid-cols-4 gap-3">
-          {quickServices.map((s) => (
-            <Link
-              key={s.id}
-              href={`/m/service/${s.id}`}
-              className="m-card flex flex-col items-center p-2.5 text-center transition active:scale-95"
-            >
-              <span className="text-2xl">{s.icon}</span>
-              <span className="mt-1 line-clamp-2 text-[10px] font-medium leading-tight">{s.title}</span>
-            </Link>
-          ))}
+          {quickServices.map((s) => {
+            const isActive = selectedId === s.id;
+            return (
+              <button
+                key={s.id}
+                type="button"
+                onClick={() => handleSelectService(s.id)}
+                className={`m-card flex flex-col items-center p-2.5 text-center transition active:scale-95 ${
+                  isActive ? "m-service-chip-active" : ""
+                }`}
+              >
+                <span className="text-2xl">{s.icon}</span>
+                <span className="mt-1 line-clamp-2 text-[10px] font-medium leading-tight">{s.title}</span>
+              </button>
+            );
+          })}
         </div>
+
+        {selected?.videoSrc ? (
+          <div className="mt-3">
+            <MobileServiceVideoPlayer
+              videoSrc={selected.videoSrc}
+              title={selected.title}
+              onClose={() => setSelectedId(null)}
+            />
+            <p className="mt-2 text-xs text-[var(--m-muted)]">{selected.desc}</p>
+            <div className="mt-3 flex gap-2">
+              <Link
+                href={`/m/service/${selected.id}`}
+                className="flex-1 rounded-xl border border-[var(--m-primary)] py-2.5 text-center text-xs font-semibold text-[var(--m-primary-dark)]"
+              >
+                Chi tiết
+              </Link>
+              <Link
+                href={`/m/book?service=${selected.id}`}
+                className="m-btn-primary flex-1 py-2.5 text-center text-xs"
+              >
+                Đặt lịch
+              </Link>
+            </div>
+          </div>
+        ) : null}
 
         <div
           className="m-card mt-6 overflow-hidden p-4 text-white"
@@ -77,7 +123,7 @@ export default function MobileHomePage() {
           </Link>
         </div>
 
-        <h2 className="mb-3 mt-6 text-sm font-bold">Vì sao tin HomeCare365</h2>
+        <h2 className="mb-3 mt-6 text-sm font-bold">Vì sao tin {mobileBrand.name}</h2>
         <div className="grid grid-cols-4 gap-2">
           {trustStats.map((t) => (
             <div key={t.label} className="m-card p-2 text-center">
@@ -102,9 +148,13 @@ export default function MobileHomePage() {
         <div className="m-card mt-6 border-l-4 border-[var(--m-primary)] p-4">
           <p className="text-xs font-semibold text-[var(--m-primary)]">Gợi ý cho bạn</p>
           <p className="mt-1 text-sm font-medium">Nhà bạn đã 7 ngày chưa tổng vệ sinh</p>
-          <Link href="/m/service/deep" className="mt-2 text-xs font-semibold text-[var(--m-trust)]">
-            Đặt tổng vệ sinh →
-          </Link>
+          <button
+            type="button"
+            onClick={() => handleSelectService("deep")}
+            className="mt-2 text-xs font-semibold text-[var(--m-trust)]"
+          >
+            Xem video tổng vệ sinh →
+          </button>
         </div>
       </div>
 
