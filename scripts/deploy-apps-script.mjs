@@ -43,10 +43,40 @@ function run(cmd, opts = {}) {
 
 console.log("\n=== HomeCare365 — Deploy Apps Script ===\n");
 
-if (!existsSync(join(process.env.USERPROFILE || "", ".clasprc.json"))) {
-  console.error(
-    "Chưa đăng nhập clasp. Chạy lệnh sau trong terminal (mở trình duyệt Google):\n\n  cd google-apps-script\n  npx clasp login\n\nRồi chạy lại: npm run deploy:apps-script\n",
-  );
+const clasprc = join(process.env.USERPROFILE || "", ".clasprc.json");
+if (!existsSync(clasprc)) {
+  console.error(`
+╔══════════════════════════════════════════════════════════════╗
+║  CẦN BẠN CẤP QUYỀN GOOGLE (một lần)                        ║
+╚══════════════════════════════════════════════════════════════╝
+
+1) Tài khoản: chủ Sheet + Apps Script HomeCare365
+   Sheet:  https://docs.google.com/spreadsheets/d/1G84ZEO31bvWJGxdaaQHSGcF_z0SGTvWuOL3zVpw1Kg8/edit
+   Script: https://script.google.com/home/projects/1_lj5DMji92EOynZitTdrT1sSovzwyNMKWHjxJiexYTkqtZhjr_vFkJvs/edit
+
+2) Terminal:
+   cd google-apps-script
+   npx clasp login
+   → Trình duyệt → Allow toàn bộ quyền
+
+3) (Khuyến nghị) Bật Apps Script API:
+   https://script.google.com/home/usersettings
+
+4) Quay lại:
+   npm run deploy:apps-script
+   npm run test:tracking-gas
+
+Chi tiết: docs/CAP_QUYEN_APPS_SCRIPT.md
+
+Sau khi xong bước 2, báo lại: "đã clasp login"
+`);
+  try {
+    if (process.platform === "win32") {
+      execSync("start https://script.google.com/home/usersettings", { shell: true });
+    }
+  } catch {
+    /* ignore */
+  }
   process.exit(1);
 }
 
