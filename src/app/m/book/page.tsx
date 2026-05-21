@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, Suspense, useState } from "react";
-import { getServiceById, quickServices } from "@/lib/mobile-app-data";
+import { getQuickServiceById, quickServices } from "@/lib/mobile-app-data";
 import { submitConsultation } from "@/lib/submit-consultation";
 
 const steps = ["Dịch vụ", "Thời gian", "Xác nhận"];
@@ -11,9 +11,13 @@ const steps = ["Dịch vụ", "Thời gian", "Xác nhận"];
 function MobileBookContent() {
   const router = useRouter();
   const params = useSearchParams();
-  const preselect = params.get("service") ?? "hourly";
+  const preselect = params.get("service");
   const [step, setStep] = useState(0);
-  const [serviceId, setServiceId] = useState(preselect);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(() => {
+    const initial = new Set<string>();
+    if (preselect && getQuickServiceById(preselect)) initial.add(preselect);
+    return initial;
+  });
   const [area, setArea] = useState("60");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("09:00");
@@ -27,7 +31,27 @@ function MobileBookContent() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const service = getServiceById(serviceId);
+  const selectedServices = quickServices.filter((s) => selectedIds.has(s.id));
+  const serviceTitles = selectedServices.map((s) => s.title).join(", ");
+
+  function toggleService(id: string) {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+    setError("");
+  }
+
+  function goToStep1() {
+    if (selectedIds.size === 0) {
+      setError("Vui lòng chọn ít nhất một dịch vụ");
+      return;
+    }
+    setError("");
+    setStep(1);
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -42,7 +66,7 @@ function MobileBookContent() {
       ward,
       district,
       city,
-      note: `[APP] ${service?.title ?? serviceId} | ${area}m² | ${date} ${time}`,
+      note: `[APP] ${serviceTitles || "—"} | ${area}m² | ${date} ${time}`,
     });
     setLoading(false);
     if (result.ok) {
@@ -73,20 +97,25 @@ function MobileBookContent() {
         {step === 0 && (
           <div className="space-y-4">
             <label className="text-sm font-semibold">Loại dịch vụ</label>
+            <p className="text-xs text-[var(--m-muted)]">Chạm để chọn — chạm lại để bỏ chọn (có thể chọn nhiều)</p>
             <div className="grid grid-cols-2 gap-2">
-              {quickServices.slice(0, 6).map((s) => (
-                <button
-                  key={s.id}
-                  type="button"
-                  onClick={() => setServiceId(s.id)}
-                  className={`m-card p-3 text-left text-sm ${
-                    serviceId === s.id ? "ring-2 ring-[var(--m-primary)]" : ""
-                  }`}
-                >
-                  {s.icon} {s.title}
-                </button>
-              ))}
+              {quickServices.map((s) => {
+                const isSelected = selectedIds.has(s.id);
+                return (
+                  <button
+                    key={s.id}
+                    type="button"
+                    onClick={() => toggleService(s.id)}
+                    className={`m-card p-3 text-left text-sm transition active:scale-[0.98] ${
+                      isSelected ? "m-service-chip-active" : ""
+                    }`}
+                  >
+                    {s.icon} {s.title}
+                  </button>
+                );
+              })}
             </div>
+            {error && step === 0 ? <p className="text-sm text-red-600">{error}</p> : null}
             <label className="text-sm font-semibold">Diện tích (m²)</label>
             <select className="m-input" value={area} onChange={(e) => setArea(e.target.value)}>
               <option value="40">Dưới 40m²</option>
@@ -94,7 +123,7 @@ function MobileBookContent() {
               <option value="80">60–80m²</option>
               <option value="100">Trên 80m²</option>
             </select>
-            <button type="button" onClick={() => setStep(1)} className="m-btn-primary w-full py-3.5">
+            <button type="button" onClick={goToStep1} className="m-btn-primary w-full py-3.5">
               Tiếp tục
             </button>
           </div>
@@ -133,7 +162,7 @@ function MobileBookContent() {
           <div className="space-y-4">
             <div className="m-card p-4 text-sm">
               <p>
-                <strong>{service?.title}</strong> — {area}m²
+                <strong>{serviceTitles}</strong> — {area}m²
               </p>
               <p className="text-[var(--m-muted)]">
                 {date} lúc {time}

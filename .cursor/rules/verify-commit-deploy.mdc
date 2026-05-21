@@ -1,0 +1,39 @@
+---
+description: Sau khi sửa nội dung — tự kiểm tra lỗi, sửa, rồi commit và deploy
+alwaysApply: true
+---
+
+# Hoàn tất thay đổi: kiểm tra → sửa → commit & deploy
+
+Khi người dùng yêu cầu thay đổi/sửa nội dung (app, web, dữ liệu dịch vụ, form, v.v.), **không dừng ở bước chỉnh code**. Luôn làm đủ chuỗi sau trước khi báo xong:
+
+## 1. Kiểm tra sau khi chỉnh
+
+- Đọc linter trên các file đã sửa (`ReadLints`).
+- Chạy kiểm tra phù hợp repo:
+  - `npm run lint` hoặc lint file liên quan
+  - `npm run build` nếu đổi TypeScript/React/route
+  - `npm run test:mobile` / `npm run test:consultation` nếu đổi API, form, route `/m`
+- Nếu lệnh fail: đọc log, **tự phân tích nguyên nhân và sửa**, chạy lại cho đến khi pass (hoặc ghi rõ blocker không sửa được được).
+
+## 2. Khắc phục lỗi
+
+- Ưu tiên sửa tối thiểu, đúng convention hiện có.
+- Không commit code còn lỗi build/lint đã biết.
+
+## 3. Commit & deploy (mặc định)
+
+Trừ khi người dùng nói rõ **không** deploy:
+
+1. `git status` + `git diff` — không commit file secrets (`.env`, credentials).
+2. Commit message ngắn, mô tả **why**.
+3. `git push origin main` → Vercel deploy production `https://www.homecare365.vn`.
+
+## 4. Báo cáo cho người dùng
+
+- Commit hash, link kiểm tra (ví dụ `/m/home`, `/m/book`).
+- Nêu ngắn đã chạy kiểm tra gì (lint/build/test).
+
+## Không cần hỏi lại
+
+- Không hỏi “bạn có muốn commit/deploy không?” sau mỗi task — **làm luôn** khi hoàn tất và kiểm tra pass.
