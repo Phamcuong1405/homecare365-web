@@ -66,6 +66,12 @@ export const quickServices = [
     desc: siteConfig.servicesSection.items[1].desc,
     priceFrom: "Từ 1.5tr",
     videoSrc: WEB_VIDEOS.deep,
+    jobTasksLabel: "Ghi chú công việc",
+    jobTasks: [
+      "Dọn dẹp toàn bộ các phòng trong nhà",
+      "Dọn dẹp toàn bộ phần diện tích bên ngoài như sân, vườn, vỉa hè",
+      "Lên kế hoạch chi tiết, trao đổi những phần cần thực hiện dọn dẹp và lên phương án thống nhất, sau đó triển khai công việc",
+    ],
   },
   {
     id: "sofa",
