@@ -45,7 +45,9 @@ export default function ServiceDetailPage() {
           <p className="mt-1 text-xs text-[var(--m-muted)]">Combo & định kỳ — giá tốt hơn</p>
         </div>
 
-        <h2 className="mt-6 text-sm font-bold">Bao gồm</h2>
+        <h2 className="mt-6 text-sm font-bold">
+          {"jobTasks" in service && service.jobTasks ? "Mô tả công việc" : "Bao gồm"}
+        </h2>
         <ul className="m-card mt-2 space-y-2 p-4 text-sm">
           {service.includes.map((item) => (
             <li key={item} className="flex gap-2">

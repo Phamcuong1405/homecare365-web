@@ -41,6 +41,8 @@ const WEB_VIDEOS = {
   office: "/videos/services/don-dep-van-phong.mp4",
   postBuild: "/videos/services/goi-dinh-ky-365.mp4",
   recurring: "/videos/services/cham-soc-dinh-ky.mp4",
+  pet: "/videos/services/cham-soc-thu-cung.mp4",
+  childcare: "/videos/services/cham-soc-tre.mp4",
 } as const;
 
 export const quickServices = [
@@ -77,20 +79,33 @@ export const quickServices = [
     videoSrc: WEB_VIDEOS.fabric,
   },
   {
-    id: "curtain",
-    icon: "🪟",
-    title: "Giặt rèm",
-    desc: "Vệ sinh rèm cửa chuyên sâu.",
-    priceFrom: "Từ 200k",
-    videoSrc: WEB_VIDEOS.fabric,
+    id: "pet",
+    icon: "🐾",
+    title: "Chăm sóc thú cưng",
+    desc: "Chăm sóc thú cưng tại nhà — an toàn, nhẹ nhàng, đúng giờ.",
+    priceFrom: "Từ 150k",
+    videoSrc: WEB_VIDEOS.pet,
+    jobTasks: [
+      "Tắm cho thú cưng",
+      "Dắt đi dạo",
+      "Cho ăn và trông coi thú cưng",
+    ],
   },
   {
-    id: "ac",
-    icon: "❄️",
-    title: "Vệ sinh máy lạnh",
-    desc: "Làm sạch máy lạnh, khử mùi hiệu quả.",
-    priceFrom: "Từ 150k",
-    videoSrc: WEB_VIDEOS.deep,
+    id: "childcare",
+    icon: "👶",
+    title: "Chăm sóc trẻ khi ba mẹ vắng nhà",
+    desc: "Trông coi bé an toàn, vui vẻ — ba mẹ yên tâm khi vắng nhà.",
+    priceFrom: "Từ 200k",
+    videoSrc: WEB_VIDEOS.childcare,
+    jobTasks: [
+      "Trông coi trẻ",
+      "Đưa đón",
+      "Cho ăn",
+      "Tắm rửa",
+      "Thay đồ",
+      "Chơi cùng bé",
+    ],
   },
   {
     id: "office",
@@ -138,15 +153,16 @@ export const uspBadges = [
 export function getServiceById(id: string) {
   const quick = getQuickServiceById(id);
   if (quick) {
-    return {
-      ...quick,
-      includes: [
-        "Công việc theo checklist chuẩn",
-        "Dụng cụ & hóa chất an toàn",
-        "Nhân viên có mặt đúng giờ",
-        "Cam kết chất lượng & bảo hiểm",
-      ],
-    };
+    const includes =
+      "jobTasks" in quick && quick.jobTasks
+        ? [...quick.jobTasks]
+        : [
+            "Công việc theo checklist chuẩn",
+            "Dụng cụ & hóa chất an toàn",
+            "Nhân viên có mặt đúng giờ",
+            "Cam kết chất lượng & bảo hiểm",
+          ];
+    return { ...quick, includes };
   }
   return null;
 }

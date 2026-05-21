@@ -94,6 +94,21 @@ export default function MobileHomePage() {
               onClose={() => setSelectedId(null)}
             />
             <p className="mt-2 text-xs text-[var(--m-muted)]">{selected.desc}</p>
+            {"jobTasks" in selected && selected.jobTasks?.length ? (
+              <div className="m-card mt-3 p-3">
+                <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--m-trust)]">
+                  Mô tả công việc
+                </p>
+                <ul className="mt-2 space-y-1.5 text-xs text-[var(--m-text)]">
+                  {selected.jobTasks.map((task) => (
+                    <li key={task} className="flex gap-2">
+                      <span className="text-[var(--m-primary)]">•</span>
+                      {task}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
             <div className="mt-3 flex gap-2">
               <Link
                 href={`/m/service/${selected.id}`}
