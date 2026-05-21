@@ -94,6 +94,13 @@ export const quickServices = [
     desc: siteConfig.servicesSection.items[2].desc,
     priceFrom: "Từ 280k",
     videoSrc: WEB_VIDEOS.fabric,
+    jobTasksLabel: "Ghi chú công việc",
+    jobTasks: [
+      "Giặt lại nệm",
+      "Giặt lại chăn ga gối, các loại đồ bông trong phòng",
+      "Sắp xếp lại đồ dùng trong phòng ngủ",
+      "Lau chùi dọn dẹp để hoàn tất công việc",
+    ],
   },
   {
     id: "pet",
