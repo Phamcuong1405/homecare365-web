@@ -50,6 +50,20 @@ function setupTrackingSheet() {
   getTrackingSheet_();
 }
 
+/** Tiêu đề bị lỗi encoding (UTF-8 hiển thị thành Thá»i gian, Há» vÃ  tÃªn...) */
+function isHeaderBroken_(value) {
+  var v = String(value || "");
+  if (v === HEADERS[0]) return false;
+  if (v.indexOf("á»") >= 0 || v.indexOf("Ã") >= 0 || v.indexOf("Ä") >= 0) return true;
+  return v !== HEADERS[0];
+}
+
+/** Ghi lại hàng 1 — tiếng Việt đúng. Chạy 1 lần trong editor hoặc ?action=fixHeaders */
+function fixVietnameseHeaders() {
+  setupHomeCare365Sheet();
+  return { ok: true, message: "Da sua tieu de cot tieng Viet", columns: HEADERS };
+}
+
 /** Chạy 1 lần trong trình soạn Apps Script để tạo tiêu đề cột */
 function setupHomeCare365Sheet() {
   var sheet = getSheet_();
@@ -66,7 +80,7 @@ function setupHomeCare365Sheet() {
 function ensureHeaderRow_() {
   var sheet = getSheet_();
   var firstCell = sheet.getRange(1, 1).getValue();
-  if (firstCell !== HEADERS[0]) {
+  if (isHeaderBroken_(firstCell)) {
     setupHomeCare365Sheet();
   }
 }
@@ -198,6 +212,9 @@ function trackingUpsert_(data) {
 }
 
 function doGet(e) {
+  if (e && e.parameter && e.parameter.action === "fixHeaders") {
+    return jsonResponse_(fixVietnameseHeaders());
+  }
   if (e && e.parameter && e.parameter.action === "trackingGet" && e.parameter.jobId) {
     return trackingGet_(e.parameter.jobId);
   }
@@ -232,6 +249,9 @@ function parseIncoming_(e) {
 function doPost(e) {
   try {
     var data = parseIncoming_(e);
+    if (data.action === "fixHeaders") {
+      return jsonResponse_(fixVietnameseHeaders());
+    }
     if (data.action === "trackingStart" || data.action === "trackingUpdate" || data.action === "trackingStop") {
       return trackingUpsert_({
         jobId: data.jobId,

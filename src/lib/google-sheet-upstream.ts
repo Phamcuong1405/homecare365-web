@@ -30,7 +30,7 @@ export async function appendRowToGoogleSheet(
     try {
       const upstream = await fetch(webhookUrl, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json; charset=utf-8" },
         body: JSON.stringify(sheetRow),
         cache: "no-store",
         redirect: "follow",
