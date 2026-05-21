@@ -138,6 +138,12 @@ export const quickServices = [
     desc: siteConfig.servicesSection.items[3].desc,
     priceFrom: "Liên hệ",
     videoSrc: WEB_VIDEOS.office,
+    jobTasksLabel: "Ghi chú công việc",
+    jobTasks: [
+      "Khảo sát và nắm thông tin công việc khách hàng yêu cầu",
+      "Sắp xếp, dọn dẹp, lau chùi toàn bộ phòng",
+      "Nếu được yêu cầu lắp đặt hoặc thay thế sẽ lên phương án và báo lại với khách hàng nội dung thực hiện",
+    ],
   },
   {
     id: "recurring",
