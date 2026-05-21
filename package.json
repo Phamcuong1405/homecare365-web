@@ -18,6 +18,8 @@
     "mobile:android": "npm run test:android --prefix mobile",
     "mobile:setup": "npm run setup:android --prefix mobile",
     "test:mobile": "node scripts/test-mobile-app.mjs",
+    "deploy:apps-script": "node scripts/deploy-apps-script.mjs",
+    "test:tracking-gas": "node scripts/test-tracking-gas.mjs",
     "mobile:open:android": "npm run open:android --prefix mobile"
   },
   "dependencies": {
@@ -31,6 +33,7 @@
     "uuid": "^14.0.0"
   },
   "devDependencies": {
+    "@google/clasp": "^3.3.0",
     "@tailwindcss/postcss": "^4",
     "@types/leaflet": "^1.9.21",
     "@types/node": "^20",

@@ -28,6 +28,7 @@ Trừ khi người dùng nói rõ **không** deploy:
 1. `git status` + `git diff` — không commit file secrets (`.env`, credentials).
 2. Commit message ngắn, mô tả **why**.
 3. `git push origin main` → Vercel deploy production `https://www.homecare365.vn`.
+4. Nếu đổi `scripts/google-sheet-consultation.gs` → `npm run deploy:apps-script` (cần `clasp login` một lần).
 
 ## 4. Báo cáo cho người dùng
 
