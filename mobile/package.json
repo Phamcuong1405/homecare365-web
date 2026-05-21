@@ -12,7 +12,10 @@
     "sync:ios": "npm run sync && npx cap sync ios",
     "open:android": "npx cap open android",
     "open:ios": "npx cap open ios",
-    "build:android:debug": "npm run sync:android && cd android && gradlew.bat assembleDebug",
+    "setup:android": "powershell -ExecutionPolicy Bypass -File scripts/setup-android-build.ps1",
+    "build:android:debug": "powershell -ExecutionPolicy Bypass -File scripts/build-apk.ps1",
+    "apk:test": "powershell -ExecutionPolicy Bypass -File scripts/copy-test-apk.ps1",
+    "test:android": "npm run check && npm run build:android:debug && npm run apk:test",
     "build:android:release": "npm run sync:android && cd android && gradlew.bat assembleRelease",
     "build:ios": "npm run sync:ios && echo Build iOS on macOS: npx cap open ios"
   },

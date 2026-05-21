@@ -52,6 +52,7 @@ next-env.d.ts
 .vercel
 
 # mobile (Capacitor)
+mobile/.tools/
 mobile/node_modules
 mobile/android/.gradle
 mobile/android/app/build

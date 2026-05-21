@@ -21,8 +21,9 @@ Tùy chọn: biến môi trường `MOBILE_OUTPUT_DIR` khi copy artefact (CI).
 - `npm install` trong `mobile/`
 
 ### Android (Windows / macOS / Linux)
-- [Android Studio](https://developer.android.com/studio) hoặc Android SDK + JDK 17
-- Biến `ANDROID_HOME` trỏ tới SDK
+- [Android Studio](https://developer.android.com/studio) **hoặc** chạy `npm run setup:android` (tự cài JDK 21 + SDK vào `mobile/.tools/`)
+- JDK **21** (Capacitor 7 yêu cầu)
+- Biến `ANDROID_HOME` trỏ tới SDK (tự tạo khi chạy setup)
 
 ### iOS (chỉ macOS)
 - Xcode 15+
@@ -41,8 +42,22 @@ npx cap add ios        # Lần đầu (có thể tạo project trên Windows; bu
 npm run sync           # check + icons + assets + cap sync
 ```
 
-### Chạy thử
-- **Android:** `npm run open:android` → Android Studio → Run trên máy ảo/thật  
+### Chạy thử trên điện thoại Android
+
+```bash
+cd mobile
+npm run test:android    # check + build APK + copy ra Desktop
+```
+
+File cài đặt:
+- `mobile/build/homecare365-debug.apk`
+- Desktop: `HomeCare365-debug.apk`
+
+**Cài trên máy:** copy APK sang điện thoại → mở file → cho phép “Cài từ nguồn không xác định” → Cài đặt.
+
+**Hoặc USB:** bật Gỡ lỗi USB → `adb install mobile\build\homecare365-debug.apk`
+
+- **Android Studio:** `npm run open:android` → Run trên máy ảo/thật  
 - **iOS:** trên Mac: `npm run open:ios` → Xcode → Run  
 
 ### Build file cài đặt
