@@ -19,6 +19,7 @@
     "mobile:setup": "npm run setup:android --prefix mobile",
     "test:mobile": "node scripts/test-mobile-app.mjs",
     "deploy:apps-script": "node scripts/deploy-apps-script.mjs",
+    "push:gas-api": "node scripts/push-gas-via-api.mjs",
     "test:tracking-gas": "node scripts/test-tracking-gas.mjs",
     "mobile:open:android": "npm run open:android --prefix mobile"
   },

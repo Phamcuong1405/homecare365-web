@@ -29,7 +29,7 @@
 Thêm biến môi trường (Production + Preview):
 
 ```
-GOOGLE_SHEETS_WEB_APP_URL=https://script.google.com/macros/s/AKfycby26ARqQtcfMdkUshQ47pnyUGFEOH947Phcn0uU9NwFEOonLUsQO6t3shcvA0YnauLHrw/exec
+GOOGLE_SHEETS_WEB_APP_URL=https://script.google.com/macros/s/AKfycbyPbkhEVW-5Mt4Dsn7WgCb-g9GySGlyYBoPdU5hJp54Zbot2MQq0owHa1q53mWMSMKkEg/exec
 ```
 
 Redeploy project **homecare365-web**.
