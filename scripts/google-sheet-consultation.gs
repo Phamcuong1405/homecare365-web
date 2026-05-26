@@ -1,34 +1,35 @@
 /**
- * HomeCare365 — Nhận form tư vấn từ website → ghi Google Sheet
+ * HomeCare365 - Consultation form webhook -> Google Sheet
+ * Vietnamese strings use \u escapes so paste into Apps Script editor stays correct.
  *
- * Apps Script (dán code vào đây):
- * https://script.google.com/home/projects/1_lj5DMji92EOynZitTdrT1sSovzwyNMKWHjxJiexYTkqtZhjr_vFkJvs/edit
+ * Script: https://script.google.com/home/projects/1_lj5DMji92EOynZitTdrT1sSovzwyNMKWHjxJiexYTkqtZhjr_vFkJvs/edit
+ * Sheet:  https://docs.google.com/spreadsheets/d/1G84ZEO31bvWJGxdaaQHSGcF_z0SGTvWuOL3zVpw1Kg8/edit
  *
- * Google Sheet:
- * https://docs.google.com/spreadsheets/d/1G84ZEO31bvWJGxdaaQHSGcF_z0SGTvWuOL3zVpw1Kg8/edit
- *
- * CÀI: Save → chạy setupHomeCare365Sheet → Deploy Web app (Me, Anyone)
- *      → copy URL /exec → Vercel GOOGLE_SHEETS_WEB_APP_URL
+ * Setup: Save -> run setupHomeCare365Sheet -> Deploy Web app (Me, Anyone)
+ *        -> copy /exec URL -> Vercel GOOGLE_SHEETS_WEB_APP_URL
+ *        -> open ?action=fixHeaders once to fix row 1 on the sheet
  */
 
 var SPREADSHEET_ID = "1G84ZEO31bvWJGxdaaQHSGcF_z0SGTvWuOL3zVpw1Kg8";
 var SHEET_GID = 0;
-var SHEET_TAB_NAME = "Khách hàng";
+var SHEET_TAB_NAME = "Kh\u00e1ch h\u00e0ng";
 var TRACKING_TAB_NAME = "Theo_doi";
 
 var HEADERS = [
-  "Thời gian",
-  "Họ và tên",
-  "Số điện thoại",
-  "Số nhà",
-  "Ngõ/Hẻm",
-  "Tên đường",
-  "Phường/Xã",
-  "Quận/Huyện",
-  "Thành phố",
-  "Nhu cầu dọn dẹp",
-  "Địa chỉ đầy đủ",
+  "Th\u1eddi gian",
+  "H\u1ecd v\u00e0 t\u00ean",
+  "S\u1ed1 \u0111i\u1ec7n tho\u1ea1i",
+  "S\u1ed1 nh\u00e0",
+  "Ng\u00f5/H\u1ebbm",
+  "T\u00ean \u0111\u01b0\u1eddng",
+  "Ph\u01b0\u1eddng/X\u00e3",
+  "Qu\u1eadn/Huy\u1ec7n",
+  "Th\u00e0nh ph\u1ed1",
+  "Nhu c\u1ea7u d\u1ecdn d\u1eb9p",
+  "\u0110\u1ecba ch\u1ec9 \u0111\u1ea7y \u0111\u1ee7",
 ];
+
+var DEFAULT_STAFF_NAME = "Nh\u00e2n vi\u00ean HomeCare365";
 
 function getSpreadsheet_() {
   return SpreadsheetApp.openById(SPREADSHEET_ID);
@@ -45,26 +46,28 @@ function getSheet_() {
   return sheets[0];
 }
 
-/** Chạy 1 lần — tạo tab Theo_doi cho GPS tracking */
+/** Run once - create Theo_doi tab for GPS tracking */
 function setupTrackingSheet() {
   getTrackingSheet_();
 }
 
-/** Tiêu đề bị lỗi encoding (UTF-8 hiển thị thành Thá»i gian, Há» vÃ  tÃªn...) */
+/** Detect mojibake in header row (UTF-8 shown as Thá»i gian, etc.) */
 function isHeaderBroken_(value) {
   var v = String(value || "");
   if (v === HEADERS[0]) return false;
-  if (v.indexOf("á»") >= 0 || v.indexOf("Ã") >= 0 || v.indexOf("Ä") >= 0) return true;
+  if (v.indexOf("\u00e1\u00bb") >= 0) return true;
+  if (v.indexOf("\u00c3") >= 0) return true;
+  if (v.indexOf("\u00c4") >= 0) return true;
   return v !== HEADERS[0];
 }
 
-/** Ghi lại hàng 1 — tiếng Việt đúng. Chạy 1 lần trong editor hoặc ?action=fixHeaders */
+/** Rewrite row 1 with correct Vietnamese headers */
 function fixVietnameseHeaders() {
   setupHomeCare365Sheet();
   return { ok: true, message: "Da sua tieu de cot tieng Viet", columns: HEADERS };
 }
 
-/** Chạy 1 lần trong trình soạn Apps Script để tạo tiêu đề cột */
+/** Run once in Apps Script editor to create column headers */
 function setupHomeCare365Sheet() {
   var sheet = getSheet_();
   sheet.setName(SHEET_TAB_NAME);
@@ -149,7 +152,7 @@ function trackingGet_(jobId) {
         session: {
           jobId: String(data[i][0]),
           status: String(data[i][1] || "waiting"),
-          staffName: String(data[i][2] || "Nhân viên HomeCare365"),
+          staffName: String(data[i][2] || DEFAULT_STAFF_NAME),
           sharing: data[i][3] === true || data[i][3] === "TRUE",
           staffLat: Number(data[i][4]) || 21.02,
           staffLng: Number(data[i][5]) || 105.82,
@@ -192,7 +195,7 @@ function trackingUpsert_(data) {
   var row = [
     data.jobId,
     data.status || "waiting",
-    data.staffName || "Nhân viên HomeCare365",
+    data.staffName || DEFAULT_STAFF_NAME,
     data.sharing === true,
     Number(data.staffLat) || 21.02,
     Number(data.staffLng) || 105.82,
@@ -274,19 +277,20 @@ function doPost(e) {
   }
 }
 
-/** Chạy thử trong editor — kiểm tra ghi Sheet (không cần website) */
+/** Run in editor to test append without website */
 function testAppendSampleRow() {
   appendRow_({
     submittedAt: new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" }),
-    fullName: "Nguyễn Văn Test",
+    fullName: "Nguy\u1ec5n V\u0103n Test",
     phone: "0901234567",
     houseNumber: "12",
-    alley: "Ngõ 5",
-    street: "Phố Huế",
-    ward: "Kim Liên",
-    district: "Đống Đa",
-    city: "Hà Nội",
-    note: "Dọn 80m2, 1 lần/tuần",
-    fullAddress: "Số nhà 12, Ngõ/Hẻm Ngõ 5, Đường Phố Huế, Phường/Xã Kim Liên, Quận/Huyện Đống Đa, Thành phố Hà Nội",
+    alley: "Ng\u00f5 5",
+    street: "Ph\u1ed1 Hu\u1ebf",
+    ward: "Kim Li\u00ean",
+    district: "\u0110\u1ed1ng \u0110a",
+    city: "H\u00e0 N\u1ed9i",
+    note: "D\u1ecdn 80m2, 1 l\u1ea7n/tu\u1ea7n",
+    fullAddress:
+      "S\u1ed1 nh\u00e0 12, Ng\u00f5/H\u1ebbm Ng\u00f5 5, \u0110\u01b0\u1eddng Ph\u1ed1 Hu\u1ebf, Ph\u01b0\u1eddng/X\u00e3 Kim Li\u00ean, Qu\u1eadn/Huy\u1ec7n \u0110\u1ed1ng \u0110a, Th\u00e0nh ph\u1ed1 H\u00e0 N\u1ed9i",
   });
 }

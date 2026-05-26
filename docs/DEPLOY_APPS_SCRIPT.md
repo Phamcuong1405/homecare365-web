@@ -31,7 +31,7 @@ Script sẽ:
 Mở (ẩn danh):
 
 ```
-https://script.google.com/macros/s/AKfycbzhNkAT1_7UkqRWjRbSvAbm9aAbcBdt-7Mqc04ySvB6MzL05M2rnerIro1y3d6aAzGqqA/exec?action=trackingGet&jobId=HC-DEMO01
+https://script.google.com/macros/s/AKfycbzbZ7QEFIjXGOTAQbLKgidW9VL_Fg87XHUzCY7RcYfAWXr-eofqwDgF9ep8mS2fLmjEug/exec?action=trackingGet&jobId=HC-DEMO01
 ```
 
 - **Đúng:** `{"ok":true,"session":{...}}` hoặc `{"ok":false,"error":"not_found"}`

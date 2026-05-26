@@ -21,14 +21,17 @@ TAB 1 - Sheet: Tien ich mo rong → Apps Script
 
 TAB 2 - Apps Script:
 1. Code.gs -> Ctrl+A -> Ctrl+V -> Save
-2. Ham: setupTrackingSheet -> Run -> Allow
+2. Ham: setupHomeCare365Sheet -> Run -> Allow
 3. Nut Deploy (goc phai) -> Manage deployments
    -> Edit web app -> New version -> Deploy
+4. Mo URL (sua tieu de cot Sheet):
+   .../exec?action=fixHeaders
+   Cot 1 phai la: Thoi gian, Ho va ten, So dien thoai...
 
 VERCEL (bat buoc):
 Settings -> Environment Variables
 GOOGLE_SHEETS_WEB_APP_URL =
-https://script.google.com/macros/s/AKfycbzhNkAT1_7UkqRWjRbSvAbm9aAbcBdt-7Mqc04ySvB6MzL05M2rnerIro1y3d6aAzGqqA/exec
+https://script.google.com/macros/s/AKfycbzbZ7QEFIjXGOTAQbLKgidW9VL_Fg87XHUzCY7RcYfAWXr-eofqwDgF9ep8mS2fLmjEug/exec
 
 Redeploy Production
 

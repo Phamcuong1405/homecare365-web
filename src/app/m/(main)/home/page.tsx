@@ -15,6 +15,7 @@ import {
 export default function MobileHomePage() {
   const [name, setName] = useState("bạn");
   const [promoIdx, setPromoIdx] = useState(0);
+  const [servicesOpen, setServicesOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const selected = selectedId ? getQuickServiceById(selectedId) : null;
@@ -25,11 +26,16 @@ export default function MobileHomePage() {
     return () => clearInterval(t);
   }, []);
 
+  function handleSearchClick() {
+    setServicesOpen((open) => !open);
+  }
+
   function handleSelectService(id: string) {
-    if (selectedId === id) {
-      setSelectedId(null);
-      return;
-    }
+    setSelectedId((prev) => (prev === id ? null : id));
+  }
+
+  function openService(id: string) {
+    setServicesOpen(true);
     setSelectedId(id);
   }
 
@@ -59,41 +65,70 @@ export default function MobileHomePage() {
       </header>
 
       <div className="px-4">
-        <div className="m-card mt-3 flex items-center gap-2 px-4 py-3">
-          <span>🔍</span>
-          <span className="text-sm text-[var(--m-muted)]">Bạn cần dọn gì hôm nay?</span>
-        </div>
+        <button
+          type="button"
+          onClick={handleSearchClick}
+          aria-expanded={servicesOpen}
+          className={`m-card mt-3 flex w-full items-center gap-2 px-4 py-3 text-left transition ${
+            servicesOpen ? "ring-2 ring-[var(--m-primary)] ring-offset-1" : ""
+          }`}
+        >
+          <span aria-hidden>🔍</span>
+          <span
+            className={`flex-1 text-sm ${
+              selected && !servicesOpen
+                ? "font-medium text-[var(--m-text)]"
+                : "text-[var(--m-muted)]"
+            }`}
+          >
+            {selected && !servicesOpen ? selected.title : "Bạn cần dọn gì hôm nay?"}
+          </span>
+          <span className="text-xs text-[var(--m-muted)]" aria-hidden>
+            {servicesOpen ? "▲" : "▼"}
+          </span>
+        </button>
 
-        <h2 className="mb-1 mt-6 text-sm font-bold text-[var(--m-text)]">Dịch vụ nhanh</h2>
-        <p className="mb-3 text-[10px] text-[var(--m-muted)]">Chạm để xem video — chạm lại hoặc chọn mục khác để đổi</p>
+        {servicesOpen ? (
+          <div className="animate-in mt-4">
+            <h2 className="mb-1 text-sm font-bold text-[var(--m-text)]">Dịch vụ nhanh</h2>
+            <p className="mb-3 text-[10px] text-[var(--m-muted)]">
+              Chọn dịch vụ để xem video và mô tả chi tiết
+            </p>
 
-        <div className="grid grid-cols-4 gap-3">
-          {quickServices.map((s) => {
-            const isActive = selectedId === s.id;
-            return (
-              <button
-                key={s.id}
-                type="button"
-                onClick={() => handleSelectService(s.id)}
-                className={`m-card flex flex-col items-center p-2.5 text-center transition active:scale-95 ${
-                  isActive ? "m-service-chip-active" : ""
-                }`}
-              >
-                <span className="text-2xl">{s.icon}</span>
-                <span className="mt-1 line-clamp-2 text-[10px] font-medium leading-tight">{s.title}</span>
-              </button>
-            );
-          })}
-        </div>
+            <div className="grid grid-cols-4 gap-3">
+              {quickServices.map((s) => {
+                const isActive = selectedId === s.id;
+                return (
+                  <button
+                    key={s.id}
+                    type="button"
+                    onClick={() => handleSelectService(s.id)}
+                    className={`m-card flex flex-col items-center p-2.5 text-center transition active:scale-95 ${
+                      isActive ? "m-service-chip-active" : ""
+                    }`}
+                  >
+                    <span className="text-2xl">{s.icon}</span>
+                    <span className="mt-1 line-clamp-2 text-[10px] font-medium leading-tight">{s.title}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ) : null}
 
-        {selected?.videoSrc ? (
-          <div className="mt-3">
-            <MobileServiceVideoPlayer
-              videoSrc={selected.videoSrc}
-              title={selected.title}
-              onClose={() => setSelectedId(null)}
-            />
-            <p className="mt-2 text-xs text-[var(--m-muted)]">{selected.desc}</p>
+        {selected ? (
+          <div className="animate-in mt-4">
+            {selected.videoSrc ? (
+              <MobileServiceVideoPlayer
+                videoSrc={selected.videoSrc}
+                title={selected.title}
+                onClose={() => setSelectedId(null)}
+              />
+            ) : null}
+            <p className="mt-2 text-xs leading-relaxed text-[var(--m-muted)]">{selected.desc}</p>
+            {selected.priceFrom ? (
+              <p className="mt-1 text-xs font-semibold text-[var(--m-trust)]">Từ {selected.priceFrom}</p>
+            ) : null}
             {"jobTasks" in selected && selected.jobTasks?.length ? (
               <div className="m-card mt-3 p-3">
                 <p className="text-[10px] font-semibold uppercase tracking-wide text-[var(--m-trust)]">
@@ -167,7 +202,7 @@ export default function MobileHomePage() {
           <p className="mt-1 text-sm font-medium">Nhà bạn đã 7 ngày chưa tổng vệ sinh</p>
           <button
             type="button"
-            onClick={() => handleSelectService("deep")}
+            onClick={() => openService("deep")}
             className="mt-2 text-xs font-semibold text-[var(--m-trust)]"
           >
             Xem video tổng vệ sinh →

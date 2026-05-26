@@ -27,7 +27,7 @@ Dùng khi bạn đã mở được Apps Script từ Sheet (Extensions → Apps S
 Mở link (ẩn danh):
 
 ```
-https://script.google.com/macros/s/AKfycbyPbkhEVW-5Mt4Dsn7WgCb-g9GySGlyYBoPdU5hJp54Zbot2MQq0owHa1q53mWMSMKkEg/exec?action=trackingGet&jobId=HC-DEMO01
+https://script.google.com/macros/s/AKfycbzbZ7QEFIjXGOTAQbLKgidW9VL_Fg87XHUzCY7RcYfAWXr-eofqwDgF9ep8mS2fLmjEug/exec?action=trackingGet&jobId=HC-DEMO01
 ```
 
 Đúng: `"session"` hoặc `"error":"not_found"`  
