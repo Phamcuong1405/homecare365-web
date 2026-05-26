@@ -21,10 +21,12 @@
 **Vercel** — thêm biến:
 
 ```
-ADMIN_OPS_KEY=<mã-bí-mật-quản-lý>
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=<mật-khẩu-quản-lý>
+ADMIN_OPS_KEY=<mã-api-nội-bộ>
 ```
 
-Dùng mã này đăng nhập tại `/admin/login`.
+Đăng nhập tại `/admin/login` bằng **tài khoản + mật khẩu** (không hiển thị mã API trên form).
 
 **Apps Script** — sau khi dán code mới, chạy một lần trong editor:
 

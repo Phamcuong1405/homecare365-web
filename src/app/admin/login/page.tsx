@@ -7,7 +7,8 @@ import { ADMIN_STORAGE_KEY } from "@/lib/admin-session";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [key, setKey] = useState("");
+  const [username, setUsername] = useState("admin");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -18,15 +19,20 @@ export default function AdminLoginPage() {
     const res = await fetch("/api/ops/auth", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ key }),
+      body: JSON.stringify({ username, password }),
     });
-    const data = (await res.json()) as { ok?: boolean; error?: string };
+    const data = (await res.json()) as { ok?: boolean; token?: string; error?: string };
     setLoading(false);
-    if (!data.ok) {
-      setError(data.error === "invalid_key" ? "Mã quản trị không đúng" : "Không đăng nhập được");
+    if (!data.ok || !data.token) {
+      setError(
+        data.error === "invalid_credentials"
+          ? "Tài khoản hoặc mật khẩu không đúng"
+          : "Không đăng nhập được — liên hệ kỹ thuật",
+      );
       return;
     }
-    sessionStorage.setItem(ADMIN_STORAGE_KEY, key);
+    sessionStorage.setItem(ADMIN_STORAGE_KEY, data.token);
+    sessionStorage.setItem("hc365_admin_user", username);
     router.replace("/admin");
   }
 
@@ -37,19 +43,32 @@ export default function AdminLoginPage() {
         <p className="mt-1 text-sm text-[var(--a-muted)]">Điều phối việc — phân công nhân viên</p>
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <div>
-            <label className="text-xs font-medium text-[var(--a-muted)]">Mã quản trị (ADMIN_OPS_KEY)</label>
+            <label className="text-xs font-medium text-[var(--a-muted)]">Tài khoản</label>
+            <input
+              className="admin-input mt-1"
+              type="text"
+              autoComplete="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="admin"
+              required
+            />
+          </div>
+          <div>
+            <label className="text-xs font-medium text-[var(--a-muted)]">Mật khẩu</label>
             <input
               className="admin-input mt-1"
               type="password"
-              value={key}
-              onChange={(e) => setKey(e.target.value)}
-              placeholder="Nhập mã bí mật"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
               required
             />
           </div>
           {error ? <p className="text-sm text-red-600">{error}</p> : null}
           <button type="submit" className="admin-btn w-full py-3" disabled={loading}>
-            {loading ? "Đang kiểm tra…" : "Đăng nhập"}
+            {loading ? "Đang đăng nhập…" : "Đăng nhập"}
           </button>
         </form>
         <p className="mt-4 text-center text-xs text-[var(--a-muted)]">

@@ -1,16 +1,27 @@
-import { getAdminKey } from "@/lib/admin-auth";
+import { getAdminKey, getAdminPassword, verifyAdminLogin } from "@/lib/admin-auth";
 
 export async function POST(request: Request) {
-  const body = (await request.json()) as { key?: string };
-  const expected = getAdminKey();
-  if (!expected) {
+  const body = (await request.json()) as {
+    username?: string;
+    password?: string;
+    key?: string;
+  };
+
+  const adminKey = getAdminKey();
+  if (!adminKey && !getAdminPassword()) {
     return Response.json(
-      { ok: false, error: "ADMIN_OPS_KEY not configured on server" },
+      { ok: false, error: "admin_not_configured" },
       { status: 503 },
     );
   }
-  if (body.key !== expected) {
-    return Response.json({ ok: false, error: "invalid_key" }, { status: 401 });
+
+  if (!verifyAdminLogin(body)) {
+    return Response.json({ ok: false, error: "invalid_credentials" }, { status: 401 });
   }
-  return Response.json({ ok: true });
+
+  return Response.json({
+    ok: true,
+    token: adminKey,
+    username: body.username?.trim() || "admin",
+  });
 }
