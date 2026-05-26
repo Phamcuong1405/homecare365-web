@@ -7,6 +7,7 @@ import { buildFullAddress } from "@/lib/consultation-form-utils";
 import { getQuickServiceById, quickServices } from "@/lib/mobile-app-data";
 import { postTrackingUpdate } from "@/lib/tracking-client";
 import { generateJobId } from "@/lib/tracking-utils";
+import { createJobClient } from "@/lib/ops-client";
 import { submitConsultation } from "@/lib/submit-consultation";
 
 const steps = ["Dịch vụ", "Thời gian", "Xác nhận"];
@@ -86,6 +87,14 @@ function MobileBookContent() {
     });
 
     if (result.ok) {
+      await createJobClient({
+        jobId,
+        customerName: name,
+        phone,
+        address: fullAddress,
+        serviceNote: `${serviceTitles || "—"} | ${area}m² | ${date} ${time}`,
+        scheduledAt: date && time ? `${date} ${time}` : "",
+      });
       await postTrackingUpdate(jobId, {
         action: "trackingStart",
         destAddress: fullAddress,

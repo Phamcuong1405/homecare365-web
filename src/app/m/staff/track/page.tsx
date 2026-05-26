@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
+import { getStaffSession } from "@/lib/staff-session";
 import { postTrackingUpdate } from "@/lib/tracking-client";
 
 function StaffTrackContent() {
   const params = useSearchParams();
   const jobId = params.get("job") ?? "";
-  const [staffName, setStaffName] = useState("Chị Lan");
+  const [staffName, setStaffName] = useState(() => getStaffSession()?.name ?? "Nhân viên HomeCare365");
   const [sharing, setSharing] = useState(false);
   const [status, setStatus] = useState<string>("");
   const [lastPos, setLastPos] = useState("");

@@ -14,6 +14,8 @@ var SPREADSHEET_ID = "1G84ZEO31bvWJGxdaaQHSGcF_z0SGTvWuOL3zVpw1Kg8";
 var SHEET_GID = 0;
 var SHEET_TAB_NAME = "Kh\u00e1ch h\u00e0ng";
 var TRACKING_TAB_NAME = "Theo_doi";
+var STAFF_TAB_NAME = "Nhan_vien";
+var JOBS_TAB_NAME = "Cong_viec";
 
 var HEADERS = [
   "Th\u1eddi gian",
@@ -49,6 +51,214 @@ function getSheet_() {
 /** Run once - create Theo_doi tab for GPS tracking */
 function setupTrackingSheet() {
   getTrackingSheet_();
+}
+
+/** Run once - tabs Nhan_vien + Cong_viec (quan ly phan cong) */
+function setupOpsSheets() {
+  getStaffSheet_();
+  getJobsSheet_();
+}
+
+function getStaffSheet_() {
+  var ss = getSpreadsheet_();
+  var sheet = ss.getSheetByName(STAFF_TAB_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(STAFF_TAB_NAME);
+    sheet.appendRow(["staffId", "name", "phone", "email", "pin", "status", "registeredAt"]);
+    sheet.getRange(1, 1, 1, 7).setFontWeight("bold").setBackground("#ff9800").setFontColor("#ffffff");
+  }
+  return sheet;
+}
+
+function getJobsSheet_() {
+  var ss = getSpreadsheet_();
+  var sheet = ss.getSheetByName(JOBS_TAB_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(JOBS_TAB_NAME);
+    sheet.appendRow([
+      "jobId",
+      "customerName",
+      "phone",
+      "address",
+      "serviceNote",
+      "status",
+      "staffId",
+      "staffName",
+      "scheduledAt",
+      "createdAt",
+      "assignedAt",
+    ]);
+    sheet.getRange(1, 1, 1, 11).setFontWeight("bold").setBackground("#673ab7").setFontColor("#ffffff");
+  }
+  return sheet;
+}
+
+function nextStaffId_() {
+  var sheet = getStaffSheet_();
+  var n = Math.max(0, sheet.getLastRow() - 1);
+  return "NV" + String(n + 1).padStart(3, "0");
+}
+
+function staffRowToObj_(row) {
+  return {
+    staffId: String(row[0]),
+    name: String(row[1]),
+    phone: String(row[2]),
+    email: String(row[3] || ""),
+    status: String(row[5] || "pending"),
+    registeredAt: String(row[6] || ""),
+  };
+}
+
+function jobRowToObj_(row) {
+  return {
+    jobId: String(row[0]),
+    customerName: String(row[1]),
+    phone: String(row[2]),
+    address: String(row[3]),
+    serviceNote: String(row[4]),
+    status: String(row[5] || "new"),
+    staffId: String(row[6] || ""),
+    staffName: String(row[7] || ""),
+    scheduledAt: String(row[8] || ""),
+    createdAt: String(row[9] || ""),
+    assignedAt: String(row[10] || ""),
+  };
+}
+
+function staffList_() {
+  var sheet = getStaffSheet_();
+  var data = sheet.getDataRange().getValues();
+  var staff = [];
+  for (var i = 1; i < data.length; i++) {
+    if (data[i][0]) staff.push(staffRowToObj_(data[i]));
+  }
+  return jsonResponse_({ ok: true, staff: staff });
+}
+
+function staffRegister_(data) {
+  var sheet = getStaffSheet_();
+  var phone = String(data.phone || "");
+  var rows = sheet.getDataRange().getValues();
+  for (var i = 1; i < rows.length; i++) {
+    if (String(rows[i][2]) === phone) {
+      return jsonResponse_({ ok: false, error: "phone_exists" });
+    }
+  }
+  var staffId = nextStaffId_();
+  var registeredAt = new Date().toISOString();
+  sheet.appendRow([
+    staffId,
+    data.name || "",
+    phone,
+    data.email || "",
+    String(data.pin || ""),
+    "pending",
+    registeredAt,
+  ]);
+  return jsonResponse_({
+    ok: true,
+    staff: { staffId: staffId, name: data.name, phone: phone, email: data.email || "", status: "pending", registeredAt: registeredAt },
+  });
+}
+
+function staffUpdate_(data) {
+  var sheet = getStaffSheet_();
+  var rows = sheet.getDataRange().getValues();
+  for (var i = 1; i < rows.length; i++) {
+    if (String(rows[i][0]) === String(data.staffId)) {
+      if (data.status) sheet.getRange(i + 1, 6).setValue(data.status);
+      return jsonResponse_({ ok: true, staff: staffRowToObj_(sheet.getRange(i + 1, 1, i + 1, 7).getValues()[0]) });
+    }
+  }
+  return jsonResponse_({ ok: false, error: "not_found" });
+}
+
+function staffLogin_(data) {
+  var sheet = getStaffSheet_();
+  var rows = sheet.getDataRange().getValues();
+  for (var i = 1; i < rows.length; i++) {
+    if (String(rows[i][0]) === String(data.staffId)) {
+      if (String(rows[i][4]) !== String(data.pin)) return jsonResponse_({ ok: false, error: "invalid_pin" });
+      if (String(rows[i][5]) !== "active") return jsonResponse_({ ok: false, error: "not_active" });
+      return jsonResponse_({ ok: true, staff: staffRowToObj_(rows[i]) });
+    }
+  }
+  return jsonResponse_({ ok: false, error: "not_found" });
+}
+
+function jobList_(staffId) {
+  var sheet = getJobsSheet_();
+  var data = sheet.getDataRange().getValues();
+  var jobs = [];
+  for (var i = 1; i < data.length; i++) {
+    if (!data[i][0]) continue;
+    if (staffId && String(data[i][6]) !== String(staffId)) continue;
+    jobs.push(jobRowToObj_(data[i]));
+  }
+  return jsonResponse_({ ok: true, jobs: jobs });
+}
+
+function jobUpsert_(data) {
+  var sheet = getJobsSheet_();
+  var rows = sheet.getDataRange().getValues();
+  var rowIndex = -1;
+  for (var i = 1; i < rows.length; i++) {
+    if (String(rows[i][0]) === String(data.jobId)) {
+      rowIndex = i + 1;
+      break;
+    }
+  }
+  var createdAt = data.createdAt || new Date().toISOString();
+  var row = [
+    data.jobId,
+    data.customerName || "",
+    data.phone || "",
+    data.address || "",
+    data.serviceNote || "",
+    rowIndex > 0 ? String(rows[rowIndex - 1][5] || "new") : "new",
+    rowIndex > 0 ? String(rows[rowIndex - 1][6] || "") : "",
+    rowIndex > 0 ? String(rows[rowIndex - 1][7] || "") : "",
+    data.scheduledAt || (rowIndex > 0 ? String(rows[rowIndex - 1][8] || "") : ""),
+    rowIndex > 0 ? String(rows[rowIndex - 1][9] || createdAt) : createdAt,
+    rowIndex > 0 ? String(rows[rowIndex - 1][10] || "") : "",
+  ];
+  if (rowIndex > 0) {
+    sheet.getRange(rowIndex, 1, rowIndex, 11).setValues([row]);
+  } else {
+    sheet.appendRow(row);
+  }
+  return jsonResponse_({ ok: true, job: jobRowToObj_(row) });
+}
+
+function jobAssign_(data) {
+  var sheet = getJobsSheet_();
+  var rows = sheet.getDataRange().getValues();
+  for (var i = 1; i < rows.length; i++) {
+    if (String(rows[i][0]) === String(data.jobId)) {
+      var assignedAt = new Date().toISOString();
+      sheet.getRange(i + 1, 6).setValue("assigned");
+      sheet.getRange(i + 1, 7).setValue(data.staffId);
+      sheet.getRange(i + 1, 8).setValue(data.staffName || "");
+      sheet.getRange(i + 1, 11).setValue(assignedAt);
+      var updated = sheet.getRange(i + 1, 1, i + 1, 11).getValues()[0];
+      return jsonResponse_({ ok: true, job: jobRowToObj_(updated) });
+    }
+  }
+  return jsonResponse_({ ok: false, error: "not_found" });
+}
+
+function jobStatus_(data) {
+  var sheet = getJobsSheet_();
+  var rows = sheet.getDataRange().getValues();
+  for (var i = 1; i < rows.length; i++) {
+    if (String(rows[i][0]) === String(data.jobId)) {
+      sheet.getRange(i + 1, 6).setValue(data.status);
+      var updated = sheet.getRange(i + 1, 1, i + 1, 11).getValues()[0];
+      return jsonResponse_({ ok: true, job: jobRowToObj_(updated) });
+    }
+  }
+  return jsonResponse_({ ok: false, error: "not_found" });
 }
 
 /** Detect mojibake in header row (UTF-8 shown as Thá»i gian, etc.) */
@@ -221,6 +431,12 @@ function doGet(e) {
   if (e && e.parameter && e.parameter.action === "trackingGet" && e.parameter.jobId) {
     return trackingGet_(e.parameter.jobId);
   }
+  if (e && e.parameter && e.parameter.action === "staffList") {
+    return staffList_();
+  }
+  if (e && e.parameter && e.parameter.action === "jobList") {
+    return jobList_(e.parameter.staffId || "");
+  }
   return jsonResponse_({
     ok: true,
     message: "HomeCare365 consultation webhook",
@@ -270,8 +486,21 @@ function doPost(e) {
         updatedAt: data.updatedAt || Date.now(),
       });
     }
-    appendRow_(data);
-    return jsonResponse_({ ok: true });
+    if (data.action === "staffRegister") return staffRegister_(data);
+    if (data.action === "staffUpdate") return staffUpdate_(data);
+    if (data.action === "staffLogin") return staffLogin_(data);
+    if (data.action === "jobUpsert") return jobUpsert_(data);
+    if (data.action === "jobAssign") return jobAssign_(data);
+    if (data.action === "jobStatus") return jobStatus_(data);
+    if (data.action === "setupOps") {
+      setupOpsSheets();
+      return jsonResponse_({ ok: true, message: "ops_sheets_ready" });
+    }
+    if (data.fullName || data.phone) {
+      appendRow_(data);
+      return jsonResponse_({ ok: true });
+    }
+    return jsonResponse_({ ok: false, error: "unknown_action" });
   } catch (err) {
     return jsonResponse_({ ok: false, error: String(err) });
   }
