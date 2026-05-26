@@ -102,11 +102,23 @@ if (!deploymentId) {
   run(`npx clasp deploy -i ${deploymentId} --description "HomeCare365 web+tracking"`);
 }
 
-console.log("\nChạy setupTrackingSheet trên Google…");
+console.log("\nChạy setupTrackingSheet + setupOpsSheets trên Google…");
 try {
   run("npx clasp run setupTrackingSheet");
 } catch {
-  console.warn("(Bỏ qua nếu chưa bật Apps Script API — tab Theo_doi sẽ tạo khi có request tracking)");
+  console.warn("(Bỏ qua setupTrackingSheet nếu chưa bật Apps Script API)");
+}
+try {
+  run("npx clasp run setupOpsSheets");
+} catch {
+  console.warn("(Bỏ qua setupOpsSheets — sẽ gọi POST setupOps sau)");
+}
+
+console.log("\nPOST setupOps (tạo tab Nhan_vien, Cong_viec)…");
+try {
+  execSync("node scripts/gas-post-setup.mjs", { stdio: "inherit", cwd: root });
+} catch {
+  console.warn("(Chạy lại sau khi deploy: node scripts/gas-post-setup.mjs)");
 }
 
 if (webAppUrl) {

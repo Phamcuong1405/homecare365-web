@@ -5,7 +5,7 @@
 const url =
   process.argv[2] ??
   process.env.GOOGLE_SHEETS_WEB_APP_URL ??
-  "https://script.google.com/macros/s/AKfycbzbZ7QEFIjXGOTAQbLKgidW9VL_Fg87XHUzCY7RcYfAWXr-eofqwDgF9ep8mS2fLmjEug/exec";
+  "https://script.google.com/macros/s/AKfycbyo1UQaWaix0N-38hDPsvBiKxRBKdrmLsErvD7LPmm6aSTctKNm08bqnv48e8X5hVujfQ/exec";
 
 const fixUrl = `${url.replace(/\/$/, "")}?action=fixHeaders`;
 console.log(`GET ${fixUrl}\n`);
